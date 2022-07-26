@@ -16,6 +16,6 @@
             <MenuItem Header="Users" Click="UsersMenu"></MenuItem>
         </Menu>
 
-        <Frame x:Name="MainFrame" Margin="0,35,0,0"/>
+        <Frame x:Name="MainFrame" Margin="0,20,0,0"/>
     </Grid>
 </Window>

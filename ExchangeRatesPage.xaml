@@ -9,22 +9,21 @@
       Title="ExchangeRatesPage">
 
     <Grid>
-        <Label Content="Exchange Rates Id" HorizontalAlignment="Left" Margin="35,25,0,0" VerticalAlignment="Top"/>
+        <Label Content="Exchange Rate Id" HorizontalAlignment="Left" Margin="35,25,0,0" VerticalAlignment="Top"/>
         <Label Content="Validity Date" HorizontalAlignment="Left" Margin="200,25,0,0" VerticalAlignment="Top"/>
         <Label Content="Currency From" HorizontalAlignment="Left" Margin="370,25,0,0" VerticalAlignment="Top"/>
         <Label Content="Currency To" HorizontalAlignment="Left" Margin="550,25,0,0" VerticalAlignment="Top"/>
-        <Label Content="Is Active" HorizontalAlignment="Left" Margin="600,50,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="ExchangeRatesId" HorizontalAlignment="Left" Margin="140,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50"/>
         <TextBox x:Name="ValidityDate" HorizontalAlignment="Left" Margin="280,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
         <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Margin="35,200,35,10"/>
         <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <CheckBox x:Name="checkBox" Content="" HorizontalAlignment="Left" Margin="655,60,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkBox" Content="Is Active" HorizontalAlignment="Left" Margin="455,80,0,0" VerticalAlignment="Top"/>
         <Button Content="Insert" HorizontalAlignment="Left" Margin="150,120,0,0" VerticalAlignment="Top" Click="Insert" Width="55"/>
         <Button Content="Delete" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="55"/>
         <Button Content="Edit" HorizontalAlignment="Right" Margin="0,120,150,0" VerticalAlignment="Top" Width="55"/>
         <ComboBox HorizontalAlignment="Left" Margin="470,27,0,0" VerticalAlignment="Top" Width="70"/>
         <ComboBox HorizontalAlignment="Left" Margin="640,27,0,0" VerticalAlignment="Top" Width="70"/>
-        <Label Content="Rate" HorizontalAlignment="Left" Margin="100,75,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="Rate" HorizontalAlignment="Left" Margin="165,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="Rate1_TextChanged"/>
+        <Label Content="Rate" HorizontalAlignment="Left" Margin="150,75,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="Rate" HorizontalAlignment="Left" Margin="200,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
     </Grid>
 </Page>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace ExchangeRates
 {
     /// <summary>
-    /// Interaction logic for ExchangeRatesPage.xaml
+    /// Interaction logic for OperationTypesPage.xaml
     /// </summary>
-    public partial class ExchangeRatesPage : Page
+    public partial class OperationTypesPage : Page
     {
-        public ExchangeRatesPage()
+        public OperationTypesPage()
         {
             InitializeComponent();
         }
