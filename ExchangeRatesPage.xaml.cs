@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,11 +27,53 @@ namespace ExchangeRates
         public ExchangeRatesPage()
         {
             InitializeComponent();
+            fillCB();
+        }
+        
+        string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
+
+        void fillCB()
+        {
+            SqlConnection conn = new SqlConnection(cs);
+            string comm = "SELECT * FROM Currencies";
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comm, conn);
+                var dr = cmd.ExecuteReader();
+                while(dr.Read())
+                {
+                    var id = dr.GetValue(0);
+                    CurrencyFromCB.Items.Add(id);
+                    CurrencyToCB.Items.Add(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+            }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LoadTable(object sender, RoutedEventArgs e)
         {
+            SqlConnection conn = new SqlConnection(cs);
+            string comm = "SELECT * FROM ExchangeRates";
 
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comm, conn);
+                cmd.ExecuteNonQuery();
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable("Exchange Rates");
+                adapter.Fill(dt);
+                dataGrid.ItemsSource = dt.DefaultView;
+                adapter.Update(dt);
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+            }
         }
 
         private void Insert(object sender, RoutedEventArgs e)
@@ -38,21 +83,20 @@ namespace ExchangeRates
             {
                 isActive = 1;
             }
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
             SqlConnection conn = new SqlConnection(cs);
-            /*string comm = "EXEC InsertIntoCurrencies @Code = '" + Code.Text + "', @CurrencyName = '" +
-                CurrencyName.Text + "', @IsActive = " + isActive + ")";
-
+            string comm = "EXEC InsertIntoExchangeRates @ValidityDate = '" + ValidityDate.Text + "', @CurrencyFrom = " +
+                CurrencyFromCB.Text + ", @CurrencyTo = " + CurrencyToCB.Text + ", @Rate = " + Rate.Text + 
+                ", @IsActive = " + isActive;
 
             try
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(comm, conn);
                 cmd.ExecuteNonQuery();
-                cmd = new SqlCommand("SELECT * FROM Currencies", conn);
+                cmd = new SqlCommand("SELECT * FROM ExchangeRates", conn);
                 cmd.ExecuteNonQuery();
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Currencies");
+                DataTable dt = new DataTable("Exchange Rates");
                 adapter.Fill(dt);
                 dataGrid.ItemsSource = dt.DefaultView;
                 adapter.Update(dt);
@@ -60,7 +104,9 @@ namespace ExchangeRates
             catch (Exception ex)
             {
                 conn.Close();
-            }*/
+            }
         }
+
+        
     }
 }

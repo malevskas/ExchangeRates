@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Data;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -18,11 +18,11 @@ using System.Windows.Shapes;
 namespace ExchangeRates
 {
     /// <summary>
-    /// Interaction logic for CurrenciesPage.xaml
+    /// Interaction logic for UsersPage.xaml
     /// </summary>
-    public partial class CurrenciesPage : Page
+    public partial class UsersPage : Page
     {
-        public CurrenciesPage()
+        public UsersPage()
         {
             InitializeComponent();
         }
@@ -31,7 +31,7 @@ namespace ExchangeRates
         {
             string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
             SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM Currencies";
+            string comm = "SELECT * FROM Users";
 
             try
             {
@@ -39,7 +39,7 @@ namespace ExchangeRates
                 SqlCommand cmd = new SqlCommand(comm, conn);
                 cmd.ExecuteNonQuery();
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Currencies");
+                DataTable dt = new DataTable("Users");
                 adapter.Fill(dt);
                 dataGrid.ItemsSource = dt.DefaultView;
                 adapter.Update(dt);
@@ -53,25 +53,24 @@ namespace ExchangeRates
         private void Insert(object sender, RoutedEventArgs e)
         {
             int isActive = 0;
-            if(checkBox.IsChecked == true)
+            if (checkBox.IsChecked == true)
             {
                 isActive = 1;
             }
             string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
             SqlConnection conn = new SqlConnection(cs);
-            string comm = "EXEC InsertIntoCurrencies @Code = '" + Code.Text + "', @CurrencyName = '" +
-                CurrencyName.Text + "', @IsActive = " + isActive;
-
+            string comm = "EXEC InsertIntoUers @FirstName = '" + FirstName.Text + "', @Surname = '" +
+                LastName.Text + "', @IsActive = " + isActive;
 
             try
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(comm, conn);
                 cmd.ExecuteNonQuery();
-                cmd = new SqlCommand("SELECT * FROM Currencies", conn);
+                cmd = new SqlCommand("SELECT * FROM Users", conn);
                 cmd.ExecuteNonQuery();
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Currencies");
+                DataTable dt = new DataTable("Users");
                 adapter.Fill(dt);
                 dataGrid.ItemsSource = dt.DefaultView;
                 adapter.Update(dt);
@@ -80,37 +79,6 @@ namespace ExchangeRates
             {
                 conn.Close();
             }
-        }
-
-        private void Delete(object sender, RoutedEventArgs e)
-        {
-
-
-            Currency currency = (Currency)dataGrid.SelectedItem;
-
-            MessageBox.Show(currency.CurrencyId+"");
-            /*string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "EXEC DeleteFromCurrencies @Id = '" + currency.CurrencyId + ")";
-
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                cmd = new SqlCommand("SELECT * FROM Currencies", conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Currencies");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }*/
         }
     }
 }

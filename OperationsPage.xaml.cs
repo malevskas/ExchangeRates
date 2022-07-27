@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,22 +27,36 @@ namespace ExchangeRates
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LoadTable(object sender, RoutedEventArgs e)
         {
+            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
+            SqlConnection conn = new SqlConnection(cs);
+            string comm = "SELECT * FROM Operations";
 
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comm, conn);
+                cmd.ExecuteNonQuery();
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable("Operations");
+                adapter.Fill(dt);
+                dataGrid.ItemsSource = dt.DefaultView;
+                adapter.Update(dt);
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+            }
         }
 
         private void Insert(object sender, RoutedEventArgs e)
-        {
-            int isActive = 0;
-            if (checkBox.IsChecked == true)
-            {
-                isActive = 1;
-            }
+        { 
             string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
             SqlConnection conn = new SqlConnection(cs);
-            /*string comm = "EXEC InsertIntoCurrencies @Code = '" + Code.Text + "', @CurrencyName = '" +
-                CurrencyName.Text + "', @IsActive = " + isActive + ")";
+            string comm = "EXEC InsertIntoCurrencies @UserId = " + OperationId.Text + ", @OperationDate = '" +
+                OperationDate.Text + "', @Amount = " + Amount.Text + "@CurrencyFrom = " + CurrencyFromCB.Text + 
+                ", @CurrencyTo = " + CurrencyToCB.Text;
 
 
             try
@@ -59,7 +75,7 @@ namespace ExchangeRates
             catch (Exception ex)
             {
                 conn.Close();
-            }*/
+            }
         }
     }
 }

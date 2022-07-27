@@ -16,13 +16,13 @@
         <TextBox x:Name="ExchangeRatesId" HorizontalAlignment="Left" Margin="140,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50"/>
         <TextBox x:Name="ValidityDate" HorizontalAlignment="Left" Margin="280,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
         <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Margin="35,200,35,10"/>
-        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="LoadTable"/>
         <CheckBox x:Name="checkBox" Content="Is Active" HorizontalAlignment="Left" Margin="455,80,0,0" VerticalAlignment="Top"/>
         <Button Content="Insert" HorizontalAlignment="Left" Margin="150,120,0,0" VerticalAlignment="Top" Click="Insert" Width="55"/>
         <Button Content="Delete" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="55"/>
         <Button Content="Edit" HorizontalAlignment="Right" Margin="0,120,150,0" VerticalAlignment="Top" Width="55"/>
-        <ComboBox HorizontalAlignment="Left" Margin="470,27,0,0" VerticalAlignment="Top" Width="70"/>
-        <ComboBox HorizontalAlignment="Left" Margin="640,27,0,0" VerticalAlignment="Top" Width="70"/>
+        <ComboBox x:Name="CurrencyFromCB" HorizontalAlignment="Left" Margin="470,27,0,0" VerticalAlignment="Top" Width="70"/>
+        <ComboBox x:Name="CurrencyToCB" HorizontalAlignment="Left" Margin="640,27,0,0" VerticalAlignment="Top" Width="70"/>
         <Label Content="Rate" HorizontalAlignment="Left" Margin="150,75,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="Rate" HorizontalAlignment="Left" Margin="200,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
     </Grid>

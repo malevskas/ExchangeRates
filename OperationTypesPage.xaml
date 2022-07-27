@@ -16,7 +16,7 @@
         <TextBox x:Name="OperationTypeId" HorizontalAlignment="Left" Margin="140,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
         <TextBox x:Name="Code" HorizontalAlignment="Left" Margin="290,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
         <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Margin="35,200,35,10"/>
-        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="LoadTable"/>
         <TextBox x:Name="OperationName" HorizontalAlignment="Left" Margin="500,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"/>
         <CheckBox x:Name="checkBox" Content="" HorizontalAlignment="Left" Margin="655,31,0,0" VerticalAlignment="Top"/>
         <Button Content="Insert" HorizontalAlignment="Left" Margin="150,95,0,0" VerticalAlignment="Top" Click="Insert" Width="55"/>

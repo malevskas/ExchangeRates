@@ -15,7 +15,7 @@
         <Label Content="Operation Date" HorizontalAlignment="Left" Margin="520,25,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="OperationId" HorizontalAlignment="Left" Margin="120,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50"/>
         <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Margin="35,200,35,10"/>
-        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="LoadTable"/>
         <Button Content="Insert" HorizontalAlignment="Left" Margin="150,120,0,0" VerticalAlignment="Top" Click="Insert" Width="55"/>
         <Button Content="Delete" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="55"/>
         <Button Content="Edit" HorizontalAlignment="Right" Margin="0,120,150,0" VerticalAlignment="Top" Width="55"/>
@@ -27,6 +27,6 @@
         <Label Content="Currency To" HorizontalAlignment="Left" Margin="340,75,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="CurrencyToCB" HorizontalAlignment="Left" Margin="425,77,0,0" VerticalAlignment="Top" Width="70"/>
         <Label Content="Amount" HorizontalAlignment="Left" Margin="530,75,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="Amount" HorizontalAlignment="Left" Margin="630,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
+        <TextBox x:Name="Amount" HorizontalAlignment="Left" Margin="610,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
     </Grid>
 </Page>

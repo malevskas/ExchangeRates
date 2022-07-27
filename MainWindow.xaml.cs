@@ -36,15 +36,19 @@ namespace ExchangeRates
         }
         private void OfficialRatesMenu(object sender, RoutedEventArgs e)
         {
+            MainFrame.Content = new OfficialRate();
         }
         private void OperationsMenu(object sender, RoutedEventArgs e)
         {
+            MainFrame.Content = new OperationsPage();
         }
         private void OperationTypesMenu(object sender, RoutedEventArgs e)
         {
+            MainFrame.Content = new OperationTypesPage();
         }
         private void UsersMenu(object sender, RoutedEventArgs e)
         {
+            MainFrame.Content = new UsersPage();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
