@@ -56,24 +56,9 @@ namespace ExchangeRates
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM ExchangeRates";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Exchange Rates");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }
+            Entity myExchangeDatabase = new Entity();
+            var allMyExchangeRates = myExchangeDatabase.ExchangeRates.ToList<ExchangeRate>();
+            dataGrid.ItemsSource = allMyExchangeRates;
         }
 
         private void Insert(object sender, RoutedEventArgs e)
@@ -107,6 +92,9 @@ namespace ExchangeRates
             }
         }
 
-        
+        private void Delete(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

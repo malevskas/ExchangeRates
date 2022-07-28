@@ -83,8 +83,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="sysdiagram.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="Entities\sysdiagram.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="UsersPage.xaml.cs">
       <DependentUpon>UsersPage.xaml</DependentUpon>
     </Compile>
@@ -107,9 +107,9 @@
     <Compile Include="CurrenciesPage.xaml.cs">
       <DependentUpon>CurrenciesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Currency.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="ExchangeRate.cs" />
+    <Compile Include="Entities\Currency.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\ExchangeRate.cs" />
     <Compile Include="ExchangeRatesPage.xaml.cs">
       <DependentUpon>ExchangeRatesPage.xaml</DependentUpon>
     </Compile>
@@ -135,17 +135,16 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OfficialRate.cs" />
+    <Compile Include="Entities\OfficialRate.cs" />
     <Compile Include="OfficialRatesPage.xaml.cs">
       <DependentUpon>OfficialRatesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Operation.cs" />
-    <Compile Include="OperationsHistory.cs" />
+    <Compile Include="Entities\Operation.cs" />
+    <Compile Include="Entities\OperationsHistory.cs" />
     <Compile Include="OperationsPage.xaml.cs">
       <DependentUpon>OperationsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Operationss.cs" />
-    <Compile Include="OperationType.cs" />
+    <Compile Include="Entities\OperationType.cs" />
     <Compile Include="OperationTypesPage.xaml.cs">
       <DependentUpon>OperationTypesPage.xaml</DependentUpon>
     </Compile>
@@ -175,5 +174,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,18 +8,50 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="UsersPage">
 
-    <Grid>
-        <Label Content="User Id" HorizontalAlignment="Left" Margin="55,25,0,0" VerticalAlignment="Top"/>
-        <Label Content="First Name" HorizontalAlignment="Left" Margin="230,25,0,0" VerticalAlignment="Top"/>
-        <Label Content="Last Name" HorizontalAlignment="Left" Margin="420,25,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="UserId" HorizontalAlignment="Left" Margin="120,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
-        <TextBox x:Name="FirstName" HorizontalAlignment="Left" Margin="310,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
-        <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Margin="35,200,35,10" ItemsSource="{Binding Path=Currencies}"/>
-        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="LoadTable"/>
-        <TextBox x:Name="LastName" HorizontalAlignment="Left" Margin="500,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"/>
-        <CheckBox x:Name="checkBox" Content="Is Active" HorizontalAlignment="Left" Margin="635,31,0,0" VerticalAlignment="Top"/>
-        <Button Content="Insert" HorizontalAlignment="Left" Margin="150,95,0,0" VerticalAlignment="Top" Click="Insert" Width="55"/>
-        <Button Content="Delete" HorizontalAlignment="Center" Margin="0,95,0,0" VerticalAlignment="Top" Width="55" Click="Delete"/>
-        <Button Content="Edit" HorizontalAlignment="Right" Margin="0,95,150,0" VerticalAlignment="Top" Width="55"/>
+    <Page.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Background" Value="Bisque" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+        <Style x:Key="FancyText" TargetType="TextBox">
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Background" Value="#F94449" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+        <Style x:Key="DeleteButton" TargetType="Button">
+            <Setter Property="Background" Value="#F94449" />
+        </Style>
+        <Style x:Key="InsertButton" TargetType="Button">
+            <Setter Property="Background" Value="#3CB043" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="0,-1,0,1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="9*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="15*"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0" Content="User Id" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Grid.Column="0" Grid.Row="1" Content="First Name" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Grid.Column="0" Grid.Row="2" Content="Last Name" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Grid.Column="0" Grid.Row="3" Content="Is Active" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <TextBox x:Name="UserId" Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox x:Name="FirstName" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox x:Name="LastName" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkBox" Grid.Column="1" Grid.Row="3" Content="" HorizontalAlignment="Left" Margin="0,11,0,0" VerticalAlignment="Top"/>
+        <Button Grid.Column="0" Grid.Row="4" Content="Load Table" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Top" Click="LoadTable"/>
+        <Button Style="{StaticResource InsertButton}" Grid.Column="1" Grid.Row="4" Content="Insert" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="Insert" Width="55"/>
+        <Button Grid.Column="1" Grid.Row="4" Content="Edit" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Top" Width="55"/>
+        <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="4" Content="Delete" HorizontalAlignment="Left" Margin="120,0,0,0" VerticalAlignment="Top" Width="55" Click="Delete"/>
+        <DataGrid x:Name="dataGrid" Grid.Row="5" Grid.ColumnSpan="2" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=Users}"/>
     </Grid>
 </Page>

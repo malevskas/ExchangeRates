@@ -29,25 +29,9 @@ namespace ExchangeRates
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM Currencies";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Currencies");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }
+            Entity myExchangeDatabase = new Entity();
+            var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
+            dataGrid.ItemsSource = allMyCurrencies;
         }
 
         private void Insert(object sender, RoutedEventArgs e)

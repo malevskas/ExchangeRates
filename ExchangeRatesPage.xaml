@@ -8,22 +8,56 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ExchangeRatesPage">
 
-    <Grid>
-        <Label Content="Exchange Rate Id" HorizontalAlignment="Left" Margin="35,25,0,0" VerticalAlignment="Top"/>
-        <Label Content="Validity Date" HorizontalAlignment="Left" Margin="200,25,0,0" VerticalAlignment="Top"/>
-        <Label Content="Currency From" HorizontalAlignment="Left" Margin="370,25,0,0" VerticalAlignment="Top"/>
-        <Label Content="Currency To" HorizontalAlignment="Left" Margin="550,25,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ExchangeRatesId" HorizontalAlignment="Left" Margin="140,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50"/>
-        <TextBox x:Name="ValidityDate" HorizontalAlignment="Left" Margin="280,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
-        <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Margin="35,200,35,10"/>
-        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="LoadTable"/>
-        <CheckBox x:Name="checkBox" Content="Is Active" HorizontalAlignment="Left" Margin="455,80,0,0" VerticalAlignment="Top"/>
-        <Button Content="Insert" HorizontalAlignment="Left" Margin="150,120,0,0" VerticalAlignment="Top" Click="Insert" Width="55"/>
-        <Button Content="Delete" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="55"/>
-        <Button Content="Edit" HorizontalAlignment="Right" Margin="0,120,150,0" VerticalAlignment="Top" Width="55"/>
-        <ComboBox x:Name="CurrencyFromCB" HorizontalAlignment="Left" Margin="470,27,0,0" VerticalAlignment="Top" Width="70"/>
-        <ComboBox x:Name="CurrencyToCB" HorizontalAlignment="Left" Margin="640,27,0,0" VerticalAlignment="Top" Width="70"/>
-        <Label Content="Rate" HorizontalAlignment="Left" Margin="150,75,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="Rate" HorizontalAlignment="Left" Margin="200,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
+    <Page.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Background" Value="Bisque" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+        <Style x:Key="FancyText" TargetType="TextBox">
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Background" Value="#F94449" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+        <Style x:Key="DeleteButton" TargetType="Button">
+            <Setter Property="Background" Value="#F94449" />
+        </Style>
+        <Style x:Key="InsertButton" TargetType="Button">
+            <Setter Property="Background" Value="#3CB043" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="0,-1,0,1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="9*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="13*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Exchange Rate Id" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Content="Validity Date" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Content="Rate" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Content="Currency From" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Content="Currency To" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Grid.Column="0" Grid.Row="5" Content="Is Active" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <TextBox x:Name="ExchangeRatesId" Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox x:Name="ValidityDate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox x:Name="Rate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CurrencyFromCB" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
+        <ComboBox x:Name="CurrencyToCB" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
+        <CheckBox x:Name="checkBox" Grid.Column="1" Grid.Row="5" Content="" HorizontalAlignment="Left" Margin="0,11,0,0" VerticalAlignment="Top"/>
+        <Button Grid.Column="0" Grid.Row="6" Content="Load Table" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Top" Click="LoadTable"/>
+        <Button Style="{StaticResource InsertButton}" Grid.Column="1" Grid.Row="6" Content="Insert" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="Insert" Width="55"/>
+        <Button Grid.Column="1" Grid.Row="6" Content="Edit" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Top" Width="55"/>
+        <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="6" Content="Delete" HorizontalAlignment="Left" Margin="120,0,0,0" VerticalAlignment="Top" Width="55" Click="Delete"/>
+        <DataGrid x:Name="dataGrid" Grid.Row="7" Grid.ColumnSpan="2" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=ExchangeRates}"/>
     </Grid>
 </Page>

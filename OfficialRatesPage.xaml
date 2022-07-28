@@ -8,20 +8,39 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OfficialRatesPage">
 
+    <Page.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Background" Value="Bisque" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+        <Style x:Key="FancyText" TargetType="TextBox">
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Background" Value="#F94449" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+        <Style x:Key="DeleteButton" TargetType="Button">
+            <Setter Property="Background" Value="#F94449" />
+        </Style>
+        <Style x:Key="InsertButton" TargetType="Button">
+            <Setter Property="Background" Value="#3CB043" />
+        </Style>
+    </Page.Resources>
+    
     <Grid>
         <Label Content="Official Rate Id" HorizontalAlignment="Left" Margin="35,25,0,0" VerticalAlignment="Top"/>
         <Label Content="Validity Date" HorizontalAlignment="Left" Margin="200,25,0,0" VerticalAlignment="Top"/>
+        <Label Content="Rate" HorizontalAlignment="Left" Margin="530,25,0,0" VerticalAlignment="Top"/>
         <Label Content="Currency" HorizontalAlignment="Left" Margin="365,25,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="ExchangeRatesId" HorizontalAlignment="Left" Margin="135,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="50"/>
         <TextBox x:Name="ValidityDate" HorizontalAlignment="Left" Margin="280,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
-        <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Margin="35,200,35,10"/>
-        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="LoadTable"/>
-        <CheckBox x:Name="checkBox" Content="Is Active" HorizontalAlignment="Left" Margin="660,30,0,0" VerticalAlignment="Top"/>
-        <Button Content="Insert" HorizontalAlignment="Left" Margin="150,100,0,0" VerticalAlignment="Top" Click="Insert" Width="55"/>
-        <Button Content="Delete" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Width="55"/>
-        <Button Content="Edit" HorizontalAlignment="Right" Margin="0,100,150,0" VerticalAlignment="Top" Width="55"/>
-        <ComboBox x:Name="CurrencyCB" HorizontalAlignment="Left" Margin="435,27,0,0" VerticalAlignment="Top" Width="70"/>
-        <Label Content="Rate" HorizontalAlignment="Left" Margin="530,25,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="Rate" HorizontalAlignment="Left" Margin="570,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="70"/>
+        <CheckBox x:Name="checkBox" Content="Is Active" HorizontalAlignment="Left" Margin="660,30,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CurrencyCB" HorizontalAlignment="Left" Margin="435,27,0,0" VerticalAlignment="Top" Width="70"/>
+        <Button Content="Load Table" HorizontalAlignment="Center" Margin="0,165,0,0" VerticalAlignment="Top" Click="LoadTable"/>
+        <Button Content="Insert" HorizontalAlignment="Left" Margin="150,100,0,0" VerticalAlignment="Top" Click="Insert" Width="55"/>
+        <Button Content="Edit" HorizontalAlignment="Right" Margin="0,100,150,0" VerticalAlignment="Top" Width="55"/>
+        <Button Content="Delete" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Width="55"/>
+        <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Margin="35,200,35,10"/>
     </Grid>
 </Page>

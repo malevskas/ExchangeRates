@@ -25,11 +25,99 @@ namespace ExchangeRates
         public OperationsPage()
         {
             InitializeComponent();
+            fillCurrencyCB();
+            fillUserCB();
+            fillOperationTypeCB();
+        }
+
+        string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
+
+        void fillCurrencyCB()
+        {
+            SqlConnection conn = new SqlConnection(cs);
+            string comm = "SELECT * FROM Currencies";
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comm, conn);
+                var dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    var id = dr.GetValue(0);
+                    CurrencyFromCB.Items.Add(id);
+                    CurrencyToCB.Items.Add(id);
+                }
+
+                comm = "SELECT * FROM OperationTypes";
+                cmd = new SqlCommand(comm, conn);
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    var id = dr.GetValue(0);
+                    OperationTypeCB.Items.Add(id);
+                }
+
+                comm = "SELECT * FROM Users";
+                cmd = new SqlCommand(comm, conn);
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    var id = dr.GetValue(0);
+                    UserCB.Items.Add(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+            }
+        }
+
+        void fillUserCB()
+        {
+            SqlConnection conn = new SqlConnection(cs);
+            string comm = "SELECT * FROM Users";
+
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comm, conn);
+                var dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    var id = dr.GetValue(0);
+                    UserCB.Items.Add(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+            }
+        }
+
+        void fillOperationTypeCB()
+        {
+            SqlConnection conn = new SqlConnection(cs);
+            string comm = "SELECT * FROM OperationTypes";
+
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(comm, conn);
+                var dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    var id = dr.GetValue(0);
+                    OperationTypeCB.Items.Add(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+            }
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
             SqlConnection conn = new SqlConnection(cs);
             string comm = "SELECT * FROM Operations";
 
@@ -58,7 +146,6 @@ namespace ExchangeRates
                 OperationDate.Text + "', @Amount = " + Amount.Text + "@CurrencyFrom = " + CurrencyFromCB.Text + 
                 ", @CurrencyTo = " + CurrencyToCB.Text;
 
-
             try
             {
                 conn.Open();
@@ -76,6 +163,11 @@ namespace ExchangeRates
             {
                 conn.Close();
             }
+        }
+
+        private void Delete(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

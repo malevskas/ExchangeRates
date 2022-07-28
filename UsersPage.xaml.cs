@@ -29,25 +29,9 @@ namespace ExchangeRates
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM Users";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Users");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }
+            Entity myExchangeDatabase = new Entity();
+            var allMyUsers = myExchangeDatabase.Users.ToList<User>();
+            dataGrid.ItemsSource = allMyUsers;
         }
 
         private void Insert(object sender, RoutedEventArgs e)
@@ -79,6 +63,11 @@ namespace ExchangeRates
             {
                 conn.Close();
             }
+        }
+
+        private void Delete(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

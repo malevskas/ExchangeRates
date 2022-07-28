@@ -17,7 +17,6 @@ namespace ExchangeRates
         public virtual DbSet<OfficialRate> OfficialRates { get; set; }
         public virtual DbSet<Operation> Operations { get; set; }
         public virtual DbSet<OperationsHistory> OperationsHistories { get; set; }
-        public virtual DbSet<Operationss> Operationsses { get; set; }
         public virtual DbSet<OperationType> OperationTypes { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -46,16 +45,6 @@ namespace ExchangeRates
                 .HasMany(e => e.OfficialRates)
                 .WithOptional(e => e.Currency1)
                 .HasForeignKey(e => e.Currency);
-
-            modelBuilder.Entity<Currency>()
-                .HasMany(e => e.Operationsses)
-                .WithOptional(e => e.Currency)
-                .HasForeignKey(e => e.CurrencyFrom);
-
-            modelBuilder.Entity<Currency>()
-                .HasMany(e => e.Operationsses1)
-                .WithOptional(e => e.Currency1)
-                .HasForeignKey(e => e.CurrencyTo);
 
             modelBuilder.Entity<Currency>()
                 .HasMany(e => e.Operations)
