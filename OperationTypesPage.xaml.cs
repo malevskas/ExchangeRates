@@ -27,28 +27,12 @@ namespace ExchangeRates
             InitializeComponent();
         }
 
+        private Entity myExchangeDatabase = new Entity();
+
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM OperationTypes";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("OperationTypes");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }
-
+            var allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
+            dataGrid.ItemsSource = allMyOperationTypes;
         }
 
         private void Insert(object sender, RoutedEventArgs e)
@@ -81,6 +65,27 @@ namespace ExchangeRates
             {
                 conn.Close();
             }*/
+        }
+        private void Delete(object sender, RoutedEventArgs e)
+        {
+            OperationType ot = (OperationType)dataGrid.SelectedItem;
+            ot.isActive = 0;
+            myExchangeDatabase.SaveChanges();
+
+            var allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
+            dataGrid.ItemsSource = allMyOperationTypes;
+        }
+
+        private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
+        {
+            OperationType ot = (OperationType)dataGrid.SelectedItem;
+            OperationTypeId.Text = ot.OperationTypeId.ToString();
+            Code.Text = ot.Code;
+            OperationName.Text = ot.OperationName;
+            if (ot.isActive == 1)
+            {
+                checkBox.IsChecked = true;
+            }
         }
     }
 }

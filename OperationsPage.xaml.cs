@@ -30,112 +30,44 @@ namespace ExchangeRates
             fillOperationTypeCB();
         }
 
-        string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
+        private Entity myExchangeDatabase = new Entity();
 
         void fillCurrencyCB()
         {
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM Currencies";
-            try
+            var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
+            CurrencyFromCB.Items.Clear();
+            CurrencyToCB.Items.Clear();
+            foreach (var currency in allMyCurrencies)
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                var dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    var id = dr.GetValue(0);
-                    CurrencyFromCB.Items.Add(id);
-                    CurrencyToCB.Items.Add(id);
-                }
-
-                comm = "SELECT * FROM OperationTypes";
-                cmd = new SqlCommand(comm, conn);
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    var id = dr.GetValue(0);
-                    OperationTypeCB.Items.Add(id);
-                }
-
-                comm = "SELECT * FROM Users";
-                cmd = new SqlCommand(comm, conn);
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    var id = dr.GetValue(0);
-                    UserCB.Items.Add(id);
-                }
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
+                CurrencyFromCB.Items.Add(currency.CurrencyId);
+                CurrencyToCB.Items.Add(currency.CurrencyId);
             }
         }
 
         void fillUserCB()
         {
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM Users";
-
-            try
+            var allMyUsers = myExchangeDatabase.Users.ToList<User>();
+            UserCB.Items.Clear();
+            foreach (var user in allMyUsers)
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                var dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    var id = dr.GetValue(0);
-                    UserCB.Items.Add(id);
-                }
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
+                UserCB.Items.Add(user.UserId);
             }
         }
 
         void fillOperationTypeCB()
         {
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM OperationTypes";
-
-            try
+            var allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
+            OperationTypeCB.Items.Clear();
+            foreach (var oTypes in allMyOperationTypes)
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                var dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    var id = dr.GetValue(0);
-                    OperationTypeCB.Items.Add(id);
-                }
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
+                OperationTypeCB.Items.Add(oTypes.OperationTypeId);
             }
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM Operations";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Operations");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }
+            var allMyOperations = myExchangeDatabase.Operations.ToList<Operation>();
+            dataGrid.ItemsSource = allMyOperations;
         }
 
         private void Insert(object sender, RoutedEventArgs e)
@@ -167,6 +99,12 @@ namespace ExchangeRates
 
         private void Delete(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
+        {
+            Operation operation = (Operation)dataGrid.SelectedItem;
 
         }
     }

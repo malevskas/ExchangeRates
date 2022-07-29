@@ -28,50 +28,23 @@ namespace ExchangeRates
             fillCB();
         }
 
-        string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
+        private Entity myExchangeDatabase = new Entity();
 
         void fillCB()
         {
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM Currencies";
-            try
+            var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
+            CurrencyCB.Items.Clear();
+
+            foreach (var currency in allMyCurrencies)
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                var dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    var id = dr.GetValue(0);
-                    CurrencyCB.Items.Add(id);
-                }
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
+                CurrencyCB.Items.Add(currency.CurrencyId);
             }
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "SELECT * FROM OfficialRates";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("OfficialRates");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }
+            var allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
+            dataGrid.ItemsSource = allMyOfficialRates;
         }
 
         private void Insert(object sender, RoutedEventArgs e)
@@ -81,7 +54,7 @@ namespace ExchangeRates
             {
                 isActive = 1;
             }
-            SqlConnection conn = new SqlConnection(cs);
+            /*SqlConnection conn = new SqlConnection(cs);
             string comm = "EXEC InsertIntoOfficialRates @ValidityDate = '" + ValidityDate.Text + "', @Currency = " +
                 CurrencyCB.Text + ", @Rate = " + Rate.Text + ", @IsActive = " + isActive;
 
@@ -101,7 +74,22 @@ namespace ExchangeRates
             catch (Exception ex)
             {
                 conn.Close();
-            }
+            }*/
+        }
+
+        private void Delete(object sender, RoutedEventArgs e)
+        {
+            OfficialRate or = (OfficialRate)dataGrid.SelectedItem;
+            or.IsActive = 0;
+            myExchangeDatabase.SaveChanges();
+
+            var allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
+            dataGrid.ItemsSource = allMyOfficialRates;
+        }
+
+        private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
+        {
+            
         }
     }
 }

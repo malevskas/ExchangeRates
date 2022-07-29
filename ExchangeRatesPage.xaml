@@ -58,6 +58,6 @@
         <Button Style="{StaticResource InsertButton}" Grid.Column="1" Grid.Row="6" Content="Insert" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="Insert" Width="55"/>
         <Button Grid.Column="1" Grid.Row="6" Content="Edit" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Top" Width="55"/>
         <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="6" Content="Delete" HorizontalAlignment="Left" Margin="120,0,0,0" VerticalAlignment="Top" Width="55" Click="Delete"/>
-        <DataGrid x:Name="dataGrid" Grid.Row="7" Grid.ColumnSpan="2" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=ExchangeRates}"/>
+        <DataGrid x:Name="dataGrid" Grid.Row="7" Grid.ColumnSpan="2" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=ExchangeRates}" SelectedCellsChanged="populateTextBox"/>
     </Grid>
 </Page>

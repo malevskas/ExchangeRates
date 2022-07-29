@@ -27,9 +27,10 @@ namespace ExchangeRates
             InitializeComponent();
         }
 
+        Entity myExchangeDatabase = new Entity();
+
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            Entity myExchangeDatabase = new Entity();
             var allMyUsers = myExchangeDatabase.Users.ToList<User>();
             dataGrid.ItemsSource = allMyUsers;
         }
@@ -41,33 +42,38 @@ namespace ExchangeRates
             {
                 isActive = 1;
             }
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "EXEC InsertIntoUers @FirstName = '" + FirstName.Text + "', @Surname = '" +
-                LastName.Text + "', @IsActive = " + isActive;
 
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                cmd = new SqlCommand("SELECT * FROM Users", conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Users");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }
+            User user = new User();
+            user.FirstName = FirstName.Text;
+            user.Surname = LastName.Text;
+            user.IsActive = isActive;
+            myExchangeDatabase.Users.Add(user);
+            myExchangeDatabase.SaveChanges();
+
+            var allMyUsers = myExchangeDatabase.Users.ToList<User>();
+            dataGrid.ItemsSource = allMyUsers;
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
+            User user = (User)dataGrid.SelectedItem;
+            user.IsActive = 0;
+            myExchangeDatabase.SaveChanges();
 
+            var allMyUsers = myExchangeDatabase.Users.ToList<User>();
+            dataGrid.ItemsSource = allMyUsers;
+        }
+
+        private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
+        {
+            User user = (User)dataGrid.SelectedItem;
+            UserId.Text = user.UserId.ToString();
+            FirstName.Text = user.FirstName;
+            LastName.Text = user.Surname;
+            if (user.IsActive == 1)
+            {
+                checkBox.IsChecked = true;
+            }
         }
     }
 }

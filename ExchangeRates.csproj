@@ -85,6 +85,9 @@
     </ApplicationDefinition>
     <Compile Include="Entities\sysdiagram.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="OfficialRatesPage.xaml.cs">
+      <DependentUpon>OfficialRatesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UsersPage.xaml.cs">
       <DependentUpon>UsersPage.xaml</DependentUpon>
     </Compile>
@@ -136,9 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\OfficialRate.cs" />
-    <Compile Include="OfficialRatesPage.xaml.cs">
-      <DependentUpon>OfficialRatesPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Entities\Operation.cs" />
     <Compile Include="Entities\OperationsHistory.cs" />
     <Compile Include="OperationsPage.xaml.cs">

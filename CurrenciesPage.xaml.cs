@@ -27,9 +27,10 @@ namespace ExchangeRates
             InitializeComponent();
         }
 
+        private Entity myExchangeDatabase = new Entity();
+
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            Entity myExchangeDatabase = new Entity();
             var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
             dataGrid.ItemsSource = allMyCurrencies;
         }
@@ -41,60 +42,35 @@ namespace ExchangeRates
             {
                 isActive = 1;
             }
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "EXEC InsertIntoCurrencies @Code = '" + Code.Text + "', @CurrencyName = '" +
-                CurrencyName.Text + "', @IsActive = " + isActive;
 
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                cmd = new SqlCommand("SELECT * FROM Currencies", conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Currencies");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }
+            Currency currency = new Currency();
+            currency.Code = Code.Text;
+            currency.CurrencyName = CurrencyName.Text;
+            currency.IsActive = isActive;
+            myExchangeDatabase.Currencies.Add(currency);
+            myExchangeDatabase.SaveChanges();
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-
-
             Currency currency = (Currency)dataGrid.SelectedItem;
+            currency.IsActive = 0;
+            myExchangeDatabase.SaveChanges();
 
-            MessageBox.Show(currency.CurrencyId+"");
-            /*string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "EXEC DeleteFromCurrencies @Id = '" + currency.CurrencyId + ")";
+            var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
+            dataGrid.ItemsSource = allMyCurrencies;
+        }
 
-
-            try
+        private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
+        {
+            Currency currency = (Currency)dataGrid.SelectedItem;
+            CurrencyId.Text = currency.CurrencyId+"";
+            Code.Text = currency.Code;
+            CurrencyName.Text = currency.CurrencyName;
+            if(currency.IsActive == 1)
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                cmd = new SqlCommand("SELECT * FROM Currencies", conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Currencies");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
+                checkBox.IsChecked = true;
             }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }*/
         }
     }
 }

@@ -42,7 +42,7 @@
         <Label Grid.Column="0" Grid.Row="1" Content="Code" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label Grid.Column="0" Grid.Row="2" Content="Currency Name" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label Grid.Column="0" Grid.Row="3" Content="Is Active" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
-        <TextBox Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" x:Name="CurrencyId" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <TextBox Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" x:Name="CurrencyId" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBox Grid.Column="1" Grid.Row="1" x:Name="Code" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <TextBox Grid.Column="1" Grid.Row="2" x:Name="CurrencyName" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <CheckBox Grid.Column="1" Grid.Row="3" x:Name="checkBox" Content="" HorizontalAlignment="Left" Margin="0,11,0,0" VerticalAlignment="Top"/>
@@ -50,6 +50,6 @@
         <Button Style="{StaticResource InsertButton}" Grid.Column="2" Grid.Row="4" Content="Insert" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="Insert" Width="55"/>
         <Button Grid.Column="2" Grid.Row="4" Content="Edit" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Top" Width="55"/>
         <Button Style="{StaticResource DeleteButton}" Grid.Column="2" Grid.Row="4" Content="Delete" HorizontalAlignment="Left" Margin="120,0,0,0" VerticalAlignment="Top" Width="55" Click="Delete"/>
-        <DataGrid Grid.Row="5" Grid.ColumnSpan="2" x:Name="dataGrid" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=Currencies}"/>
+        <DataGrid Grid.Row="5" Grid.ColumnSpan="2" x:Name="dataGrid" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=Currencies}" SelectedCellsChanged="populateTextBox"/>
     </Grid>
 </Page>
