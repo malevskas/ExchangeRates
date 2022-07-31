@@ -5,34 +5,16 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ExchangeRates"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="700" d:DesignWidth="1050"
       Title="OfficialRatesPage">
 
-
-    <Page.Resources>
-        <Style TargetType="TextBox">
-            <Setter Property="Width" Value="400" />
-            <Setter Property="Background" Value="Bisque" />
-            <Setter Property="Height" Value="25" />
-        </Style>
-        <Style x:Key="FancyText" TargetType="TextBox">
-            <Setter Property="Width" Value="400" />
-            <Setter Property="Background" Value="#F94449" />
-            <Setter Property="Height" Value="25" />
-        </Style>
-        <Style x:Key="DeleteButton" TargetType="Button">
-            <Setter Property="Background" Value="#F94449" />
-        </Style>
-        <Style x:Key="InsertButton" TargetType="Button">
-            <Setter Property="Background" Value="#3CB043" />
-        </Style>
-    </Page.Resources>
-
     <Grid Margin="0,-1,0,1">
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="9*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
@@ -42,20 +24,23 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="14*"/>
         </Grid.RowDefinitions>
+        
         <Label Content="Official Rate Id" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
-        <Label Content="Validity Date" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Content="Currency" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label Content="Rate" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
-        <Label Content="Currency" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
+        <Label Content="Validity Date" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label Grid.Column="0" Grid.Row="4" Content="Is Active" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
-        <TextBox x:Name="ExchangeRatesId" Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBox x:Name="ValidityDate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Label x:Name="OfficialRatesId" Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CurrencyCB" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
         <TextBox x:Name="Rate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <ComboBox x:Name="CurrencyCB" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
-        <CheckBox x:Name="checkBox" Grid.Column="1" Grid.Row="4" Content="" HorizontalAlignment="Left" Margin="0,11,0,0" VerticalAlignment="Top"/>
-        <Button Grid.Column="0" Grid.Row="5" Content="Load Table" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Top" Click="LoadTable"/>
-        <Button Style="{StaticResource InsertButton}" Grid.Column="1" Grid.Row="5" Content="Insert" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="Insert" Width="55"/>
-        <Button Grid.Column="1" Grid.Row="5" Content="Edit" HorizontalAlignment="Left" Margin="60,0,0,0" VerticalAlignment="Top" Width="55"/>
-        <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="5" Content="Delete" HorizontalAlignment="Left" Margin="120,0,0,0" VerticalAlignment="Top" Width="55" Click="Delete"/>
+        <DatePicker x:Name="ValidityDate" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
+        <CheckBox x:Name="checkBox" Grid.Column="1" Grid.Row="4" Content="" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
+        <Button Grid.Column="0" Grid.Row="5" Content="Load Table" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Center" Click="LoadTable"/>
+        <Button Style="{StaticResource InsertButton}" Grid.Column="1" Grid.Row="5" Content="Insert" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Click="Insert" Width="55"/>
+        <Button Grid.Column="1" Grid.Row="5" Content="Edit" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Center" Width="55" Click="Edit"/>
+        <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="5" Content="Delete" HorizontalAlignment="Left" Margin="125,0,0,0" VerticalAlignment="Center" Width="55" Click="Delete"/>
         <DataGrid x:Name="dataGrid" Grid.Row="6" Grid.ColumnSpan="2" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=OfficialRate}" SelectedCellsChanged="populateTextBox"/>
+    
     </Grid>
+    
 </Page>

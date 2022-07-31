@@ -29,47 +29,68 @@ namespace ExchangeRates
 
         Entity myExchangeDatabase = new Entity();
 
-        private void LoadTable(object sender, RoutedEventArgs e)
+        private void loadTable()
         {
             var allMyUsers = myExchangeDatabase.Users.ToList<User>();
             dataGrid.ItemsSource = allMyUsers;
         }
 
+        private void LoadTable(object sender, RoutedEventArgs e)
+        {
+            loadTable();
+        }
+        
         private void Insert(object sender, RoutedEventArgs e)
         {
-            int isActive = 0;
-            if (checkBox.IsChecked == true)
-            {
-                isActive = 1;
-            }
-
             User user = new User();
             user.FirstName = FirstName.Text;
-            user.Surname = LastName.Text;
-            user.IsActive = isActive;
+            user.Surname = Surname.Text;
+            if (checkBox.IsChecked == true)
+            {
+                user.IsActive = 1;
+            }
+            else
+            {
+                user.IsActive = 0;
+            }
+
             myExchangeDatabase.Users.Add(user);
             myExchangeDatabase.SaveChanges();
+            loadTable();
+        }
 
-            var allMyUsers = myExchangeDatabase.Users.ToList<User>();
-            dataGrid.ItemsSource = allMyUsers;
+        private void Edit(object sender, RoutedEventArgs e)
+        {
+            User user = (User)dataGrid.SelectedItem;
+            user.FirstName = FirstName.Text;
+            user.Surname = Surname.Text;
+            if (checkBox.IsChecked == true)
+            {
+                user.IsActive = 1;
+            } else
+            {
+                user.IsActive = 0;
+            }
+
+            myExchangeDatabase.SaveChanges();
+            loadTable();
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
             User user = (User)dataGrid.SelectedItem;
             user.IsActive = 0;
-            myExchangeDatabase.SaveChanges();
 
-            var allMyUsers = myExchangeDatabase.Users.ToList<User>();
-            dataGrid.ItemsSource = allMyUsers;
+            myExchangeDatabase.SaveChanges();
+            loadTable();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
             User user = (User)dataGrid.SelectedItem;
-            UserId.Text = user.UserId.ToString();
+            UserId.Content = user.UserId.ToString();
             FirstName.Text = user.FirstName;
-            LastName.Text = user.Surname;
+            Surname.Text = user.Surname;
             if (user.IsActive == 1)
             {
                 checkBox.IsChecked = true;

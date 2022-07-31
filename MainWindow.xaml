@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExchangeRates"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="700" Width="1050">
+
     <Grid>
+        
         <Menu IsMainMenu="True">
             <MenuItem Header="Currencies" Click="CurrenciesMenu"></MenuItem>
             <MenuItem Header="Exchange Rates" Click="ExchangeRatesMenu"></MenuItem>
@@ -16,6 +18,8 @@
             <MenuItem Header="Users" Click="UsersMenu"></MenuItem>
         </Menu>
 
-        <Frame x:Name="MainFrame" Margin="0,25,0,0"/>
+        <Frame x:Name="MainFrame" Margin="0,30,0,0"/>
+        
     </Grid>
+    
 </Window>

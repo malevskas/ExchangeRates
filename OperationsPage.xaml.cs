@@ -32,7 +32,7 @@ namespace ExchangeRates
 
         private Entity myExchangeDatabase = new Entity();
 
-        void fillCurrencyCB()
+        private void fillCurrencyCB()
         {
             var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
             CurrencyFromCB.Items.Clear();
@@ -44,7 +44,7 @@ namespace ExchangeRates
             }
         }
 
-        void fillUserCB()
+        private void fillUserCB()
         {
             var allMyUsers = myExchangeDatabase.Users.ToList<User>();
             UserCB.Items.Clear();
@@ -54,7 +54,7 @@ namespace ExchangeRates
             }
         }
 
-        void fillOperationTypeCB()
+        private void fillOperationTypeCB()
         {
             var allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
             OperationTypeCB.Items.Clear();
@@ -64,48 +64,61 @@ namespace ExchangeRates
             }
         }
 
-        private void LoadTable(object sender, RoutedEventArgs e)
+        private void loadTable()
         {
             var allMyOperations = myExchangeDatabase.Operations.ToList<Operation>();
             dataGrid.ItemsSource = allMyOperations;
         }
 
-        private void Insert(object sender, RoutedEventArgs e)
-        { 
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "EXEC InsertIntoCurrencies @UserId = " + OperationId.Text + ", @OperationDate = '" +
-                OperationDate.Text + "', @Amount = " + Amount.Text + "@CurrencyFrom = " + CurrencyFromCB.Text + 
-                ", @CurrencyTo = " + CurrencyToCB.Text;
+        private void LoadTable(object sender, RoutedEventArgs e)
+        {
+            loadTable();
+        }
 
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                cmd = new SqlCommand("SELECT * FROM Currencies", conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Currencies");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
-            }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }
+        private void Insert(object sender, RoutedEventArgs e)
+        {
+            Operation operation = new Operation();
+            operation.OperationTypeId = int.Parse(OperationTypeCB.Text);
+            operation.OperationDate = OperationDate.SelectedDate.Value.Date;
+            operation.UserId = int.Parse(UserCB.Text);
+            operation.CurrencyFrom = int.Parse(CurrencyFromCB.Text);
+            operation.CurrencyTo = int.Parse(CurrencyToCB.Text);
+            operation.Amount = int.Parse(Amount.Text);
+
+            myExchangeDatabase.Operations.Add(operation);
+            myExchangeDatabase.SaveChanges();
+            loadTable();
+        }
+
+        private void Edit(object sender, RoutedEventArgs e)
+        {
+            Operation operation = (Operation)dataGrid.SelectedItem;
+            operation.OperationTypeId = int.Parse(OperationTypeCB.Text);
+            operation.OperationDate = OperationDate.SelectedDate.Value.Date;
+            operation.UserId = int.Parse(UserCB.Text);
+            operation.CurrencyFrom = int.Parse(CurrencyFromCB.Text);
+            operation.CurrencyTo = int.Parse(CurrencyToCB.Text);
+            operation.Amount = int.Parse(Amount.Text);
+
+            myExchangeDatabase.SaveChanges();
+            loadTable();
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-
+            loadTable();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
             Operation operation = (Operation)dataGrid.SelectedItem;
-
+            OperationId.Content = operation.OperationId.ToString();
+            OperationTypeCB.Text = operation.OperationTypeId.ToString();
+            OperationDate.SelectedDate = operation.OperationDate;
+            UserCB.Text = operation.UserId.ToString();
+            CurrencyFromCB.Text = operation.CurrencyFrom.ToString();
+            CurrencyToCB.Text = operation.CurrencyTo.ToString();
+            Amount.Text = operation.Amount.ToString();
         }
     }
 }

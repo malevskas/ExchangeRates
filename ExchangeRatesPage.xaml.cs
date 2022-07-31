@@ -32,7 +32,7 @@ namespace ExchangeRates
         
         private Entity myExchangeDatabase = new Entity();
 
-        void fillCB()
+        private void fillCB()
         {
             var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
             CurrencyFromCB.Items.Clear();
@@ -44,49 +44,57 @@ namespace ExchangeRates
             }
         }
 
-        private void LoadTable(object sender, RoutedEventArgs e)
+        private void loadTable()
         {
             var allMyExchangeRates = myExchangeDatabase.ExchangeRates.ToList<ExchangeRate>();
             dataGrid.ItemsSource = allMyExchangeRates;
         }
 
+        private void LoadTable(object sender, RoutedEventArgs e)
+        {
+            loadTable();
+        }
+
         private void Insert(object sender, RoutedEventArgs e)
         {
-            int isActive = 0;
+            ExchangeRate er = new ExchangeRate();
+            er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
+            er.CurrencyFrom = int.Parse(CurrencyFromCB.Text);
+            er.CurrencyTo = int.Parse(CurrencyToCB.Text);
+            er.Rate = int.Parse(Rate.Text);
             if (checkBox.IsChecked == true)
             {
-                isActive = 1;
+                er.IsActive = 1;
+            }
+            else
+            {
+                er.IsActive = 0;
             }
 
-            //ExchangeRate er = new ExchangeRate();
-            //er.ValidityDate = ValidityDate.Text;
-            //er.CurrencyFrom = CurrencyFromCB.Text;
-            //er.CurrencyTo = CurrencyToCB.Text;
-            //er.Rate = Rate.Text;
-            //er.IsActive = isActive;
+            myExchangeDatabase.ExchangeRates.Add(er);
+            myExchangeDatabase.SaveChanges();
+            loadTable();
+            //MessageBox.Show(ValidityDate.SelectedDate.Value.Date.ToString());
+        }
 
-            //SqlConnection conn = new SqlConnection(cs);
-            //string comm = "EXEC InsertIntoExchangeRates @ValidityDate = '" + ValidityDate.Text + "', @CurrencyFrom = " +
-            //    CurrencyFromCB.Text + ", @CurrencyTo = " + CurrencyToCB.Text + ", @Rate = " + Rate.Text + 
-            //    ", @IsActive = " + isActive;
+        private void Edit(object sender, RoutedEventArgs e)
+        {
+            ExchangeRate er = (ExchangeRate)dataGrid.SelectedItem;
+            er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
+            er.CurrencyFrom = int.Parse(CurrencyFromCB.Text);
+            er.CurrencyTo = int.Parse(CurrencyToCB.Text);
+            er.Rate = int.Parse(Rate.Text);
+            if (checkBox.IsChecked == true)
+            {
+                er.IsActive = 1;
+            }
+            else
+            {
+                er.IsActive = 0;
+            }
 
-            //try
-            //{
-            //    conn.Open();
-            //    SqlCommand cmd = new SqlCommand(comm, conn);
-            //    cmd.ExecuteNonQuery();
-            //    cmd = new SqlCommand("SELECT * FROM ExchangeRates", conn);
-            //    cmd.ExecuteNonQuery();
-            //    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-            //    DataTable dt = new DataTable("Exchange Rates");
-            //    adapter.Fill(dt);
-            //    dataGrid.ItemsSource = dt.DefaultView;
-            //    adapter.Update(dt);
-            //}
-            //catch (Exception ex)
-            //{
-            //    conn.Close();
-            //}
+            myExchangeDatabase.SaveChanges();
+            loadTable();
         }
 
         private void Delete(object sender, RoutedEventArgs e)
@@ -102,8 +110,8 @@ namespace ExchangeRates
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
             ExchangeRate er = (ExchangeRate)dataGrid.SelectedItem;
-            ExchangeRatesId.Text = er.ExchangeRatesId + "";
-            ValidityDate.Text = er.ValidityDate.ToString();
+            ExchangeRatesId.Content = er.ExchangeRatesId.ToString();
+            ValidityDate.SelectedDate = er.ValidityDate;
             Rate.Text = er.Rate.ToString();
             CurrencyFromCB.Text = er.CurrencyFrom.ToString();
             CurrencyToCB.Text = er.CurrencyTo.ToString();

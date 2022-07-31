@@ -29,57 +29,67 @@ namespace ExchangeRates
 
         private Entity myExchangeDatabase = new Entity();
 
-        private void LoadTable(object sender, RoutedEventArgs e)
+        private void loadTable()
         {
             var allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
             dataGrid.ItemsSource = allMyOperationTypes;
+        }
+
+        private void LoadTable(object sender, RoutedEventArgs e)
+        {
+            loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            int isActive = 0;
+            OperationType ot = new OperationType();
+            ot.Code = Code.Text;
+            ot.OperationName = OperationName.Text;
             if (checkBox.IsChecked == true)
             {
-                isActive = 1;
+                ot.isActive = 1;
             }
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            /*string comm = "EXEC InsertIntoCurrencies @Code = '" + Code.Text + "', @CurrencyName = '" +
-                CurrencyName.Text + "', @IsActive = " + isActive + ")";
-
-
-            try
+            else
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-                cmd = new SqlCommand("SELECT * FROM Currencies", conn);
-                cmd.ExecuteNonQuery();
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable("Currencies");
-                adapter.Fill(dt);
-                dataGrid.ItemsSource = dt.DefaultView;
-                adapter.Update(dt);
+                ot.isActive = 0;
             }
-            catch (Exception ex)
-            {
-                conn.Close();
-            }*/
+
+            myExchangeDatabase.OperationTypes.Add(ot);
+            myExchangeDatabase.SaveChanges();
+            loadTable();
         }
+
+        private void Edit(object sender, RoutedEventArgs e)
+        {
+            OperationType ot = (OperationType)dataGrid.SelectedItem;
+            ot.Code = Code.Text;
+            ot.OperationName = OperationName.Text;
+            if (checkBox.IsChecked == true)
+            {
+                ot.isActive = 1;
+            }
+            else
+            {
+                ot.isActive = 0;
+            }
+
+            myExchangeDatabase.SaveChanges();
+            loadTable();
+        }
+
         private void Delete(object sender, RoutedEventArgs e)
         {
             OperationType ot = (OperationType)dataGrid.SelectedItem;
             ot.isActive = 0;
-            myExchangeDatabase.SaveChanges();
 
-            var allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
-            dataGrid.ItemsSource = allMyOperationTypes;
+            myExchangeDatabase.SaveChanges();
+            loadTable();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
             OperationType ot = (OperationType)dataGrid.SelectedItem;
-            OperationTypeId.Text = ot.OperationTypeId.ToString();
+            OperationTypeId.Content = ot.OperationTypeId.ToString();
             Code.Text = ot.Code;
             OperationName.Text = ot.OperationName;
             if (ot.isActive == 1)
