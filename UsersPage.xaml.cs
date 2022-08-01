@@ -80,6 +80,7 @@ namespace ExchangeRates
         {
             User user = (User)dataGrid.SelectedItem;
             user.IsActive = 0;
+            checkBox.IsChecked = false;
 
             myExchangeDatabase.SaveChanges();
             loadTable();
@@ -94,6 +95,10 @@ namespace ExchangeRates
             if (user.IsActive == 1)
             {
                 checkBox.IsChecked = true;
+            }
+            else
+            {
+                checkBox.IsChecked = false;
             }
         }
     }

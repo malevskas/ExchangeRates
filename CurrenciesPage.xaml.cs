@@ -80,7 +80,7 @@ namespace ExchangeRates
         {
             Currency currency = (Currency)dataGrid.SelectedItem;
             currency.IsActive = 0;
-
+            checkBox.IsChecked = false;
             myExchangeDatabase.SaveChanges();
             loadTable();
         }
@@ -94,6 +94,10 @@ namespace ExchangeRates
             if(currency.IsActive == 1)
             {
                 checkBox.IsChecked = true;
+            }
+            else
+            {
+                checkBox.IsChecked = false;
             }
         }
     }

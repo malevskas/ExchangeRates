@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace ExchangeRates
 {
@@ -119,6 +120,12 @@ namespace ExchangeRates
             CurrencyFromCB.Text = operation.CurrencyFrom.ToString();
             CurrencyToCB.Text = operation.CurrencyTo.ToString();
             Amount.Text = operation.Amount.ToString();
+        }
+
+        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

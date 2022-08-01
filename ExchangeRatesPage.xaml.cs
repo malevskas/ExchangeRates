@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace ExchangeRates
 {
@@ -101,6 +102,7 @@ namespace ExchangeRates
         {
             ExchangeRate er = (ExchangeRate)dataGrid.SelectedItem;
             er.IsActive = 0;
+            checkBox.IsChecked = false;
             myExchangeDatabase.SaveChanges();
 
             var allMyExchangeRates = myExchangeDatabase.ExchangeRates.ToList<ExchangeRate>();
@@ -119,6 +121,16 @@ namespace ExchangeRates
             {
                 checkBox.IsChecked = true;
             }
+            else
+            {
+                checkBox.IsChecked = false;
+            }
+        }
+
+        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

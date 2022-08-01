@@ -81,6 +81,7 @@ namespace ExchangeRates
         {
             OperationType ot = (OperationType)dataGrid.SelectedItem;
             ot.isActive = 0;
+            checkBox.IsChecked = false;
 
             myExchangeDatabase.SaveChanges();
             loadTable();
@@ -95,6 +96,10 @@ namespace ExchangeRates
             if (ot.isActive == 1)
             {
                 checkBox.IsChecked = true;
+            }
+            else
+            {
+                checkBox.IsChecked = false;
             }
         }
     }
