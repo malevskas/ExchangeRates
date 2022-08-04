@@ -38,31 +38,22 @@ namespace ExchangeRates
             var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
             CurrencyFromCB.Items.Clear();
             CurrencyToCB.Items.Clear();
-            foreach (var currency in allMyCurrencies)
-            {
-                CurrencyFromCB.Items.Add(currency.CurrencyId);
-                CurrencyToCB.Items.Add(currency.CurrencyId);
-            }
+            CurrencyFromCB.ItemsSource = allMyCurrencies;
+            CurrencyToCB.ItemsSource = allMyCurrencies;
         }
 
         private void fillUserCB()
         {
             var allMyUsers = myExchangeDatabase.Users.ToList<User>();
             UserCB.Items.Clear();
-            foreach (var user in allMyUsers)
-            {
-                UserCB.Items.Add(user.UserId);
-            }
+            UserCB.ItemsSource = allMyUsers;
         }
 
         private void fillOperationTypeCB()
         {
             var allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
             OperationTypeCB.Items.Clear();
-            foreach (var oTypes in allMyOperationTypes)
-            {
-                OperationTypeCB.Items.Add(oTypes.OperationTypeId);
-            }
+            OperationTypeCB.ItemsSource = allMyOperationTypes;
         }
 
         private void loadTable()

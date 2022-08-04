@@ -31,7 +31,7 @@
         <Label Content="Validity Date" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label Grid.Column="0" Grid.Row="4" Content="Is Active" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label x:Name="OfficialRatesId" Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top"/>
-        <ComboBox x:Name="CurrencyCB" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
+        <ComboBox x:Name="CurrencyCB" DisplayMemberPath="CurrencyName" SelectedValuePath="CurrencyId" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
         <TextBox x:Name="Rate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextInput"/>
         <DatePicker x:Name="ValidityDate" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
         <CheckBox x:Name="checkBox" Grid.Column="1" Grid.Row="4" Content="" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>

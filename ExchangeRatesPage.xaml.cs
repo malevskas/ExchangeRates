@@ -38,11 +38,8 @@ namespace ExchangeRates
             var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
             CurrencyFromCB.Items.Clear();
             CurrencyToCB.Items.Clear();
-            foreach (var currency in allMyCurrencies)
-            {
-                CurrencyFromCB.Items.Add(currency.CurrencyId);
-                CurrencyToCB.Items.Add(currency.CurrencyId);
-            }
+            CurrencyFromCB.ItemsSource = allMyCurrencies;
+            CurrencyToCB.ItemsSource = allMyCurrencies;
         }
 
         private void loadTable()
