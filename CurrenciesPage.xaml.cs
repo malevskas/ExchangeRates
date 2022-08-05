@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ExchangeRates.Helpers;
 
 namespace ExchangeRates
 {
@@ -22,83 +23,38 @@ namespace ExchangeRates
     /// </summary>
     public partial class CurrenciesPage : Page
     {
+
+        private CurrenciesHelper cHelper;
+
         public CurrenciesPage()
         {
             InitializeComponent();
-        }
-
-        private Entity myExchangeDatabase = new Entity();
-
-        private void loadTable()
-        {
-            var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
-            dataGrid.ItemsSource = allMyCurrencies;
+            cHelper = new CurrenciesHelper(CurrencyId, Code, CurrencyName, checkBox, dataGrid);
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            loadTable();
+            cHelper.loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            Currency currency = new Currency();
-            currency.Code = Code.Text;
-            currency.CurrencyName = CurrencyName.Text;
-            if (checkBox.IsChecked == true)
-            {
-                currency.IsActive = 1;
-            }
-            else
-            {
-                currency.IsActive = 0;
-            }
-
-            myExchangeDatabase.Currencies.Add(currency);
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+            cHelper.insert();
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            Currency currency = (Currency)dataGrid.SelectedItem;
-            currency.Code = Code.Text;
-            currency.CurrencyName = CurrencyName.Text;
-            if (checkBox.IsChecked == true)
-            {
-                currency.IsActive = 1;
-            } else
-            {
-                currency.IsActive = 0;
-            }
-
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+            cHelper.edit();
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            Currency currency = (Currency)dataGrid.SelectedItem;
-            currency.IsActive = 0;
-            checkBox.IsChecked = false;
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+            cHelper.delete();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
-            Currency currency = (Currency)dataGrid.SelectedItem;
-            CurrencyId.Content = currency.CurrencyId.ToString();
-            Code.Text = currency.Code;
-            CurrencyName.Text = currency.CurrencyName;
-            if(currency.IsActive == 1)
-            {
-                checkBox.IsChecked = true;
-            }
-            else
-            {
-                checkBox.IsChecked = false;
-            }
+            cHelper.populateTextBox();
         }
     }
 }

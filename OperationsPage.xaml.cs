@@ -70,11 +70,15 @@ namespace ExchangeRates
         private void Insert(object sender, RoutedEventArgs e)
         {
             Operation operation = new Operation();
-            operation.OperationTypeId = int.Parse(OperationTypeCB.Text);
+            OperationType ot = (OperationType)OperationTypeCB.SelectedItem;
+            operation.OperationTypeId = ot.OperationTypeId;
             operation.OperationDate = OperationDate.SelectedDate.Value.Date;
-            operation.UserId = int.Parse(UserCB.Text);
-            operation.CurrencyFrom = int.Parse(CurrencyFromCB.Text);
-            operation.CurrencyTo = int.Parse(CurrencyToCB.Text);
+            User u = (User)UserCB.SelectedItem;
+            operation.UserId = u.UserId;
+            Currency c = (Currency)CurrencyFromCB.SelectedItem;
+            operation.CurrencyFrom = c.CurrencyId;
+            c = (Currency)CurrencyToCB.SelectedItem;
+            operation.CurrencyTo = c.CurrencyId;
             operation.Amount = int.Parse(Amount.Text);
 
             myExchangeDatabase.Operations.Add(operation);

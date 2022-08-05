@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using ExchangeRates.Helpers;
 
 namespace ExchangeRates
 {
@@ -23,97 +24,38 @@ namespace ExchangeRates
     /// </summary>
     public partial class OfficialRatesPage : Page
     {
+        private OfficialRatesHelper orHelper;
+
         public OfficialRatesPage()
         {
             InitializeComponent();
-            fillCB();
-        }
-
-        private Entity myExchangeDatabase = new Entity();
-
-        private void fillCB()
-        {
-            var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
-            CurrencyCB.Items.Clear();
-            CurrencyCB.ItemsSource = allMyCurrencies;
-        }
-
-        private void loadTable()
-        {
-            var allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
-            dataGrid.ItemsSource = allMyOfficialRates;
+            orHelper = new OfficialRatesHelper(OfficialRatesId, CurrencyCB, Rate, ValidityDate, checkBox, dataGrid);
+            orHelper.fillCB();
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
-        {
-            loadTable();
+        {   
+            orHelper.loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            OfficialRate or = new OfficialRate();
-            or.ValidityDate = ValidityDate.SelectedDate.Value.Date;
-            or.Currency = int.Parse(CurrencyCB.Text);
-            or.Rate = int.Parse(Rate.Text);
-            if (checkBox.IsChecked == true)
-            {
-                or.IsActive = 1;
-            }
-            else
-            {
-                or.IsActive = 0;
-            }
-
-            myExchangeDatabase.OfficialRates.Add(or);
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+            orHelper.insert();
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            OfficialRate or = (OfficialRate)dataGrid.SelectedItem;
-            or.ValidityDate = ValidityDate.SelectedDate.Value.Date;
-            or.Currency = int.Parse(CurrencyCB.Text);
-            or.Rate = int.Parse(Rate.Text);
-            if (checkBox.IsChecked == true)
-            {
-                or.IsActive = 1;
-            }
-            else
-            {
-                or.IsActive = 0;
-            }
-
-            myExchangeDatabase.OfficialRates.Add(or);
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+            orHelper.edit();
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            OfficialRate or = (OfficialRate)dataGrid.SelectedItem;
-            or.IsActive = 0;
-            checkBox.IsChecked = false;
-
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+            orHelper.delete();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
-            OfficialRate or = (OfficialRate)dataGrid.SelectedItem;
-            OfficialRatesId.Content = or.OfficialRatesId.ToString();
-            ValidityDate.SelectedDate = or.ValidityDate;
-            Rate.Text = or.Rate.ToString();
-            CurrencyCB.Text = or.Currency.ToString();
-            if (or.IsActive == 1)
-            {
-                checkBox.IsChecked = true;
-            }
-            else
-            {
-                checkBox.IsChecked = false;
-            }
+            orHelper.populateTextBox();
         }
 
         private void PreviewTextInput(object sender, TextCompositionEventArgs e)

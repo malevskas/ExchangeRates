@@ -85,6 +85,10 @@
     </ApplicationDefinition>
     <Compile Include="Entities\sysdiagram.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Helpers\CurrenciesHelper.cs" />
+    <Compile Include="Helpers\ExchangeRatesHelper.cs" />
+    <Compile Include="Helpers\OfficialRatesHelper.cs" />
+    <Compile Include="Helpers\OperationTypesHelper.cs" />
     <Compile Include="OfficialRatesPage.xaml.cs">
       <DependentUpon>OfficialRatesPage.xaml</DependentUpon>
     </Compile>
