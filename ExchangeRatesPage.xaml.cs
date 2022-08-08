@@ -44,7 +44,6 @@ namespace ExchangeRates
         private void Insert(object sender, RoutedEventArgs e)
         {
             erHelper.insert();
-            //MessageBox.Show(ValidityDate.SelectedDate.Value.Date.ToString());
         }
 
         private void Edit(object sender, RoutedEventArgs e)

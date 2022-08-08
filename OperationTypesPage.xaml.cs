@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExchangeRates.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -22,85 +23,37 @@ namespace ExchangeRates
     /// </summary>
     public partial class OperationTypesPage : Page
     {
+        private OperationTypesHelper otHelper;
+
         public OperationTypesPage()
         {
             InitializeComponent();
-        }
-
-        private Entity myExchangeDatabase = new Entity();
-
-        private void loadTable()
-        {
-            var allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
-            dataGrid.ItemsSource = allMyOperationTypes;
+            otHelper = new OperationTypesHelper(OperationTypeId, Code, OperationName, checkBox, dataGrid);
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            loadTable();
+            otHelper.loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            OperationType ot = new OperationType();
-            ot.Code = Code.Text;
-            ot.OperationName = OperationName.Text;
-            if (checkBox.IsChecked == true)
-            {
-                ot.isActive = 1;
-            }
-            else
-            {
-                ot.isActive = 0;
-            }
-
-            myExchangeDatabase.OperationTypes.Add(ot);
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+            otHelper.insert();
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            OperationType ot = (OperationType)dataGrid.SelectedItem;
-            ot.Code = Code.Text;
-            ot.OperationName = OperationName.Text;
-            if (checkBox.IsChecked == true)
-            {
-                ot.isActive = 1;
-            }
-            else
-            {
-                ot.isActive = 0;
-            }
-
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+            otHelper.edit();
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            OperationType ot = (OperationType)dataGrid.SelectedItem;
-            ot.isActive = 0;
-            checkBox.IsChecked = false;
-
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+            otHelper.delete();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
-            OperationType ot = (OperationType)dataGrid.SelectedItem;
-            OperationTypeId.Content = ot.OperationTypeId.ToString();
-            Code.Text = ot.Code;
-            OperationName.Text = ot.OperationName;
-            if (ot.isActive == 1)
-            {
-                checkBox.IsChecked = true;
-            }
-            else
-            {
-                checkBox.IsChecked = false;
-            }
+            otHelper.populateTextBox();
         }
     }
 }

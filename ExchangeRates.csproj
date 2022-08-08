@@ -88,7 +88,9 @@
     <Compile Include="Helpers\CurrenciesHelper.cs" />
     <Compile Include="Helpers\ExchangeRatesHelper.cs" />
     <Compile Include="Helpers\OfficialRatesHelper.cs" />
+    <Compile Include="Helpers\OperationsHelper.cs" />
     <Compile Include="Helpers\OperationTypesHelper.cs" />
+    <Compile Include="Helpers\UsersHelper.cs" />
     <Compile Include="OfficialRatesPage.xaml.cs">
       <DependentUpon>OfficialRatesPage.xaml</DependentUpon>
     </Compile>
