@@ -30,6 +30,8 @@ namespace ExchangeRates
         public ExchangeRatesPage()
         {
             InitializeComponent();
+            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today);
+            ValidityDate.BlackoutDates.Add(cdr);
             erHelper = new ExchangeRatesHelper(ExchangeRatesId, Rate, CurrencyFromCB, CurrencyToCB, ValidityDate, checkBox, dataGrid);
             erHelper.fillCB();
         }

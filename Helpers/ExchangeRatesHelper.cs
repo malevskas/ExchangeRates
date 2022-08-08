@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ExchangeRates.Helpers
@@ -44,47 +45,65 @@ namespace ExchangeRates.Helpers
 
         public void insert()
         {
-            ExchangeRate er = new ExchangeRate();
-            er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
-            Currency c = (Currency)CurrencyFromCB.SelectedItem;
-            er.CurrencyFrom = c.CurrencyId;
-            c = (Currency)CurrencyToCB.SelectedItem;
-            er.CurrencyTo = c.CurrencyId;
-            er.Rate = int.Parse(Rate.Text);
-            if (checkBox.IsChecked == true)
+            if (ValidityDate.SelectedDate.Value.Date == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Rate.Text == "")
             {
-                er.IsActive = 1;
+                MessageBox.Show("Please fill out all fields.");
+            }
+            else if(CurrencyFromCB.SelectedItem == CurrencyToCB.SelectedItem)
+            {
+                MessageBox.Show("Please choose different currencies.");
             }
             else
             {
-                er.IsActive = 0;
-            }
+                ExchangeRate er = new ExchangeRate();
+                er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
+                Currency c = (Currency)CurrencyFromCB.SelectedItem;
+                er.CurrencyFrom = c.CurrencyId;
+                c = (Currency)CurrencyToCB.SelectedItem;
+                er.CurrencyTo = c.CurrencyId;
+                er.Rate = int.Parse(Rate.Text);
+                if (checkBox.IsChecked == true)
+                {
+                    er.IsActive = 1;
+                }
+                else
+                {
+                    er.IsActive = 0;
+                }
 
-            myExchangeDatabase.ExchangeRates.Add(er);
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.ExchangeRates.Add(er);
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void edit()
         {
-            ExchangeRate er = (ExchangeRate)dataGrid.SelectedItem;
-            er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
-            Currency c = (Currency)CurrencyFromCB.SelectedItem;
-            er.CurrencyFrom = c.CurrencyId;
-            c = (Currency)CurrencyToCB.SelectedItem;
-            er.CurrencyTo = c.CurrencyId;
-            er.Rate = int.Parse(Rate.Text);
-            if (checkBox.IsChecked == true)
+            if (ValidityDate.SelectedDate.Value.Date == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Rate.Text == "")
             {
-                er.IsActive = 1;
+                MessageBox.Show("Please fill out all fields.");
             }
             else
             {
-                er.IsActive = 0;
-            }
+                ExchangeRate er = (ExchangeRate)dataGrid.SelectedItem;
+                er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
+                Currency c = (Currency)CurrencyFromCB.SelectedItem;
+                er.CurrencyFrom = c.CurrencyId;
+                c = (Currency)CurrencyToCB.SelectedItem;
+                er.CurrencyTo = c.CurrencyId;
+                er.Rate = int.Parse(Rate.Text);
+                if (checkBox.IsChecked == true)
+                {
+                    er.IsActive = 1;
+                }
+                else
+                {
+                    er.IsActive = 0;
+                }
 
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void delete()

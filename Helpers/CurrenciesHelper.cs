@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ExchangeRates.Helpers
@@ -33,39 +35,70 @@ namespace ExchangeRates.Helpers
 
         public void insert()
         {
-            Currency currency = new Currency();
-            currency.Code = Code.Text;
-            currency.CurrencyName = CurrencyName.Text;
-            if (checkBox.IsChecked == true)
+            var allMyCodes = myExchangeDatabase.Currencies.Select(x => x.Code);
+            var allMyCurrencyNames = myExchangeDatabase.Currencies.Select(x => x.CurrencyName);
+
+            if (Code.Text == "" || CurrencyName.Text == "")
             {
-                currency.IsActive = 1;
+                MessageBox.Show("Please fill out all fields.");
+            }
+            else if (allMyCodes.Contains(Code.Text))
+            {
+                MessageBox.Show("A currency with that code already exists.");
+            }
+            else if(allMyCurrencyNames.Contains(CurrencyName.Text))
+            {
+                MessageBox.Show("A currency with that name already exists.");
             }
             else
             {
-                currency.IsActive = 0;
-            }
+                Currency currency = new Currency();
+                currency.Code = Code.Text;
+                currency.CurrencyName = CurrencyName.Text;
+                if (checkBox.IsChecked == true)
+                {
+                    currency.IsActive = 1;
+                }
+                else
+                {
+                    currency.IsActive = 0;
+                }
 
-            myExchangeDatabase.Currencies.Add(currency);
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.Currencies.Add(currency);
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void edit()
         {
-            Currency currency = (Currency)dataGrid.SelectedItem;
-            currency.Code = Code.Text;
-            currency.CurrencyName = CurrencyName.Text;
-            if (checkBox.IsChecked == true)
+            var allMyCodes = myExchangeDatabase.Currencies.Select(x => x.Code);
+
+            if (Code.Text == "" || CurrencyName.Text == "")
             {
-                currency.IsActive = 1;
+                MessageBox.Show("Please fill out all fields.");
+            }
+            else if(allMyCodes.Contains(Code.Text))
+            {
+                MessageBox.Show("Code exists.");
             }
             else
             {
-                currency.IsActive = 0;
-            }
+                Currency currency = (Currency)dataGrid.SelectedItem;
+                currency.Code = Code.Text;
+                currency.CurrencyName = CurrencyName.Text;
+                if (checkBox.IsChecked == true)
+                {
+                    currency.IsActive = 1;
+                }
+                else
+                {
+                    currency.IsActive = 0;
+                }
 
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void delete()

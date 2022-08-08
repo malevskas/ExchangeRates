@@ -29,6 +29,8 @@ namespace ExchangeRates
         public OfficialRatesPage()
         {
             InitializeComponent();
+            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today);
+            ValidityDate.BlackoutDates.Add(cdr);
             orHelper = new OfficialRatesHelper(OfficialRatesId, CurrencyCB, Rate, ValidityDate, checkBox, dataGrid);
             orHelper.fillCB();
         }
