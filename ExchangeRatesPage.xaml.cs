@@ -30,8 +30,6 @@ namespace ExchangeRates
         public ExchangeRatesPage()
         {
             InitializeComponent();
-            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today);
-            ValidityDate.BlackoutDates.Add(cdr);
             erHelper = new ExchangeRatesHelper(ExchangeRatesId, Rate, CurrencyFromCB, CurrencyToCB, ValidityDate, checkBox, dataGrid);
             erHelper.fillCB();
         }
@@ -63,8 +61,8 @@ namespace ExchangeRates
 
         private void PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch(e.Text);
         }
     }
 }

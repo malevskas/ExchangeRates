@@ -43,16 +43,15 @@ namespace ExchangeRates.Helpers
 
         public void insert()
         {
+            int result = DateTime.Compare(ValidityDate.SelectedDate.Value.Date, DateTime.Today);
             var allMyCurrencies = myExchangeDatabase.OfficialRates.Select(x => x.Currency1);
             if (ValidityDate.SelectedDate.Value.Date == null || CurrencyCB.SelectedItem == null || Rate.Text == "")
             {
                 MessageBox.Show("Please fill out all fields.");
             }
-            else if(allMyCurrencies.Contains((Currency)CurrencyCB.SelectedItem))
+            else if (result < 0)
             {
-                //MessageBoxButton mbb = MessageBoxButton.YesNo;
-                //MessageBoxImage icon = MessageBoxImage
-                //MessageBox.Show("An official rate with that name alreay exists. Would you like to update it?", "", mbb, );
+                MessageBox.Show("Please select a later date.");
             }
             else
             {

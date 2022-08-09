@@ -29,15 +29,21 @@
         <Label Grid.Column="0" Grid.Row="2" Content="Surname" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label Grid.Column="0" Grid.Row="3" Content="Is Active" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label x:Name="UserId" Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top"/>
-        <TextBox x:Name="FirstName" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBox x:Name="Surname" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox x:Name="FirstName" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextInput"/>
+        <TextBox x:Name="Surname" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextInput"/>
         <CheckBox x:Name="checkBox" Grid.Column="1" Grid.Row="3" Content="" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
         <Button Grid.Column="0" Grid.Row="4" Content="Load Table" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Center" Click="LoadTable"/>
         <Button Style="{StaticResource InsertButton}" Grid.Column="1" Grid.Row="4" Content="Insert" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Click="Insert" Width="55"/>
         <Button Grid.Column="1" Grid.Row="4" Content="Edit" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Center" Width="55" Click="Edit"/>
         <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="4" Content="Delete" HorizontalAlignment="Left" Margin="125,0,0,0" VerticalAlignment="Center" Width="55" Click="Delete"/>
-        <DataGrid x:Name="dataGrid" Grid.Row="5" Grid.ColumnSpan="2" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=Users}" SelectedCellsChanged="populateTextBox"/>
-    
+        <DataGrid x:Name="dataGrid" Grid.Row="5" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding Path=Users}" SelectedCellsChanged="populateTextBox">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="Surame" Binding="{Binding Surname}"/>
+                <DataGridTextColumn Header="Is Active" Binding="{Binding IsActive}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
     </Grid>
     
 </Page>

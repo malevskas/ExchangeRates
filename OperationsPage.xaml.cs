@@ -29,8 +29,6 @@ namespace ExchangeRates
         public OperationsPage()
         {
             InitializeComponent();
-            CalendarDateRange cdr = new CalendarDateRange(DateTime.MinValue, DateTime.Today);
-            OperationDate.BlackoutDates.Add(cdr);
             oHelper = new OperationsHelper(OperationId, OperationTypeCB, UserCB, CurrencyFromCB, CurrencyToCB, Amount, OperationDate, dataGrid);
             oHelper.fillCurrencyCB();
             oHelper.fillUserCB();
@@ -59,8 +57,8 @@ namespace ExchangeRates
 
         private void PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch(e.Text);
         }
     }
 }

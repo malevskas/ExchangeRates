@@ -39,7 +39,14 @@
         <Button Style="{StaticResource InsertButton}" Grid.Column="1" Grid.Row="5" Content="Insert" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Click="Insert" Width="55"/>
         <Button Grid.Column="1" Grid.Row="5" Content="Edit" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Center" Width="55" Click="Edit"/>
         <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="5" Content="Delete" HorizontalAlignment="Left" Margin="125,0,0,0" VerticalAlignment="Center" Width="55" Click="Delete"/>
-        <DataGrid x:Name="dataGrid" Grid.Row="6" Grid.ColumnSpan="2" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=OfficialRate}" SelectedCellsChanged="populateTextBox"/>
+        <DataGrid x:Name="dataGrid" Grid.Row="6" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding Path=OfficialRate}" SelectedCellsChanged="populateTextBox">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Currency" Binding="{Binding Currency.CurrencyName}"/>
+                <DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
+                <DataGridTextColumn Header="Validity Date" Binding="{Binding ValidityDate}"/>
+                <DataGridTextColumn Header="Is Active" Binding="{Binding IsActive}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     
     </Grid>
     

@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ExchangeRates.Helpers;
+using System.Text.RegularExpressions;
 
 namespace ExchangeRates
 {
@@ -55,6 +56,18 @@ namespace ExchangeRates
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
             cHelper.populateTextBox();
+        }
+
+        private void PreviewTextNumericInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch(e.Text);
+        }
+
+        private void PreviewTextAlphabeticInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[a-zA-Z ]");
+            e.Handled = !regex.IsMatch(e.Text);
         }
     }
 }

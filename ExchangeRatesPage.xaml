@@ -33,7 +33,6 @@
         <Label Content="Validity Date" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label Grid.Column="0" Grid.Row="5" Content="Is Active" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label x:Name="ExchangeRatesId" Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top"/>
-        <!--<TextBox x:Name="ValidityDate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>-->
         <TextBox x:Name="Rate" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextInput"/>
         <ComboBox x:Name="CurrencyFromCB" DisplayMemberPath="CurrencyName" SelectedValuePath="CurrencyId" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
         <ComboBox x:Name="CurrencyToCB" DisplayMemberPath="CurrencyName" SelectedValuePath="CurrencyId" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
@@ -43,7 +42,15 @@
         <Button Style="{StaticResource InsertButton}" Grid.Column="1" Grid.Row="6" Content="Insert" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Click="Insert" Width="55"/>
         <Button Grid.Column="1" Grid.Row="6" Content="Edit" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Center" Width="55" Click="Edit"/>
         <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="6" Content="Delete" HorizontalAlignment="Left" Margin="125,0,0,0" VerticalAlignment="Center" Width="55" Click="Delete"/>
-        <DataGrid x:Name="dataGrid" Grid.Row="7" Grid.ColumnSpan="2" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=ExchangeRates}" SelectedCellsChanged="populateTextBox"/>
+        <DataGrid x:Name="dataGrid" Grid.Row="7" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding Path=ExchangeRates}" SelectedCellsChanged="populateTextBox">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Currency From" Binding="{Binding Currency.CurrencyName}"/>
+                <DataGridTextColumn Header="Currency To" Binding="{Binding Currency1.CurrencyName}"/>
+                <DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
+                <DataGridTextColumn Header="Validity Date" Binding="{Binding ValidityDate}"/>
+                <DataGridTextColumn Header="Is Active" Binding="{Binding IsActive}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         
     </Grid>
     

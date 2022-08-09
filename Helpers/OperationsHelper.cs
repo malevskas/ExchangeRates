@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ExchangeRates.Helpers
@@ -62,35 +63,54 @@ namespace ExchangeRates.Helpers
 
         public void insert()
         {
-            Operation operation = new Operation();
-            OperationType ot = (OperationType)OperationTypeCB.SelectedItem;
-            operation.OperationTypeId = ot.OperationTypeId;
-            operation.OperationDate = OperationDate.SelectedDate.Value.Date;
-            User u = (User)UserCB.SelectedItem;
-            operation.UserId = u.UserId;
-            Currency c = (Currency)CurrencyFromCB.SelectedItem;
-            operation.CurrencyFrom = c.CurrencyId;
-            c = (Currency)CurrencyToCB.SelectedItem;
-            operation.CurrencyTo = c.CurrencyId;
-            operation.Amount = int.Parse(Amount.Text);
+            int result = DateTime.Compare(OperationDate.SelectedDate.Value.Date, DateTime.Today);
+            if (OperationDate.SelectedDate.Value.Date == null || UserCB.SelectedItem == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Amount.Text == "")
+            {
+                MessageBox.Show("Please fill out all fields.");
+            }
+            else if (result < 0)
+            {
+                MessageBox.Show("Please select a later date.");
+            }
+            else
+            {
+                Operation operation = new Operation();
+                OperationType ot = (OperationType)OperationTypeCB.SelectedItem;
+                operation.OperationTypeId = ot.OperationTypeId;
+                operation.OperationDate = OperationDate.SelectedDate.Value.Date;
+                User u = (User)UserCB.SelectedItem;
+                operation.UserId = u.UserId;
+                Currency c = (Currency)CurrencyFromCB.SelectedItem;
+                operation.CurrencyFrom = c.CurrencyId;
+                c = (Currency)CurrencyToCB.SelectedItem;
+                operation.CurrencyTo = c.CurrencyId;
+                operation.Amount = int.Parse(Amount.Text);
 
-            myExchangeDatabase.Operations.Add(operation);
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.Operations.Add(operation);
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void edit()
         {
-            Operation operation = (Operation)dataGrid.SelectedItem;
-            operation.OperationTypeId = int.Parse(OperationTypeCB.Text);
-            operation.OperationDate = OperationDate.SelectedDate.Value.Date;
-            operation.UserId = int.Parse(UserCB.Text);
-            operation.CurrencyFrom = int.Parse(CurrencyFromCB.Text);
-            operation.CurrencyTo = int.Parse(CurrencyToCB.Text);
-            operation.Amount = int.Parse(Amount.Text);
+            if (OperationDate.SelectedDate.Value.Date == null || UserCB.SelectedItem == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Amount.Text == "")
+            {
+                MessageBox.Show("Please fill out all fields.");
+            }
+            else
+            {
+                Operation operation = (Operation)dataGrid.SelectedItem;
+                operation.OperationTypeId = int.Parse(OperationTypeCB.Text);
+                operation.OperationDate = OperationDate.SelectedDate.Value.Date;
+                operation.UserId = int.Parse(UserCB.Text);
+                operation.CurrencyFrom = int.Parse(CurrencyFromCB.Text);
+                operation.CurrencyTo = int.Parse(CurrencyToCB.Text);
+                operation.Amount = int.Parse(Amount.Text);
 
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void populateTextBox()

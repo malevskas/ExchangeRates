@@ -8,14 +8,6 @@
       d:DesignHeight="700" d:DesignWidth="1050"
       Title="OperationsPage">
 
-    <Page.Resources>
-        <Style x:Key="FancyText" TargetType="Label">
-            <Setter Property="Width" Value="400" />
-            <Setter Property="Background" Value="#F94449" />
-            <Setter Property="Height" Value="25" />
-        </Style>
-    </Page.Resources>
-
     <Grid Margin="0,-1,0,1">
         
         <Grid.ColumnDefinitions>
@@ -52,7 +44,16 @@
         <Button Content="Load Table" Grid.Column="0" Grid.Row="7" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Center" Click="LoadTable"/>
         <Button Content="Insert" Style="{StaticResource InsertButton}" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Click="Insert" Width="55"/>
         <Button Content="Edit" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Center" Width="55" Click="Edit"/>
-        <DataGrid x:Name="dataGrid" Grid.Row="8" Grid.ColumnSpan="2" AutoGenerateColumns="True" Margin="5" ItemsSource="{Binding Path=Operations}" SelectedCellsChanged="populateTextBox"/>
+        <DataGrid x:Name="dataGrid" Grid.Row="8" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding Path=Operations}" SelectedCellsChanged="populateTextBox">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Operation Type" Binding="{Binding OperationType.OperationName}"/>
+                <DataGridTextColumn Header="User" Binding="{Binding User.FirstName}"/>
+                <DataGridTextColumn Header="Currency From" Binding="{Binding Currency.CurrencyName}"/>
+                <DataGridTextColumn Header="Currency To" Binding="{Binding Currency1.CurrencyName}"/>
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}"/>
+                <DataGridTextColumn Header="Operation Date" Binding="{Binding OperationDate}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     
     </Grid>
     

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ExchangeRates.Helpers
@@ -32,39 +33,53 @@ namespace ExchangeRates.Helpers
 
         public void insert()
         {
-            OperationType ot = new OperationType();
-            ot.Code = Code.Text;
-            ot.OperationName = OperationName.Text;
-            if (checkBox.IsChecked == true)
+            if (Code.Text == ""  || OperationName.Text == "")
             {
-                ot.isActive = 1;
+                MessageBox.Show("Please fill out all fields.");
             }
             else
             {
-                ot.isActive = 0;
-            }
+                OperationType ot = new OperationType();
+                ot.Code = Code.Text;
+                ot.OperationName = OperationName.Text;
+                if (checkBox.IsChecked == true)
+                {
+                    ot.isActive = 1;
+                }
+                else
+                {
+                    ot.isActive = 0;
+                }
 
-            myExchangeDatabase.OperationTypes.Add(ot);
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.OperationTypes.Add(ot);
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void edit()
         {
-            OperationType ot = (OperationType)dataGrid.SelectedItem;
-            ot.Code = Code.Text;
-            ot.OperationName = OperationName.Text;
-            if (checkBox.IsChecked == true)
+            if (Code.Text == "" || OperationName.Text == "")
             {
-                ot.isActive = 1;
+                MessageBox.Show("Please fill out all fields.");
             }
             else
             {
-                ot.isActive = 0;
-            }
+                OperationType ot = (OperationType)dataGrid.SelectedItem;
+                ot.Code = Code.Text;
+                ot.OperationName = OperationName.Text;
+                if (checkBox.IsChecked == true)
+                {
+                    ot.isActive = 1;
+                }
+                else
+                {
+                    ot.isActive = 0;
+                }
 
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void delete()

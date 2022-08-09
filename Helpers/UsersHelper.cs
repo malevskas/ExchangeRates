@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ExchangeRates.Helpers
@@ -33,39 +34,53 @@ namespace ExchangeRates.Helpers
 
         public void insert()
         {
-            User user = new User();
-            user.FirstName = FirstName.Text;
-            user.Surname = Surname.Text;
-            if (checkBox.IsChecked == true)
+            if (FirstName.Text == "" || Surname.Text == "")
             {
-                user.IsActive = 1;
+                MessageBox.Show("Please fill out all fields.");
             }
             else
             {
-                user.IsActive = 0;
-            }
+                User user = new User();
+                user.FirstName = FirstName.Text;
+                user.Surname = Surname.Text;
+                if (checkBox.IsChecked == true)
+                {
+                    user.IsActive = 1;
+                }
+                else
+                {
+                    user.IsActive = 0;
+                }
 
-            myExchangeDatabase.Users.Add(user);
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.Users.Add(user);
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void edit()
         {
-            User user = (User)dataGrid.SelectedItem;
-            user.FirstName = FirstName.Text;
-            user.Surname = Surname.Text;
-            if (checkBox.IsChecked == true)
+            if (FirstName.Text == "" || Surname.Text == "")
             {
-                user.IsActive = 1;
+                MessageBox.Show("Please fill out all fields.");
             }
             else
             {
-                user.IsActive = 0;
-            }
+                User user = (User)dataGrid.SelectedItem;
+                user.FirstName = FirstName.Text;
+                user.Surname = Surname.Text;
+                if (checkBox.IsChecked == true)
+                {
+                    user.IsActive = 1;
+                }
+                else
+                {
+                    user.IsActive = 0;
+                }
 
-            myExchangeDatabase.SaveChanges();
-            loadTable();
+                myExchangeDatabase.SaveChanges();
+                loadTable();
+            }
         }
 
         public void delete()

@@ -45,14 +45,19 @@ namespace ExchangeRates.Helpers
 
         public void insert()
         {
+            int result = DateTime.Compare(ValidityDate.SelectedDate.Value.Date, DateTime.Today);
             if (ValidityDate.SelectedDate.Value.Date == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Rate.Text == "")
             {
                 MessageBox.Show("Please fill out all fields.");
             }
-            else if(CurrencyFromCB.SelectedItem == CurrencyToCB.SelectedItem)
+            else if (result < 0)
+            {
+                MessageBox.Show("Please select a later date.");
+            }
+            /*else if(CurrencyFromCB.SelectedItem == CurrencyToCB.SelectedItem)
             {
                 MessageBox.Show("Please choose different currencies.");
-            }
+            }*/
             else
             {
                 ExchangeRate er = new ExchangeRate();
