@@ -31,12 +31,13 @@ namespace ExchangeRates
         {
             InitializeComponent();
             erHelper = new ExchangeRatesHelper(ExchangeRatesId, Rate, CurrencyFromCB, CurrencyToCB, ValidityDate, checkBox, dataGrid);
-            erHelper.fillCB();
+            CurrencyFromCB.ItemsSource = erHelper.fillCB();
+            CurrencyToCB.ItemsSource = erHelper.fillCB();
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            erHelper.loadTable();
+            dataGrid.ItemsSource = erHelper.loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)

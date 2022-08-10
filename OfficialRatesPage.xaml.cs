@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using ExchangeRates.Helpers;
+using System.Diagnostics;
 
 namespace ExchangeRates
 {
@@ -35,7 +36,11 @@ namespace ExchangeRates
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {   
-            orHelper.loadTable();
+            nbrm.Kurs kurs = new nbrm.Kurs();
+            
+            var result = kurs.GetExchangeRate("01.02.2010", "15.02.2010");
+            Debug.Write(result.ToString());
+            //orHelper.loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)

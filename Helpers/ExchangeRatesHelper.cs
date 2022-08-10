@@ -30,56 +30,61 @@ namespace ExchangeRates.Helpers
             this.dataGrid = dataGrid;
         }
 
-        public void fillCB()
+        public List<Currency> fillCB()
         {
-            var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
-            CurrencyFromCB.ItemsSource = allMyCurrencies;
-            CurrencyToCB.ItemsSource = allMyCurrencies;
+            List<Currency> allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
+            return allMyCurrencies;
         }
 
-        public void loadTable()
+        public List<ExchangeRate> loadTable()
         {
-            var allMyExchangeRates = myExchangeDatabase.ExchangeRates.ToList<ExchangeRate>();
-            dataGrid.ItemsSource = allMyExchangeRates;
+            List<ExchangeRate> allMyExchangeRates = myExchangeDatabase.ExchangeRates.ToList<ExchangeRate>();
+            return allMyExchangeRates;
         }
 
         public void insert()
         {
-            int result = DateTime.Compare(ValidityDate.SelectedDate.Value.Date, DateTime.Today);
-            if (ValidityDate.SelectedDate.Value.Date == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Rate.Text == "")
+            if (ValidityDate.SelectedDate == null || ValidityDate.SelectedDate.Value.Date == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Rate.Text == "")
             {
                 MessageBox.Show("Please fill out all fields.");
             }
-            else if (result < 0)
+            else 
             {
-                MessageBox.Show("Please select a later date.");
+                int result = DateTime.Compare(ValidityDate.SelectedDate.Value.Date, DateTime.Today);
+                if(result<0)
+                {
+                    MessageBox.Show("Please select a later date.");
+                }
+                else
+                {
+                    ExchangeRate er = new ExchangeRate();
+                    er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
+                    Currency c = (Currency)CurrencyFromCB.SelectedItem;
+                    er.CurrencyFrom = c.CurrencyId;
+                    c = (Currency)CurrencyToCB.SelectedItem;
+                    er.CurrencyTo = c.CurrencyId;
+                    er.Rate = int.Parse(Rate.Text);
+                    if (checkBox.IsChecked == true)
+                    {
+                        er.IsActive = 1;
+                    }
+                    else
+                    {
+                        er.IsActive = 0;
+                    }
+
+                    myExchangeDatabase.ExchangeRates.Add(er);
+                    myExchangeDatabase.SaveChanges();
+                    loadTable();
+                }
+
             }
+
             /*else if(CurrencyFromCB.SelectedItem == CurrencyToCB.SelectedItem)
             {
                 MessageBox.Show("Please choose different currencies.");
             }*/
-            else
-            {
-                ExchangeRate er = new ExchangeRate();
-                er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
-                Currency c = (Currency)CurrencyFromCB.SelectedItem;
-                er.CurrencyFrom = c.CurrencyId;
-                c = (Currency)CurrencyToCB.SelectedItem;
-                er.CurrencyTo = c.CurrencyId;
-                er.Rate = int.Parse(Rate.Text);
-                if (checkBox.IsChecked == true)
-                {
-                    er.IsActive = 1;
-                }
-                else
-                {
-                    er.IsActive = 0;
-                }
-
-                myExchangeDatabase.ExchangeRates.Add(er);
-                myExchangeDatabase.SaveChanges();
-                loadTable();
-            }
+            
         }
 
         public void edit()

@@ -30,32 +30,61 @@ namespace ExchangeRates
         public CurrenciesPage()
         {
             InitializeComponent();
-            cHelper = new CurrenciesHelper(CurrencyId, Code, CurrencyName, checkBox, dataGrid);
+            cHelper = new CurrenciesHelper();
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            cHelper.loadTable();
+            dataGrid.ItemsSource = cHelper.loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            cHelper.insert();
+            string result = cHelper.insert(Code.Text, CurrencyName.Text, checkBox.IsChecked);
+            if(!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                cHelper.loadTable();
+            }
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            cHelper.edit();
+            string result = cHelper.edit(Code.Text, CurrencyName.Text, checkBox.IsChecked);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                cHelper.loadTable();
+            }
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            cHelper.delete();
+            cHelper.delete((Currency)dataGrid.SelectedItem);
+            checkBox.IsChecked = false;
+            dataGrid.ItemsSource = cHelper.loadTable();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
-            cHelper.populateTextBox();
+            Currency currency = (Currency)dataGrid.SelectedItem;
+            CurrencyId.Content = currency.CurrencyId.ToString();
+            Code.Text = currency.Code;
+            CurrencyName.Text = currency.CurrencyName;
+            if (currency.IsActive == 1)
+            {
+                checkBox.IsChecked = true;
+            }
+            else
+            {
+                checkBox.IsChecked = false;
+            }
         }
 
         private void PreviewTextNumericInput(object sender, TextCompositionEventArgs e)
