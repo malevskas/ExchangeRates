@@ -29,30 +29,54 @@ namespace ExchangeRates
         public OperationsPage()
         {
             InitializeComponent();
-            oHelper = new OperationsHelper(OperationId, OperationTypeCB, UserCB, CurrencyFromCB, CurrencyToCB, Amount, OperationDate, dataGrid);
-            oHelper.fillCurrencyCB();
-            oHelper.fillUserCB();
-            oHelper.fillOperationTypeCB();
+            oHelper = new OperationsHelper();
+            CurrencyFromCB.ItemsSource = oHelper.fillCurrencyCB();
+            CurrencyToCB.ItemsSource = oHelper.fillCurrencyCB();
+            UserCB.ItemsSource = oHelper.fillUserCB();
+            OperationTypeCB.ItemsSource = oHelper.fillOperationTypeCB();
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            oHelper.loadTable();
+            dataGrid.ItemsSource = oHelper.loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            oHelper.insert();
+            string result = oHelper.insert(OperationDate.SelectedDate, (User)UserCB.SelectedItem, (OperationType)OperationTypeCB.SelectedItem, (Currency)CurrencyFromCB.SelectedItem, (Currency)CurrencyToCB.SelectedItem, Amount.Text);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = oHelper.loadTable();
+            }
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            oHelper.edit();
+            string result = oHelper.edit((Operation)dataGrid.SelectedItem, OperationDate.SelectedDate, (User)UserCB.SelectedItem, (OperationType)OperationTypeCB.SelectedItem, (Currency)CurrencyFromCB.SelectedItem, (Currency)CurrencyToCB.SelectedItem, Amount.Text);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = oHelper.loadTable();
+            }
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
-            oHelper.populateTextBox();
+            Operation operation = (Operation)dataGrid.SelectedItem;
+            OperationId.Content = operation.OperationId.ToString();
+            OperationTypeCB.Text = operation.OperationTypeId.ToString();
+            OperationDate.SelectedDate = operation.OperationDate;
+            UserCB.Text = operation.UserId.ToString();
+            CurrencyFromCB.Text = operation.CurrencyFrom.ToString();
+            CurrencyToCB.Text = operation.CurrencyTo.ToString();
+            Amount.Text = operation.Amount.ToString();
         }
 
         private void PreviewTextInput(object sender, TextCompositionEventArgs e)

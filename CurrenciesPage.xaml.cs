@@ -47,20 +47,20 @@ namespace ExchangeRates
             }
             else
             {
-                cHelper.loadTable();
+                dataGrid.ItemsSource = cHelper.loadTable();
             }
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            string result = cHelper.edit(Code.Text, CurrencyName.Text, checkBox.IsChecked);
+            string result = cHelper.edit((Currency)dataGrid.SelectedItem, Code.Text, CurrencyName.Text, checkBox.IsChecked);
             if (!result.Equals("ok"))
             {
                 MessageBox.Show(result);
             }
             else
             {
-                cHelper.loadTable();
+                dataGrid.ItemsSource = cHelper.loadTable();
             }
         }
 

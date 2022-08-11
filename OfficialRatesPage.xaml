@@ -32,7 +32,7 @@
         <Label Grid.Column="0" Grid.Row="4" Content="Is Active" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label x:Name="OfficialRatesId" Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top"/>
         <ComboBox x:Name="CurrencyCB" DisplayMemberPath="CurrencyName" SelectedValuePath="CurrencyId" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
-        <TextBox x:Name="Rate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextInput"/>
+        <TextBox x:Name="Rate" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextInput" MaxLength="7"/>
         <DatePicker x:Name="ValidityDate" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
         <CheckBox x:Name="checkBox" Grid.Column="1" Grid.Row="4" Content="" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
         <Button Grid.Column="0" Grid.Row="5" Content="Load Table" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Center" Click="LoadTable"/>
@@ -41,7 +41,7 @@
         <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="5" Content="Delete" HorizontalAlignment="Left" Margin="125,0,0,0" VerticalAlignment="Center" Width="55" Click="Delete"/>
         <DataGrid x:Name="dataGrid" Grid.Row="6" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding Path=OfficialRate}" SelectedCellsChanged="populateTextBox">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Currency" Binding="{Binding Currency.CurrencyName}"/>
+                <DataGridTextColumn Header="Currency" Binding="{Binding Currency1.CurrencyName}"/>
                 <DataGridTextColumn Header="Rate" Binding="{Binding Rate}"/>
                 <DataGridTextColumn Header="Validity Date" Binding="{Binding ValidityDate}"/>
                 <DataGridTextColumn Header="Is Active" Binding="{Binding IsActive}"/>

@@ -11,39 +11,25 @@ namespace ExchangeRates.Helpers
     internal class UsersHelper
     {
         private Entity myExchangeDatabase = new Entity();
-        private Label UserId;
-        private TextBox FirstName;
-        private TextBox Surname;
-        private CheckBox checkBox;
-        private DataGrid dataGrid;
 
-        public UsersHelper(Label UserId, TextBox FirstName, TextBox Surname, CheckBox checkBox, DataGrid dataGrid)
+        public List<User> loadTable()
         {
-            this.UserId = UserId;
-            this.FirstName = FirstName;
-            this.Surname = Surname;
-            this.checkBox = checkBox;
-            this.dataGrid = dataGrid;
+            List<User> allMyUsers = myExchangeDatabase.Users.ToList<User>();
+            return allMyUsers;
         }
 
-        public void loadTable()
+        public string insert(string FirstName, string Surname, bool? IsChecked)
         {
-            var allMyUsers = myExchangeDatabase.Users.ToList<User>();
-            dataGrid.ItemsSource = allMyUsers;
-        }
-
-        public void insert()
-        {
-            if (FirstName.Text == "" || Surname.Text == "")
+            if (FirstName == "" || Surname == "")
             {
-                MessageBox.Show("Please fill out all fields.");
+                return "Please fill out all fields.";
             }
             else
             {
                 User user = new User();
-                user.FirstName = FirstName.Text;
-                user.Surname = Surname.Text;
-                if (checkBox.IsChecked == true)
+                user.FirstName = FirstName;
+                user.Surname = Surname;
+                if (IsChecked == true)
                 {
                     user.IsActive = 1;
                 }
@@ -54,22 +40,21 @@ namespace ExchangeRates.Helpers
 
                 myExchangeDatabase.Users.Add(user);
                 myExchangeDatabase.SaveChanges();
-                loadTable();
+                return "ok";
             }
         }
 
-        public void edit()
+        public string edit(User user, string FirstName, string Surname, bool? IsChecked)
         {
-            if (FirstName.Text == "" || Surname.Text == "")
+            if (FirstName == "" || Surname == "")
             {
-                MessageBox.Show("Please fill out all fields.");
+                return "Please fill out all fields.";
             }
             else
             {
-                User user = (User)dataGrid.SelectedItem;
-                user.FirstName = FirstName.Text;
-                user.Surname = Surname.Text;
-                if (checkBox.IsChecked == true)
+                user.FirstName = FirstName;
+                user.Surname = Surname;
+                if (IsChecked == true)
                 {
                     user.IsActive = 1;
                 }
@@ -79,34 +64,14 @@ namespace ExchangeRates.Helpers
                 }
 
                 myExchangeDatabase.SaveChanges();
-                loadTable();
+                return "ok";
             }
         }
 
-        public void delete()
+        public void delete(User user)
         {
-            User user = (User)dataGrid.SelectedItem;
             user.IsActive = 0;
-            checkBox.IsChecked = false;
-
             myExchangeDatabase.SaveChanges();
-            loadTable();
-        }
-
-        public void populateTextBox()
-        {
-            User user = (User)dataGrid.SelectedItem;
-            UserId.Content = user.UserId.ToString();
-            FirstName.Text = user.FirstName;
-            Surname.Text = user.Surname;
-            if (user.IsActive == 1)
-            {
-                checkBox.IsChecked = true;
-            }
-            else
-            {
-                checkBox.IsChecked = false;
-            }
         }
     }
 }

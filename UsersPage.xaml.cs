@@ -29,32 +29,61 @@ namespace ExchangeRates
         public UsersPage()
         {
             InitializeComponent();
-            uHelper = new UsersHelper(UserId, FirstName, Surname, checkBox, dataGrid);
+            uHelper = new UsersHelper();
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            uHelper.loadTable();
+            dataGrid.ItemsSource = uHelper.loadTable();
         }
         
         private void Insert(object sender, RoutedEventArgs e)
         {
-            uHelper.insert();
+            string result = uHelper.insert(FirstName.Text, Surname.Text, checkBox.IsChecked);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = uHelper.loadTable();
+            }
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            uHelper.edit();
+            string result = uHelper.edit((User)dataGrid.SelectedItem, FirstName.Text, Surname.Text, checkBox.IsChecked);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = uHelper.loadTable();
+            }
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            uHelper.delete();
+            uHelper.delete((User)dataGrid.SelectedItem);
+            checkBox.IsChecked = false;
+            dataGrid.ItemsSource = uHelper.loadTable();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
-            uHelper.populateTextBox();
+            User user = (User)dataGrid.SelectedItem;
+            UserId.Content = user.UserId.ToString();
+            FirstName.Text = user.FirstName;
+            Surname.Text = user.Surname;
+            if (user.IsActive == 1)
+            {
+                checkBox.IsChecked = true;
+            }
+            else
+            {
+                checkBox.IsChecked = false;
+            }
         }
 
         private void PreviewTextInput(object sender, TextCompositionEventArgs e)

@@ -11,118 +11,75 @@ namespace ExchangeRates.Helpers
     internal class OperationsHelper
     {
         private Entity myExchangeDatabase = new Entity();
-        private Label OperationId;
-        private ComboBox OperationTypeCB;
-        private ComboBox UserCB;
-        private ComboBox CurrencyFromCB;
-        private ComboBox CurrencyToCB;
-        private TextBox Amount;
-        private DatePicker OperationDate;
-        private DataGrid dataGrid;
 
-        public OperationsHelper(Label OperationId, ComboBox OperationTypeCB, ComboBox UserCB, ComboBox CurrencyFromCB, ComboBox CurrencyToCB, TextBox Amount, DatePicker OperationDate, DataGrid dataGrid)
+        public List<Currency> fillCurrencyCB()
         {
-            this.OperationId = OperationId;
-            this.OperationTypeCB = OperationTypeCB;
-            this.UserCB = UserCB;
-            this.CurrencyFromCB = CurrencyFromCB;
-            this.CurrencyToCB = CurrencyToCB;
-            this.Amount = Amount;
-            this.OperationDate = OperationDate;
-            this.dataGrid = dataGrid;
+            List<Currency> allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
+            return allMyCurrencies;
         }
 
-        public void fillCurrencyCB()
+        public List<User> fillUserCB()
         {
-            var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
-            CurrencyFromCB.Items.Clear();
-            CurrencyToCB.Items.Clear();
-            CurrencyFromCB.ItemsSource = allMyCurrencies;
-            CurrencyToCB.ItemsSource = allMyCurrencies;
+            List<User> allMyUsers = myExchangeDatabase.Users.ToList<User>();
+            return allMyUsers;
         }
 
-        public void fillUserCB()
+        public List<OperationType> fillOperationTypeCB()
         {
-            var allMyUsers = myExchangeDatabase.Users.ToList<User>();
-            UserCB.Items.Clear();
-            UserCB.ItemsSource = allMyUsers;
+            List<OperationType> allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
+            return allMyOperationTypes;
         }
 
-        public void fillOperationTypeCB()
+        public List<Operation> loadTable()
         {
-            var allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
-            OperationTypeCB.Items.Clear();
-            OperationTypeCB.ItemsSource = allMyOperationTypes;
+            List<Operation> allMyOperations = myExchangeDatabase.Operations.ToList<Operation>();
+            return allMyOperations;
         }
 
-        public void loadTable()
+        public string insert(DateTime? SelectedDate, User u, OperationType ot, Currency from, Currency to, string Amount)
         {
-            var allMyOperations = myExchangeDatabase.Operations.ToList<Operation>();
-            dataGrid.ItemsSource = allMyOperations;
-        }
-
-        public void insert()
-        {
-            int result = DateTime.Compare(OperationDate.SelectedDate.Value.Date, DateTime.Today);
-            if (OperationDate.SelectedDate.Value.Date == null || UserCB.SelectedItem == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Amount.Text == "")
+            if (SelectedDate == null || SelectedDate.Value.Date == null || u == null || from == null || to == null || Amount == "")
             {
-                MessageBox.Show("Please fill out all fields.");
+                return "Please fill out all fields.";
             }
-            else if (result < 0)
+            else if (DateTime.Compare(SelectedDate.Value.Date, DateTime.Today) < 0)
             {
-                MessageBox.Show("Please select a later date.");
+                return "Please select a later date.";
             }
             else
             {
                 Operation operation = new Operation();
-                OperationType ot = (OperationType)OperationTypeCB.SelectedItem;
                 operation.OperationTypeId = ot.OperationTypeId;
-                operation.OperationDate = OperationDate.SelectedDate.Value.Date;
-                User u = (User)UserCB.SelectedItem;
+                operation.OperationDate = SelectedDate.Value.Date;
                 operation.UserId = u.UserId;
-                Currency c = (Currency)CurrencyFromCB.SelectedItem;
-                operation.CurrencyFrom = c.CurrencyId;
-                c = (Currency)CurrencyToCB.SelectedItem;
-                operation.CurrencyTo = c.CurrencyId;
-                operation.Amount = int.Parse(Amount.Text);
+                operation.CurrencyFrom = from.CurrencyId;
+                operation.CurrencyTo = to.CurrencyId;
+                operation.Amount = int.Parse(Amount);
 
                 myExchangeDatabase.Operations.Add(operation);
                 myExchangeDatabase.SaveChanges();
-                loadTable();
+                return "ok";
             }
         }
 
-        public void edit()
+        public string edit(Operation operation, DateTime? SelectedDate, User u, OperationType ot, Currency from, Currency to, string Amount)
         {
-            if (OperationDate.SelectedDate.Value.Date == null || UserCB.SelectedItem == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Amount.Text == "")
+            if (SelectedDate == null || SelectedDate.Value.Date == null || u == null || from == null || to == null || Amount == "")
             {
-                MessageBox.Show("Please fill out all fields.");
+                return "Please fill out all fields.";
             }
             else
             {
-                Operation operation = (Operation)dataGrid.SelectedItem;
-                operation.OperationTypeId = int.Parse(OperationTypeCB.Text);
-                operation.OperationDate = OperationDate.SelectedDate.Value.Date;
-                operation.UserId = int.Parse(UserCB.Text);
-                operation.CurrencyFrom = int.Parse(CurrencyFromCB.Text);
-                operation.CurrencyTo = int.Parse(CurrencyToCB.Text);
-                operation.Amount = int.Parse(Amount.Text);
+                operation.OperationTypeId = ot.OperationTypeId;
+                operation.OperationDate = SelectedDate.Value.Date;
+                operation.UserId = u.UserId;
+                operation.CurrencyFrom = from.CurrencyId;
+                operation.CurrencyTo = to.CurrencyId;
+                operation.Amount = int.Parse(Amount);
 
                 myExchangeDatabase.SaveChanges();
-                loadTable();
+                return "ok";
             }
-        }
-
-        public void populateTextBox()
-        {
-            Operation operation = (Operation)dataGrid.SelectedItem;
-            OperationId.Content = operation.OperationId.ToString();
-            OperationTypeCB.Text = operation.OperationTypeId.ToString();
-            OperationDate.SelectedDate = operation.OperationDate;
-            UserCB.Text = operation.UserId.ToString();
-            CurrencyFromCB.Text = operation.CurrencyFrom.ToString();
-            CurrencyToCB.Text = operation.CurrencyTo.ToString();
-            Amount.Text = operation.Amount.ToString();
         }
     }
 }

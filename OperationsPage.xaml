@@ -39,7 +39,7 @@
         <ComboBox x:Name="UserCB" Grid.Column="1" Grid.Row="2" DisplayMemberPath="FirstName" SelectedValuePath="UserId" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
         <ComboBox x:Name="CurrencyFromCB" DisplayMemberPath="CurrencyName" SelectedValuePath="CurrencyId" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
         <ComboBox x:Name="CurrencyToCB" DisplayMemberPath="CurrencyName" SelectedValuePath="CurrencyId" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
-        <TextBox x:Name="Amount" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextInput"/>
+        <TextBox x:Name="Amount" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextInput" MaxLength="10"/>
         <DatePicker x:Name="OperationDate" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
         <Button Content="Load Table" Grid.Column="0" Grid.Row="7" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Center" Click="LoadTable"/>
         <Button Content="Insert" Style="{StaticResource InsertButton}" Grid.Column="2" Grid.Row="7" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Click="Insert" Width="55"/>

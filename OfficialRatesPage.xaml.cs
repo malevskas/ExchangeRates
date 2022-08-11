@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 using ExchangeRates.Helpers;
 using System.Diagnostics;
+using System.Xml;
 
 namespace ExchangeRates
 {
@@ -30,37 +31,64 @@ namespace ExchangeRates
         public OfficialRatesPage()
         {
             InitializeComponent();
-            orHelper = new OfficialRatesHelper(OfficialRatesId, CurrencyCB, Rate, ValidityDate, checkBox, dataGrid);
-            orHelper.fillCB();
+            orHelper = new OfficialRatesHelper();
+            CurrencyCB.ItemsSource = orHelper.fillCB();
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
-        {   
-            nbrm.Kurs kurs = new nbrm.Kurs();
-            
-            var result = kurs.GetExchangeRate("01.02.2010", "15.02.2010");
-            Debug.Write(result.ToString());
-            //orHelper.loadTable();
+        {
+            orHelper.loadTable();
+            dataGrid.ItemsSource = orHelper.loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            orHelper.insert();
+            string result = orHelper.insert(ValidityDate, /*ValidityDate.SelectedDate, */(Currency)CurrencyCB.SelectedItem, Rate.Text, checkBox.IsChecked);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = orHelper.loadTable();
+            }
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            orHelper.edit();
+            string result = orHelper.edit((OfficialRate)dataGrid.SelectedItem, ValidityDate.SelectedDate, (Currency)CurrencyCB.SelectedItem, Rate.Text, checkBox.IsChecked);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = orHelper.loadTable();
+            }
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            orHelper.delete();
+            orHelper.delete((OfficialRate)dataGrid.SelectedItem);
+            checkBox.IsChecked = false;
+            dataGrid.ItemsSource = orHelper.loadTable();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
-            orHelper.populateTextBox();
+            OfficialRate or = (OfficialRate)dataGrid.SelectedItem;
+            OfficialRatesId.Content = or.OfficialRatesId.ToString();
+            ValidityDate.SelectedDate = or.ValidityDate;
+            Rate.Text = or.Rate.ToString();
+            CurrencyCB.Text = or.Currency1.CurrencyName;
+            if (or.IsActive == 1)
+            {
+                checkBox.IsChecked = true;
+            }
+            else
+            {
+                checkBox.IsChecked = false;
+            }
         }
 
         private void PreviewTextInput(object sender, TextCompositionEventArgs e)

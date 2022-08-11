@@ -30,7 +30,7 @@ namespace ExchangeRates
         public ExchangeRatesPage()
         {
             InitializeComponent();
-            erHelper = new ExchangeRatesHelper(ExchangeRatesId, Rate, CurrencyFromCB, CurrencyToCB, ValidityDate, checkBox, dataGrid);
+            erHelper = new ExchangeRatesHelper();
             CurrencyFromCB.ItemsSource = erHelper.fillCB();
             CurrencyToCB.ItemsSource = erHelper.fillCB();
         }
@@ -42,22 +42,53 @@ namespace ExchangeRates
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            erHelper.insert();
+            string result = erHelper.insert(ValidityDate.SelectedDate, (Currency)CurrencyFromCB.SelectedItem, (Currency)CurrencyToCB.SelectedItem, Rate.Text, checkBox.IsChecked);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = erHelper.loadTable();
+            }
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            erHelper.edit();
+            string result = erHelper.edit((ExchangeRate)dataGrid.SelectedItem, ValidityDate.SelectedDate, (Currency)CurrencyFromCB.SelectedItem, (Currency)CurrencyToCB.SelectedItem, Rate.Text, checkBox.IsChecked);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = erHelper.loadTable();
+            }
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            erHelper.delete();
+            erHelper.delete((ExchangeRate)dataGrid.SelectedItem);
+            checkBox.IsChecked = false;
+            dataGrid.ItemsSource = erHelper.loadTable();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
-            erHelper.populateTextBox();
+            ExchangeRate er = (ExchangeRate)dataGrid.SelectedItem;
+            ExchangeRatesId.Content = er.ExchangeRatesId.ToString();
+            ValidityDate.SelectedDate = er.ValidityDate;
+            Rate.Text = er.Rate.ToString();
+            CurrencyFromCB.Text = er.Currency.CurrencyName;
+            CurrencyToCB.Text = er.Currency1.CurrencyName;
+            if (er.IsActive == 1)
+            {
+                checkBox.IsChecked = true;
+            }
+            else
+            {
+                checkBox.IsChecked = false;
+            }
         }
 
         private void PreviewTextInput(object sender, TextCompositionEventArgs e)

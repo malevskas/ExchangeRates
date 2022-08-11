@@ -1,66 +1,100 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml;
 
 namespace ExchangeRates.Helpers
 {
     internal class OfficialRatesHelper
     {
         private Entity myExchangeDatabase = new Entity();
-        private Label OfficialRatesId;
-        private ComboBox CurrencyCB;
-        private TextBox Rate;
-        private DatePicker ValidityDate;
-        private CheckBox checkBox;
-        private DataGrid dataGrid;
 
-        public OfficialRatesHelper(Label OfficialRatesId, ComboBox CurrencyCB, TextBox Rate, DatePicker ValidityDate, CheckBox checkBox, DataGrid dataGrid)
+        public List<Currency> fillCB()
         {
-            this.OfficialRatesId = OfficialRatesId;
-            this.CurrencyCB = CurrencyCB;
-            this.Rate = Rate;
-            this.ValidityDate = ValidityDate;
-            this.checkBox = checkBox;
-            this.dataGrid = dataGrid;
+            List<Currency> allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
+            return allMyCurrencies;
         }
 
-        public void fillCB()
+        public List<OfficialRate> loadTable()
         {
-            var allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
-            CurrencyCB.Items.Clear();
-            CurrencyCB.ItemsSource = allMyCurrencies;
-        }
+            //List<OfficialRate> or = new List<OfficialRate>();
 
-        public void loadTable()
-        {
-            var allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
-            dataGrid.ItemsSource = allMyOfficialRates;
-        }
+            nbrm.Kurs kurs = new nbrm.Kurs();
 
-        public void insert()
-        {
-            int result = DateTime.Compare(ValidityDate.SelectedDate.Value.Date, DateTime.Today);
-            var allMyCurrencies = myExchangeDatabase.OfficialRates.Select(x => x.Currency1);
-            if (ValidityDate.SelectedDate.Value.Date == null || CurrencyCB.SelectedItem == null || Rate.Text == "")
+            var result = kurs.GetExchangeRate("11.08.2022", "11.08.2022");
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(result);
+            Debug.Write(result);
+            foreach (XmlNode node in doc.SelectNodes("//KursZbir"))
             {
-                MessageBox.Show("Please fill out all fields.");
+                string name = node["Oznaka"].InnerText;
+                Currency c = myExchangeDatabase.Currencies.Where(cu => cu.CurrencyName == name).FirstOrDefault();
+                OfficialRate o = new OfficialRate();
+                o.Currency = c.CurrencyId;
+                o.ValidityDate = Convert.ToDateTime(node["Datum"].InnerText);
+                o.Rate = Convert.ToDouble(node["Sreden"].InnerText);
+                o.IsActive = 1;
+                
+                myExchangeDatabase.OfficialRates.Add(o);
+                myExchangeDatabase.SaveChanges();
+                break;
             }
-            else if (result < 0)
+            List<OfficialRate> allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
+            return allMyOfficialRates;
+        }
+
+        public string insert(DatePicker ValidityDate, /*DateTime? SelectedDate,*/ Currency c, string Rate, bool? IsChecked)
+        {
+            //var allMyCurrencies = myExchangeDatabase.OfficialRates.Select(x => x.Currency1);
+            //if (/*SelectedDate == null || */ValidityDate.SelectedDate.Value.Date == null || c == null || Rate == "")
+            //{
+            //    return "Please fill out all fields.";
+            //}
+            //return "";
+            ///*else if (DateTime.Compare(SelectedDate.Value.Date, DateTime.Today) < 0)
+            //{
+            //    return "Please select a later date.";
+            //}
+            //else
+            //{
+            //    OfficialRate or = new OfficialRate();
+            //    or.ValidityDate = SelectedDate.Value.Date;
+            //    or.Currency = c.CurrencyId;
+            //    or.Rate = int.Parse(Rate);
+            //    if (IsChecked == true)
+            //    {
+            //        or.IsActive = 1;
+            //    }
+            //    else
+            //    {
+            //        or.IsActive = 0;
+            //    }
+
+            //    myExchangeDatabase.OfficialRates.Add(or);
+            //    myExchangeDatabase.SaveChanges();
+            //    return "ok";
+            //}*/
+            return "ok";
+        }
+
+        public string edit(OfficialRate or, DateTime? SelectedDate, Currency c, string Rate, bool? IsChecked)
+        {
+            if (SelectedDate.Value.Date == null || SelectedDate.Value.Date == null || c == null || Rate == "")
             {
-                MessageBox.Show("Please select a later date.");
+                return "Please fill out all fields.";
             }
             else
             {
-                OfficialRate or = new OfficialRate();
-                or.ValidityDate = ValidityDate.SelectedDate.Value.Date;
-                Currency c = (Currency)CurrencyCB.SelectedItem;
+                or.ValidityDate = SelectedDate.Value.Date;
                 or.Currency = c.CurrencyId;
-                or.Rate = int.Parse(Rate.Text);
-                if (checkBox.IsChecked == true)
+                or.Rate = int.Parse(Rate);
+                if (IsChecked == true)
                 {
                     or.IsActive = 1;
                 }
@@ -71,63 +105,14 @@ namespace ExchangeRates.Helpers
 
                 myExchangeDatabase.OfficialRates.Add(or);
                 myExchangeDatabase.SaveChanges();
-                loadTable();
+                return "ok";
             }
         }
 
-        public void edit()
+        public void delete(OfficialRate or)
         {
-            if (ValidityDate.SelectedDate.Value.Date == null || CurrencyCB.SelectedItem == null || Rate.Text == "")
-            {
-                MessageBox.Show("Please fill out all fields.");
-            }
-            else
-            {
-                OfficialRate or = (OfficialRate)dataGrid.SelectedItem;
-                or.ValidityDate = ValidityDate.SelectedDate.Value.Date;
-                Currency c = (Currency)CurrencyCB.SelectedItem;
-                or.Currency = c.CurrencyId;
-                or.Rate = int.Parse(Rate.Text);
-                if (checkBox.IsChecked == true)
-                {
-                    or.IsActive = 1;
-                }
-                else
-                {
-                    or.IsActive = 0;
-                }
-
-                myExchangeDatabase.OfficialRates.Add(or);
-                myExchangeDatabase.SaveChanges();
-                loadTable();
-            }
-        }
-
-        public void delete()
-        {
-            OfficialRate or = (OfficialRate)dataGrid.SelectedItem;
             or.IsActive = 0;
-            checkBox.IsChecked = false;
-
             myExchangeDatabase.SaveChanges();
-            loadTable();
-        }
-
-        public void populateTextBox()
-        {
-            OfficialRate or = (OfficialRate)dataGrid.SelectedItem;
-            OfficialRatesId.Content = or.OfficialRatesId.ToString();
-            ValidityDate.SelectedDate = or.ValidityDate;
-            Rate.Text = or.Rate.ToString();
-            CurrencyCB.Text = or.Currency1.CurrencyName;
-            if (or.IsActive == 1)
-            {
-                checkBox.IsChecked = true;
-            }
-            else
-            {
-                checkBox.IsChecked = false;
-            }
         }
     }
 }

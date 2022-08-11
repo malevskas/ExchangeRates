@@ -11,25 +11,7 @@ namespace ExchangeRates.Helpers
     internal class ExchangeRatesHelper
     {
         private Entity myExchangeDatabase = new Entity();
-        private Label ExchangeRatesId;
-        private TextBox Rate;
-        private ComboBox CurrencyFromCB;
-        private ComboBox CurrencyToCB;
-        private DatePicker ValidityDate;
-        private CheckBox checkBox;
-        private DataGrid dataGrid;
-
-        public ExchangeRatesHelper(Label ExchangeRatesId, TextBox Rate, ComboBox CurrencyFromCB, ComboBox CurrencyToCB, DatePicker ValidityDate, CheckBox checkBox, DataGrid dataGrid)
-        {
-            this.ExchangeRatesId = ExchangeRatesId;
-            this.Rate = Rate;
-            this.CurrencyFromCB = CurrencyFromCB;
-            this.CurrencyToCB = CurrencyToCB;
-            this.ValidityDate = ValidityDate;
-            this.checkBox = checkBox;
-            this.dataGrid = dataGrid;
-        }
-
+        
         public List<Currency> fillCB()
         {
             List<Currency> allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
@@ -42,29 +24,27 @@ namespace ExchangeRates.Helpers
             return allMyExchangeRates;
         }
 
-        public void insert()
+        public string insert(DateTime? SelectedDate, Currency from, Currency to, string Rate, bool? IsChecked)
         {
-            if (ValidityDate.SelectedDate == null || ValidityDate.SelectedDate.Value.Date == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Rate.Text == "")
+            if (SelectedDate == null || SelectedDate.Value.Date == null || from == null || to == null || Rate == "")
             {
-                MessageBox.Show("Please fill out all fields.");
+                return "Please fill out all fields.";
             }
             else 
             {
-                int result = DateTime.Compare(ValidityDate.SelectedDate.Value.Date, DateTime.Today);
-                if(result<0)
+                int result = DateTime.Compare(SelectedDate.Value.Date, DateTime.Today);
+                if(result < 0)
                 {
-                    MessageBox.Show("Please select a later date.");
+                    return "Please select a later date.";
                 }
                 else
                 {
                     ExchangeRate er = new ExchangeRate();
-                    er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
-                    Currency c = (Currency)CurrencyFromCB.SelectedItem;
-                    er.CurrencyFrom = c.CurrencyId;
-                    c = (Currency)CurrencyToCB.SelectedItem;
-                    er.CurrencyTo = c.CurrencyId;
-                    er.Rate = int.Parse(Rate.Text);
-                    if (checkBox.IsChecked == true)
+                    er.ValidityDate = SelectedDate.Value.Date;
+                    er.CurrencyFrom = from.CurrencyId;
+                    er.CurrencyTo = to.CurrencyId;
+                    er.Rate = int.Parse(Rate);
+                    if (IsChecked == true)
                     {
                         er.IsActive = 1;
                     }
@@ -75,34 +55,24 @@ namespace ExchangeRates.Helpers
 
                     myExchangeDatabase.ExchangeRates.Add(er);
                     myExchangeDatabase.SaveChanges();
-                    loadTable();
+                    return "ok";
                 }
-
-            }
-
-            /*else if(CurrencyFromCB.SelectedItem == CurrencyToCB.SelectedItem)
-            {
-                MessageBox.Show("Please choose different currencies.");
-            }*/
-            
+            }            
         }
 
-        public void edit()
+        public string edit(ExchangeRate er, DateTime? SelectedDate, Currency from, Currency to, string Rate, bool? IsChecked)
         {
-            if (ValidityDate.SelectedDate.Value.Date == null || CurrencyFromCB.SelectedItem == null || CurrencyToCB.SelectedItem == null || Rate.Text == "")
+            if (SelectedDate == null || SelectedDate.Value.Date == null || from == null || to == null || Rate == "")
             {
-                MessageBox.Show("Please fill out all fields.");
+                return "Please fill out all fields.";
             }
             else
             {
-                ExchangeRate er = (ExchangeRate)dataGrid.SelectedItem;
-                er.ValidityDate = ValidityDate.SelectedDate.Value.Date;
-                Currency c = (Currency)CurrencyFromCB.SelectedItem;
-                er.CurrencyFrom = c.CurrencyId;
-                c = (Currency)CurrencyToCB.SelectedItem;
-                er.CurrencyTo = c.CurrencyId;
-                er.Rate = int.Parse(Rate.Text);
-                if (checkBox.IsChecked == true)
+                er.ValidityDate = SelectedDate.Value.Date;
+                er.CurrencyFrom = from.CurrencyId;
+                er.CurrencyTo = to.CurrencyId;
+                er.Rate = int.Parse(Rate);
+                if (IsChecked == true)
                 {
                     er.IsActive = 1;
                 }
@@ -112,37 +82,14 @@ namespace ExchangeRates.Helpers
                 }
 
                 myExchangeDatabase.SaveChanges();
-                loadTable();
+                return "ok";
             }
         }
 
-        public void delete()
+        public void delete(ExchangeRate er)
         {
-            ExchangeRate er = (ExchangeRate)dataGrid.SelectedItem;
             er.IsActive = 0;
-            checkBox.IsChecked = false;
             myExchangeDatabase.SaveChanges();
-
-            var allMyExchangeRates = myExchangeDatabase.ExchangeRates.ToList<ExchangeRate>();
-            dataGrid.ItemsSource = allMyExchangeRates;
-        }
-
-        public void populateTextBox()
-        {
-            ExchangeRate er = (ExchangeRate)dataGrid.SelectedItem;
-            ExchangeRatesId.Content = er.ExchangeRatesId.ToString();
-            ValidityDate.SelectedDate = er.ValidityDate;
-            Rate.Text = er.Rate.ToString();
-            CurrencyFromCB.Text = er.Currency.CurrencyName;
-            CurrencyToCB.Text = er.Currency1.CurrencyName;
-            if (er.IsActive == 1)
-            {
-                checkBox.IsChecked = true;
-            }
-            else
-            {
-                checkBox.IsChecked = false;
-            }
         }
     }
 }

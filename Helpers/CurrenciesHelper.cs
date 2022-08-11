@@ -56,7 +56,7 @@ namespace ExchangeRates.Helpers
             }
         }
 
-        public string edit(string CodeText, string CurrencyNameText, bool? IsChecked)
+        public string edit(Currency currency, string CodeText, string CurrencyNameText, bool? IsChecked)
         {
             if (CodeText == "" || CurrencyNameText == "")
             {
@@ -64,7 +64,6 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                Currency currency = (Currency)dataGrid.SelectedItem;
                 currency.Code = CodeText;
                 currency.CurrencyName = CurrencyNameText;
                 if (IsChecked == true)

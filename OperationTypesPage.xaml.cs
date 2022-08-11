@@ -29,32 +29,61 @@ namespace ExchangeRates
         public OperationTypesPage()
         {
             InitializeComponent();
-            otHelper = new OperationTypesHelper(OperationTypeId, Code, OperationName, checkBox, dataGrid);
+            otHelper = new OperationTypesHelper();
         }
 
         private void LoadTable(object sender, RoutedEventArgs e)
         {
-            otHelper.loadTable();
+            dataGrid.ItemsSource = otHelper.loadTable();
         }
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            otHelper.insert();
+            string result = otHelper.insert(Code.Text, OperationName.Text, checkBox.IsChecked);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = otHelper.loadTable();
+            }
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
-            otHelper.edit();
+            string result = otHelper.edit((OperationType)dataGrid.SelectedItem, Code.Text, OperationName.Text, checkBox.IsChecked);
+            if (!result.Equals("ok"))
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                dataGrid.ItemsSource = otHelper.loadTable();
+            }
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            otHelper.delete();
+            otHelper.delete((OperationType)dataGrid.SelectedItem);
+            checkBox.IsChecked = false;
+            dataGrid.ItemsSource = otHelper.loadTable();
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
-            otHelper.populateTextBox();
+            OperationType ot = (OperationType)dataGrid.SelectedItem;
+            OperationTypeId.Content = ot.OperationTypeId.ToString();
+            Code.Text = ot.Code;
+            OperationName.Text = ot.OperationName;
+            if (ot.isActive == 1)
+            {
+                checkBox.IsChecked = true;
+            }
+            else
+            {
+                checkBox.IsChecked = false;
+            }
         }
 
         private void PreviewTextNumericInput(object sender, TextCompositionEventArgs e)
