@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml;
 
 namespace ExchangeRates.Helpers
 {
@@ -15,6 +16,29 @@ namespace ExchangeRates.Helpers
 
         public List<Currency> loadTable()
         {
+            //myExchangeDatabase.Currencies.RemoveRange(allMyCurrencies);
+            //myExchangeDatabase.SaveChanges();
+
+            if(!myExchangeDatabase.Currencies.Any())
+            {
+                nbrm.Kurs kurs = new nbrm.Kurs();
+                var result = kurs.GetExchangeRateD(DateTime.Today, DateTime.Today);
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(result);
+                //Debug.Write(result);
+                foreach (XmlNode node in doc.SelectNodes("//KursZbir"))
+                {
+                    string name = node["Oznaka"].InnerText;
+                    Currency c = new Currency();
+                    c.Code = node["Valuta"].InnerText;
+                    c.CurrencyName = name;
+                    c.IsActive = 1;
+
+                    myExchangeDatabase.Currencies.Add(c);
+                    myExchangeDatabase.SaveChanges(); 
+                }
+            }
+
             List<Currency> allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
             return allMyCurrencies;
         }

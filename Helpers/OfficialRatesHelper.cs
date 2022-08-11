@@ -22,15 +22,14 @@ namespace ExchangeRates.Helpers
 
         public List<OfficialRate> loadTable()
         {
-            //List<OfficialRate> or = new List<OfficialRate>();
+            //myExchangeDatabase.OfficialRates.RemoveRange(allMyOfficialRates);
+            //myExchangeDatabase.SaveChanges();
 
             nbrm.Kurs kurs = new nbrm.Kurs();
-
-            var result = kurs.GetExchangeRate("11.08.2022", "11.08.2022");
-
+            var result = kurs.GetExchangeRateD(DateTime.Today, DateTime.Today);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(result);
-            Debug.Write(result);
+            //Debug.Write(result);
             foreach (XmlNode node in doc.SelectNodes("//KursZbir"))
             {
                 string name = node["Oznaka"].InnerText;
@@ -40,11 +39,14 @@ namespace ExchangeRates.Helpers
                 o.ValidityDate = Convert.ToDateTime(node["Datum"].InnerText);
                 o.Rate = Convert.ToDouble(node["Sreden"].InnerText);
                 o.IsActive = 1;
-                
-                myExchangeDatabase.OfficialRates.Add(o);
-                myExchangeDatabase.SaveChanges();
-                break;
+
+                if(!myExchangeDatabase.OfficialRates.Contains(o))
+                {
+                    myExchangeDatabase.OfficialRates.Add(o);
+                    myExchangeDatabase.SaveChanges();
+                }
             }
+
             List<OfficialRate> allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
             return allMyOfficialRates;
         }
