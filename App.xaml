@@ -11,7 +11,7 @@
             <Setter Property="Height" Value="23"/>
             <Style.Triggers>
                 <Trigger Property="IsFocused" Value="True">
-                    <Setter Property="Background" Value="CornflowerBlue"/>
+                    <Setter Property="Background" Value="#FFF8F9"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>
             </Style.Triggers>
@@ -31,7 +31,7 @@
         </Style>
         
         <Style x:Key="InsertButton" TargetType="Button">
-            <Setter Property="Background" Value="CornflowerBlue"/>
+            <Setter Property="Background" Value="#FFF8F9"/>
         </Style>
 
         <Style x:Key="DeleteButton" TargetType="Button">

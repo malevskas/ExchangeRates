@@ -12,7 +12,7 @@
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="9*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         
         <Grid.RowDefinitions>
@@ -23,7 +23,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="13*"/>
+            <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
         
         <Label Content="Exchange Rate Id" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>

@@ -12,7 +12,7 @@
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="9*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         
         <Grid.RowDefinitions>
@@ -22,7 +22,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="14*"/>
+            <RowDefinition Height="11*"/>
         </Grid.RowDefinitions>
         
         <Label Content="Official Rate Id" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>

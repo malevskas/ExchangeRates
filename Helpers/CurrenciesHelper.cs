@@ -22,7 +22,7 @@ namespace ExchangeRates.Helpers
             if(!myExchangeDatabase.Currencies.Any())
             {
                 nbrm.Kurs kurs = new nbrm.Kurs();
-                var result = kurs.GetExchangeRateD(DateTime.Today, DateTime.Today);
+                var result = kurs.GetExchangeRate("12.08.2022", "12.08.2022");
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(result);
                 //Debug.Write(result);

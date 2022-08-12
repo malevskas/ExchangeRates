@@ -22,6 +22,8 @@ namespace ExchangeRates.Helpers
 
         public List<OfficialRate> loadTable()
         {
+            //List<OfficialRate> allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
+
             //myExchangeDatabase.OfficialRates.RemoveRange(allMyOfficialRates);
             //myExchangeDatabase.SaveChanges();
 
@@ -29,23 +31,23 @@ namespace ExchangeRates.Helpers
             var result = kurs.GetExchangeRateD(DateTime.Today, DateTime.Today);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(result);
-            //Debug.Write(result);
-            foreach (XmlNode node in doc.SelectNodes("//KursZbir"))
-            {
-                string name = node["Oznaka"].InnerText;
-                Currency c = myExchangeDatabase.Currencies.Where(cu => cu.CurrencyName == name).FirstOrDefault();
-                OfficialRate o = new OfficialRate();
-                o.Currency = c.CurrencyId;
-                o.ValidityDate = Convert.ToDateTime(node["Datum"].InnerText);
-                o.Rate = Convert.ToDouble(node["Sreden"].InnerText);
-                o.IsActive = 1;
+            Debug.Write(result);
+            //foreach (XmlNode node in doc.SelectNodes("//KursZbir"))
+            //{
+            //    string name = node["Oznaka"].InnerText;
+            //    Currency c = myExchangeDatabase.Currencies.Where(cu => cu.CurrencyName == name).FirstOrDefault();
+            //    OfficialRate o = new OfficialRate();
+            //    o.Currency = c.CurrencyId;
+            //    o.ValidityDate = Convert.ToDateTime(node["Datum"].InnerText);
+            //    o.Rate = Convert.ToDouble(node["Sreden"].InnerText);
+            //    o.IsActive = 1;
 
-                if(!myExchangeDatabase.OfficialRates.Contains(o))
-                {
-                    myExchangeDatabase.OfficialRates.Add(o);
-                    myExchangeDatabase.SaveChanges();
-                }
-            }
+            //    if(!myExchangeDatabase.OfficialRates.Where(or => or.ValidityDate == DateTime.Today && or.Currency == c.CurrencyId).Any())
+            //    {
+            //        myExchangeDatabase.OfficialRates.Add(o);
+            //        myExchangeDatabase.SaveChanges();
+            //    }
+            //}
 
             List<OfficialRate> allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
             return allMyOfficialRates;
