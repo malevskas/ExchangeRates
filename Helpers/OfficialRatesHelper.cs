@@ -1,18 +1,22 @@
-﻿using System;
+﻿using ExchangeRates.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace ExchangeRates.Helpers
 {
     internal class OfficialRatesHelper
     {
         private Entity myExchangeDatabase = new Entity();
+        private readonly IOfficialRatesRepository officialRatesRepository = new OfficialRatesRepository();
 
         public List<Currency> fillCB()
         {
@@ -28,29 +32,32 @@ namespace ExchangeRates.Helpers
             //myExchangeDatabase.SaveChanges();
 
             nbrm.Kurs kurs = new nbrm.Kurs();
-            var result = kurs.GetExchangeRateD(DateTime.Today, DateTime.Today);
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(result);
-            Debug.Write(result);
-            //foreach (XmlNode node in doc.SelectNodes("//KursZbir"))
-            //{
-            //    string name = node["Oznaka"].InnerText;
-            //    Currency c = myExchangeDatabase.Currencies.Where(cu => cu.CurrencyName == name).FirstOrDefault();
-            //    OfficialRate o = new OfficialRate();
-            //    o.Currency = c.CurrencyId;
-            //    o.ValidityDate = Convert.ToDateTime(node["Datum"].InnerText);
-            //    o.Rate = Convert.ToDouble(node["Sreden"].InnerText);
-            //    o.IsActive = 1;
+            var xmlResult = kurs.GetExchangeRateD(DateTime.Today, DateTime.Today);
+            XmlSerializer serializer = new XmlSerializer(typeof(dsKurs));
+            dsKurs result;
 
-            //    if(!myExchangeDatabase.OfficialRates.Where(or => or.ValidityDate == DateTime.Today && or.Currency == c.CurrencyId).Any())
-            //    {
-            //        myExchangeDatabase.OfficialRates.Add(o);
-            //        myExchangeDatabase.SaveChanges();
-            //    }
-            //}
+            using (TextReader reader = new StringReader(xmlResult))
+            {
+                result = (dsKurs)serializer.Deserialize(reader);
+            }
 
-            List<OfficialRate> allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
-            return allMyOfficialRates;
+            foreach (dsKursKursZbir zbir in result.Items)
+            {
+                string name = zbir.Oznaka;
+                Currency c = myExchangeDatabase.Currencies.Where(cu => cu.CurrencyName == name).FirstOrDefault();
+                OfficialRate o = new OfficialRate();
+                o.Currency = c.CurrencyId;
+                o.ValidityDate = zbir.Datum;
+                o.Rate = zbir.Sreden;
+                o.IsActive = 1;
+
+                if (!myExchangeDatabase.OfficialRates.Where(or => or.ValidityDate == DateTime.Today && or.Currency == c.CurrencyId).Any())
+                {
+                    officialRatesRepository.InsertOfficialRate(o);
+                }
+            }
+
+            return officialRatesRepository.GetAllOfficialRates();
         }
 
         public string insert(DatePicker ValidityDate, /*DateTime? SelectedDate,*/ Currency c, string Rate, bool? IsChecked)
@@ -60,7 +67,7 @@ namespace ExchangeRates.Helpers
             //{
             //    return "Please fill out all fields.";
             //}
-            //return "";
+            return "";
             ///*else if (DateTime.Compare(SelectedDate.Value.Date, DateTime.Today) < 0)
             //{
             //    return "Please select a later date.";
@@ -84,7 +91,7 @@ namespace ExchangeRates.Helpers
             //    myExchangeDatabase.SaveChanges();
             //    return "ok";
             //}*/
-            return "ok";
+            //return "ok";
         }
 
         public string edit(OfficialRate or, DateTime? SelectedDate, Currency c, string Rate, bool? IsChecked)

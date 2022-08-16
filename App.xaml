@@ -11,7 +11,7 @@
             <Setter Property="Height" Value="23"/>
             <Style.Triggers>
                 <Trigger Property="IsFocused" Value="True">
-                    <Setter Property="Background" Value="#FFF8F9"/>
+                    <Setter Property="Background" Value="#B7E2FC"/>
                     <Setter Property="Foreground" Value="Black"/>
                 </Trigger>
             </Style.Triggers>
@@ -19,23 +19,19 @@
 
         <Style TargetType="TextBox">
             <Setter Property="Width" Value="400"/>
-            <Setter Property="Background" Value="#FFF8F9"/>
+            <Setter Property="Background" Value="#FFFEF2"/>
             <Setter Property="Height" Value="25"/>
             <Setter Property="Padding" Value="3"/>
         </Style>
-        
+
         <Style x:Key="FancyText" TargetType="Label">
             <Setter Property="Width" Value="400"/>
             <Setter Property="Background" Value="Gray" />
             <Setter Property="Height" Value="25"/>
         </Style>
-        
-        <Style x:Key="InsertButton" TargetType="Button">
-            <Setter Property="Background" Value="#FFF8F9"/>
-        </Style>
 
         <Style x:Key="DeleteButton" TargetType="Button">
-            <Setter Property="Background" Value="#F94449" />
+            <Setter Property="Background" Value="Gray" />
         </Style>
 
     </Application.Resources>

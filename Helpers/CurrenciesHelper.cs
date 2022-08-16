@@ -1,52 +1,60 @@
-﻿using System;
+﻿using ExchangeRates.Repositories;
+using ExchangeRates.Repository;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace ExchangeRates.Helpers
 {
     internal class CurrenciesHelper
     {
-        private Entity myExchangeDatabase = new Entity();
+        //private Entity myExchangeDatabase = new Entity();
+
+        private readonly ICurrenciesRepository currenciesRepository = new CurrenciesRepository();
 
         public List<Currency> loadTable()
         {
             //myExchangeDatabase.Currencies.RemoveRange(allMyCurrencies);
             //myExchangeDatabase.SaveChanges();
 
-            if(!myExchangeDatabase.Currencies.Any())
+            if(!currenciesRepository.GetAllCurrencies().Any())
             {
                 nbrm.Kurs kurs = new nbrm.Kurs();
-                var result = kurs.GetExchangeRate("12.08.2022", "12.08.2022");
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(result);
-                //Debug.Write(result);
-                foreach (XmlNode node in doc.SelectNodes("//KursZbir"))
+                var xmlResult = kurs.GetExchangeRateD(DateTime.Today, DateTime.Today);
+                XmlSerializer serializer = new XmlSerializer(typeof(dsKurs));
+                dsKurs result;
+
+                using (TextReader reader = new StringReader(xmlResult))
                 {
-                    string name = node["Oznaka"].InnerText;
+                    result = (dsKurs)serializer.Deserialize(reader);
+                }
+
+                foreach (dsKursKursZbir zbir in result.Items)
+                {
                     Currency c = new Currency();
-                    c.Code = node["Valuta"].InnerText;
-                    c.CurrencyName = name;
+                    c.Code = Convert.ToString(zbir.Valuta);
+                    c.CurrencyName = zbir.Oznaka;
                     c.IsActive = 1;
 
-                    myExchangeDatabase.Currencies.Add(c);
-                    myExchangeDatabase.SaveChanges(); 
+                    currenciesRepository.InsertCurrency(c);
                 }
             }
 
-            List<Currency> allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
-            return allMyCurrencies;
+            return currenciesRepository.GetAllCurrencies();
         }
 
         public string insert(string CodeText, string CurrencyNameText, bool? IsChecked)
         {
-            var allMyCodes = myExchangeDatabase.Currencies.Select(x => x.Code);
-            var allMyCurrencyNames = myExchangeDatabase.Currencies.Select(x => x.CurrencyName);
+            var allMyCodes = currenciesRepository.GetCurrencyCodes();
+            var allMyCurrencyNames = currenciesRepository.GetCurrencyNames();
 
             if (CodeText == "" || CurrencyNameText == "")
             {
@@ -74,9 +82,7 @@ namespace ExchangeRates.Helpers
                     currency.IsActive = 0;
                 }
 
-                myExchangeDatabase.Currencies.Add(currency);
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return currenciesRepository.InsertCurrency(currency);
             }
         }
 
@@ -99,15 +105,13 @@ namespace ExchangeRates.Helpers
                     currency.IsActive = 0;
                 }
 
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return currenciesRepository.InsertCurrency(currency);
             }
         }
 
         public void delete(Currency currency)
         {
-            currency.IsActive = 0;
-            myExchangeDatabase.SaveChanges();
+            currenciesRepository.DeleteCurrency(currency);
         }
     }
 }

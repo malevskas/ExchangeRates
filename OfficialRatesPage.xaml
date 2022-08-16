@@ -36,7 +36,7 @@
         <DatePicker x:Name="ValidityDate" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
         <CheckBox x:Name="checkBox" Grid.Column="1" Grid.Row="4" Content="" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
         <Button Grid.Column="0" Grid.Row="5" Content="Load Table" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Center" Click="LoadTable"/>
-        <Button Style="{StaticResource InsertButton}" Grid.Column="1" Grid.Row="5" Content="Insert" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Click="Insert" Width="55"/>
+        <Button Grid.Column="1" Grid.Row="5" Content="Insert" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Click="Insert" Width="55"/>
         <Button Grid.Column="1" Grid.Row="5" Content="Edit" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Center" Width="55" Click="Edit"/>
         <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="5" Content="Delete" HorizontalAlignment="Left" Margin="125,0,0,0" VerticalAlignment="Center" Width="55" Click="Delete"/>
         <DataGrid x:Name="dataGrid" Grid.Row="6" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding Path=OfficialRate}" SelectedCellsChanged="populateTextBox">

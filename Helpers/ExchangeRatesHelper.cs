@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExchangeRates.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace ExchangeRates.Helpers
     internal class ExchangeRatesHelper
     {
         private Entity myExchangeDatabase = new Entity();
+        private readonly IExchangeRatesRepository exchangeRatesRepository = new ExchangeRatesRepository();
         
         public List<Currency> fillCB()
         {
@@ -20,8 +22,7 @@ namespace ExchangeRates.Helpers
 
         public List<ExchangeRate> loadTable()
         {
-            List<ExchangeRate> allMyExchangeRates = myExchangeDatabase.ExchangeRates.ToList<ExchangeRate>();
-            return allMyExchangeRates;
+            return exchangeRatesRepository.GetAllExchangeRates();
         }
 
         public string insert(DateTime? SelectedDate, Currency from, Currency to, string Rate, bool? IsChecked)
@@ -53,9 +54,7 @@ namespace ExchangeRates.Helpers
                         er.IsActive = 0;
                     }
 
-                    myExchangeDatabase.ExchangeRates.Add(er);
-                    myExchangeDatabase.SaveChanges();
-                    return "ok";
+                    return exchangeRatesRepository.InsertExchangeRate(er);
                 }
             }            
         }
@@ -88,8 +87,7 @@ namespace ExchangeRates.Helpers
 
         public void delete(ExchangeRate er)
         {
-            er.IsActive = 0;
-            myExchangeDatabase.SaveChanges();
+            exchangeRatesRepository.DeleteExchangeRate(er);
         }
     }
 }
