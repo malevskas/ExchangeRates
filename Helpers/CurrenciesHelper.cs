@@ -1,5 +1,4 @@
 ﻿using ExchangeRates.Repositories;
-using ExchangeRates.Repository;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,14 +15,15 @@ namespace ExchangeRates.Helpers
 {
     internal class CurrenciesHelper
     {
-        private readonly ICurrenciesRepository currenciesRepository = new CurrenciesRepository();
+        //private readonly ICurrenciesRepository currenciesRepository = new CurrenciesRepository();
+        private readonly IRepository<Currency> currRepo = new Repository<Currency>();
 
         public List<Currency> loadTable()
         {
             //myExchangeDatabase.Currencies.RemoveRange(allMyCurrencies);
             //myExchangeDatabase.SaveChanges();
 
-            if(!currenciesRepository.GetAllCurrencies().Any())
+            if(!currRepo.GetAll().Any())
             {
                 nbrm.Kurs kurs = new nbrm.Kurs();
                 var xmlResult = kurs.GetExchangeRateD(DateTime.Today, DateTime.Today);
@@ -42,17 +42,17 @@ namespace ExchangeRates.Helpers
                     c.CurrencyName = zbir.Oznaka;
                     c.IsActive = 1;
 
-                    currenciesRepository.InsertCurrency(c);
+                    currRepo.Insert(c);
                 }
             }
 
-            return currenciesRepository.GetAllCurrencies();
+            return currRepo.GetAll();
         }
 
         public string insert(string CodeText, string CurrencyNameText, bool? IsChecked)
         {
-            var allMyCodes = currenciesRepository.GetCurrencyCodes();
-            var allMyCurrencyNames = currenciesRepository.GetCurrencyNames();
+            var allMyCodes = currRepo.GetCurrencyCodes();
+            var allMyCurrencyNames = currRepo.GetCurrencyNames();
 
             if (CodeText == "" || CurrencyNameText == "")
             {
@@ -80,7 +80,7 @@ namespace ExchangeRates.Helpers
                     currency.IsActive = 0;
                 }
 
-                return currenciesRepository.InsertCurrency(currency);
+                return currRepo.Insert(currency);
             }
         }
 
@@ -92,25 +92,25 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                Currency newC = new Currency();
-                newC.Code = CodeText;
-                newC.CurrencyName = CurrencyNameText;
+                currency.Code = CodeText;
+                currency.CurrencyName = CurrencyNameText;
                 if (IsChecked == true)
                 {
-                    newC.IsActive = 1;
+                    currency.IsActive = 1;
                 }
                 else
                 {
-                    newC.IsActive = 0;
+                    currency.IsActive = 0;
                 }
 
-                return currenciesRepository.UpdateCurrency(currency, newC);
+                return currRepo.Update(currency);
             }
         }
 
         public void delete(Currency currency)
         {
-            currenciesRepository.DeleteCurrency(currency);
+            currency.IsActive = 0;
+            currRepo.Update(currency);
         }
     }
 }

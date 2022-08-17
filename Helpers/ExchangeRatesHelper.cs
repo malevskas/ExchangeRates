@@ -11,8 +11,9 @@ namespace ExchangeRates.Helpers
 {
     internal class ExchangeRatesHelper
     {
-        private readonly IExchangeRatesRepository exchangeRatesRepository = new ExchangeRatesRepository();
-        
+        //private readonly IExchangeRatesRepository exchangeRatesRepository = new ExchangeRatesRepository();
+        private readonly IRepository<ExchangeRate> erRepo = new Repository<ExchangeRate>();
+
         public List<Currency> fillCB()
         {
             return exchangeRatesRepository.GetAllCurrencies();
@@ -20,7 +21,7 @@ namespace ExchangeRates.Helpers
 
         public List<ExchangeRate> loadTable()
         {
-            return exchangeRatesRepository.GetAllExchangeRates();
+            return erRepo.GetAll();
         }
 
         public string insert(DateTime? SelectedDate, Currency from, Currency to, string Rate, bool? IsChecked)
@@ -52,7 +53,7 @@ namespace ExchangeRates.Helpers
                         er.IsActive = 0;
                     }
 
-                    return exchangeRatesRepository.InsertExchangeRate(er);
+                    return erRepo.Insert(er);
                 }
             }            
         }
@@ -65,27 +66,27 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                ExchangeRate newER = new ExchangeRate();
-                newER.ValidityDate = SelectedDate.Value.Date;
-                newER.CurrencyFrom = from.CurrencyId;
-                newER.CurrencyTo = to.CurrencyId;
-                newER.Rate = int.Parse(Rate);
+                er.ValidityDate = SelectedDate.Value.Date;
+                er.CurrencyFrom = from.CurrencyId;
+                er.CurrencyTo = to.CurrencyId;
+                er.Rate = int.Parse(Rate);
                 if (IsChecked == true)
                 {
-                    newER.IsActive = 1;
+                    er.IsActive = 1;
                 }
                 else
                 {
-                    newER.IsActive = 0;
+                    er.IsActive = 0;
                 }
 
-                return exchangeRatesRepository.UpdateExchangeRate(er, newER);
+                return erRepo.Update(er);
             }
         }
 
         public void delete(ExchangeRate er)
         {
-            exchangeRatesRepository.DeleteExchangeRate(er);
+            er.IsActive = 0;
+            erRepo.Update(er);
         }
     }
 }

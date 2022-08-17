@@ -11,7 +11,8 @@ namespace ExchangeRates.Helpers
 {
     internal class OperationsHelper
     {
-        private readonly IOperationsRepository operationsRepository = new OperationsRepository();
+        //private readonly IOperationsRepository operationsRepository = new OperationsRepository();
+        private readonly IRepository<Operation> operationRepo = new Repository<Operation>();
 
         public List<Currency> fillCurrencyCB()
         {
@@ -30,7 +31,7 @@ namespace ExchangeRates.Helpers
 
         public List<Operation> loadTable()
         {
-            return operationsRepository.GetAllOperations();
+            return operationRepo.GetAll();
         }
 
         public string insert(DateTime? SelectedDate, User u, OperationType ot, Currency from, Currency to, string Amount)
@@ -53,7 +54,7 @@ namespace ExchangeRates.Helpers
                 operation.CurrencyTo = to.CurrencyId;
                 operation.Amount = int.Parse(Amount);
 
-                return operationsRepository.InsertOperation(operation);
+                return operationRepo.Insert(operation);
             }
         }
 
@@ -65,15 +66,14 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                Operation newOperation = new Operation();
-                newOperation.OperationTypeId = ot.OperationTypeId;
-                newOperation.OperationDate = SelectedDate.Value.Date;
-                newOperation.UserId = u.UserId;
-                newOperation.CurrencyFrom = from.CurrencyId;
-                newOperation.CurrencyTo = to.CurrencyId;
-                newOperation.Amount = int.Parse(Amount);
+                operation.OperationTypeId = ot.OperationTypeId;
+                operation.OperationDate = SelectedDate.Value.Date;
+                operation.UserId = u.UserId;
+                operation.CurrencyFrom = from.CurrencyId;
+                operation.CurrencyTo = to.CurrencyId;
+                operation.Amount = int.Parse(Amount);
 
-                return operationsRepository.UpdateOperation(operation, newOperation);
+                return operationRepo.Update(operation);
             }
         }
     }

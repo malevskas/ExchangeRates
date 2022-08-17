@@ -11,11 +11,12 @@ namespace ExchangeRates.Helpers
 {
     internal class OperationTypesHelper
     {
-        private readonly IOperationTypesRepository operationTypesRepository = new OperationTypesRepository();
+        //private readonly IOperationTypesRepository operationTypesRepository = new OperationTypesRepository();
+        private readonly IRepository<OperationType> otRepo = new Repository<OperationType>();
 
         public List<OperationType> loadTable()
         {
-            return operationTypesRepository.GetAllOperationTypes();
+            return otRepo.GetAll();
         }
 
         public string insert(string Code, string OperationName, bool? IsChecked)
@@ -38,7 +39,7 @@ namespace ExchangeRates.Helpers
                     ot.isActive = 0;
                 }
 
-                return operationTypesRepository.InsertOperationType(ot);
+                return otRepo.Insert(ot);
             }
         }
 
@@ -50,25 +51,25 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                OperationType newOT = new OperationType();
-                newOT.Code = Code;
-                newOT.OperationName = OperationName;
+                ot.Code = Code;
+                ot.OperationName = OperationName;
                 if (IsChecked == true)
                 {
-                    newOT.isActive = 1;
+                    ot.isActive = 1;
                 }
                 else
                 {
-                    newOT.isActive = 0;
+                    ot.isActive = 0;
                 }
 
-                return operationTypesRepository.UpdateOperationType(ot, newOT);
+                return otRepo.Update(ot);
             }
         }
 
         public void delete(OperationType ot)
         {
-            operationTypesRepository.DeleteOperationType(ot);
+            ot.isActive = 0;
+            otRepo.Update(ot);
         }
     }
 }

@@ -15,11 +15,12 @@ namespace ExchangeRates.Helpers
 {
     internal class OfficialRatesHelper
     {
-        private readonly IOfficialRatesRepository officialRatesRepository = new OfficialRatesRepository();
+        //private readonly IOfficialRatesRepository officialRatesRepository = new OfficialRatesRepository();
+        private readonly IRepository<OfficialRate> orRepo = new Repository<OfficialRate>();
 
         public List<Currency> fillCB()
         {
-            return officialRatesRepository.GetAllCurrencies();
+            return orRepo.GetAllCurrencies();
         }
 
         public List<OfficialRate> loadTable()
@@ -42,20 +43,20 @@ namespace ExchangeRates.Helpers
             foreach (dsKursKursZbir zbir in result.Items)
             {
                 string name = zbir.Oznaka;
-                Currency c = officialRatesRepository.GetCurrencyByName(name);
+                Currency c = orRepo.GetCurrencyByName(name);
                 OfficialRate o = new OfficialRate();
                 o.Currency = c.CurrencyId;
                 o.ValidityDate = zbir.Datum;
                 o.Rate = zbir.Sreden;
                 o.IsActive = 1;
 
-                if (!officialRatesRepository.EntryExists(name))
+                if (!orRepo.EntryExists(name))
                 {
-                    officialRatesRepository.InsertOfficialRate(o);
+                    orRepo.Insert(o);
                 }
             }
 
-            return officialRatesRepository.GetAllOfficialRates();
+            return orRepo.GetAll();
         }
 
         public string insert(DateTime? SelectedDate, Currency c, string Rate, bool? IsChecked)
@@ -83,7 +84,7 @@ namespace ExchangeRates.Helpers
                     or.IsActive = 0;
                 }
 
-                return officialRatesRepository.InsertOfficialRate(or);
+                return orRepo.Insert(or);
             }
         }
 
@@ -95,26 +96,26 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                OfficialRate newOR = new OfficialRate();
-                newOR.ValidityDate = SelectedDate.Value.Date;
-                newOR.Currency = c.CurrencyId;
-                newOR.Rate = int.Parse(Rate);
+                or.ValidityDate = SelectedDate.Value.Date;
+                or.Currency = c.CurrencyId;
+                or.Rate = int.Parse(Rate);
                 if (IsChecked == true)
                 {
-                    newOR.IsActive = 1;
+                    or.IsActive = 1;
                 }
                 else
                 {
-                    newOR.IsActive = 0;
+                    or.IsActive = 0;
                 }
 
-                return officialRatesRepository.UpdateOfficialRate(or, newOR);
+                return orRepo.Update(or);
             }
         }
 
         public void delete(OfficialRate or)
         {
-            officialRatesRepository.DeleteOfficialRate(or);
+            or.IsActive = 0;
+            orRepo.Update(or);
         }
     }
 }

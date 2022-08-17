@@ -11,11 +11,12 @@ namespace ExchangeRates.Helpers
 {
     internal class UsersHelper
     {
-        private readonly IUsersRepository usersRepository = new UsersRepository();
+        //private readonly IUsersRepository usersRepository = new UsersRepository();
+        private readonly IRepository<User> userRepo = new Repository<User>();
 
         public List<User> loadTable()
         {
-            return usersRepository.GetAllUsers();
+            return userRepo.GetAll();
         }
 
         public string insert(string FirstName, string Surname, bool? IsChecked)
@@ -25,7 +26,7 @@ namespace ExchangeRates.Helpers
                 return "Please fill out all fields.";
             }
             else
-            {
+            {                
                 User user = new User();
                 user.FirstName = FirstName;
                 user.Surname = Surname;
@@ -38,7 +39,7 @@ namespace ExchangeRates.Helpers
                     user.IsActive = 0;
                 }
 
-                return usersRepository.InsertUser(user);
+                return userRepo.Insert(user);
             }
         }
 
@@ -50,25 +51,25 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                User newUser = new User();
-                newUser.FirstName = FirstName;
-                newUser.Surname = Surname;
+                user.FirstName = FirstName;
+                user.Surname = Surname;
                 if (IsChecked == true)
                 {
-                    newUser.IsActive = 1;
+                    user.IsActive = 1;
                 }
                 else
                 {
-                    newUser.IsActive = 0;
+                    user.IsActive = 0;
                 }
 
-                return usersRepository.UpdateUser(user, newUser);
+                return userRepo.Update(user);
             }
         }
 
         public void delete(User user)
         {
-            usersRepository.DeleteUser(user);
+            user.IsActive = 0;
+            userRepo.Update(user);
         }
     }
 }

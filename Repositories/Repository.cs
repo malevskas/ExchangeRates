@@ -1,42 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ExchangeRates.Repositories
 {
-    internal class OfficialRatesRepository : IOfficialRatesRepository
+    internal class Repository<T> : IRepository<T> where T : class
     {
         private Entity myExchangeDatabase = new Entity();
+        private DbSet<T> table;
 
-        public void DeleteOfficialRate(OfficialRate officialRate)
+        public Repository()
         {
-            officialRate.IsActive = 0;
+            table = myExchangeDatabase.Set<T>();
+        }
+
+        public List<T> GetAll()
+        {
+            return table.ToList();
+        }
+
+        public string Insert(T t)
+        {
+            table.Add(t);
             myExchangeDatabase.SaveChanges();
+            return "ok";
         }
 
-        public List<OfficialRate> GetAllOfficialRates()
+        public string Update(T t)
         {
-            List<OfficialRate> allMyOfficialRates = myExchangeDatabase.OfficialRates.ToList<OfficialRate>();
-            return allMyOfficialRates;
-        }
-
-        public string InsertOfficialRate(OfficialRate officialRate)
-        {
-            myExchangeDatabase.OfficialRates.Add(officialRate);
+            table.Attach(t);
             myExchangeDatabase.SaveChanges();
             return "ok";
         }
 
-        public string UpdateOfficialRate(OfficialRate officialRate, OfficialRate newOfficialRate)
+        public List<string> GetCurrencyCodes()
         {
-            officialRate.Currency = newOfficialRate.Currency;
-            officialRate.ValidityDate = newOfficialRate.ValidityDate;
-            officialRate.Rate = newOfficialRate.Rate;
-            officialRate.IsActive = newOfficialRate.IsActive;
-            myExchangeDatabase.SaveChanges();
-            return "ok";
+            return myExchangeDatabase.Currencies.Select(x => x.Code).ToList();
+        }
+
+        public List<string> GetCurrencyNames()
+        {
+            return myExchangeDatabase.Currencies.Select(x => x.CurrencyName).ToList();
         }
 
         public List<Currency> GetAllCurrencies()
@@ -52,6 +59,16 @@ namespace ExchangeRates.Repositories
         public bool EntryExists(string name)
         {
             return myExchangeDatabase.OfficialRates.Where(or => or.ValidityDate == DateTime.Today && or.Currency1.CurrencyName == name).Any();
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return myExchangeDatabase.Users.ToList();
+        }
+
+        public List<OperationType> GetAllOperationTypes()
+        {
+            return myExchangeDatabase.OperationTypes.ToList();
         }
     }
 }
