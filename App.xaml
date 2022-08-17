@@ -30,10 +30,6 @@
             <Setter Property="Height" Value="25"/>
         </Style>
 
-        <Style x:Key="DeleteButton" TargetType="Button">
-            <Setter Property="Background" Value="Gray" />
-        </Style>
-
     </Application.Resources>
     
 </Application>

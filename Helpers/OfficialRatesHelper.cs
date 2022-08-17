@@ -15,13 +15,11 @@ namespace ExchangeRates.Helpers
 {
     internal class OfficialRatesHelper
     {
-        private Entity myExchangeDatabase = new Entity();
         private readonly IOfficialRatesRepository officialRatesRepository = new OfficialRatesRepository();
 
         public List<Currency> fillCB()
         {
-            List<Currency> allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
-            return allMyCurrencies;
+            return officialRatesRepository.GetAllCurrencies();
         }
 
         public List<OfficialRate> loadTable()
@@ -44,14 +42,14 @@ namespace ExchangeRates.Helpers
             foreach (dsKursKursZbir zbir in result.Items)
             {
                 string name = zbir.Oznaka;
-                Currency c = myExchangeDatabase.Currencies.Where(cu => cu.CurrencyName == name).FirstOrDefault();
+                Currency c = officialRatesRepository.GetCurrencyByName(name);
                 OfficialRate o = new OfficialRate();
                 o.Currency = c.CurrencyId;
                 o.ValidityDate = zbir.Datum;
                 o.Rate = zbir.Sreden;
                 o.IsActive = 1;
 
-                if (!myExchangeDatabase.OfficialRates.Where(or => or.ValidityDate == DateTime.Today && or.Currency == c.CurrencyId).Any())
+                if (!officialRatesRepository.EntryExists(name))
                 {
                     officialRatesRepository.InsertOfficialRate(o);
                 }
@@ -60,48 +58,19 @@ namespace ExchangeRates.Helpers
             return officialRatesRepository.GetAllOfficialRates();
         }
 
-        public string insert(DatePicker ValidityDate, /*DateTime? SelectedDate,*/ Currency c, string Rate, bool? IsChecked)
+        public string insert(DateTime? SelectedDate, Currency c, string Rate, bool? IsChecked)
         {
-            //var allMyCurrencies = myExchangeDatabase.OfficialRates.Select(x => x.Currency1);
-            //if (/*SelectedDate == null || */ValidityDate.SelectedDate.Value.Date == null || c == null || Rate == "")
-            //{
-            //    return "Please fill out all fields.";
-            //}
-            return "";
-            ///*else if (DateTime.Compare(SelectedDate.Value.Date, DateTime.Today) < 0)
-            //{
-            //    return "Please select a later date.";
-            //}
-            //else
-            //{
-            //    OfficialRate or = new OfficialRate();
-            //    or.ValidityDate = SelectedDate.Value.Date;
-            //    or.Currency = c.CurrencyId;
-            //    or.Rate = int.Parse(Rate);
-            //    if (IsChecked == true)
-            //    {
-            //        or.IsActive = 1;
-            //    }
-            //    else
-            //    {
-            //        or.IsActive = 0;
-            //    }
-
-            //    myExchangeDatabase.OfficialRates.Add(or);
-            //    myExchangeDatabase.SaveChanges();
-            //    return "ok";
-            //}*/
-            //return "ok";
-        }
-
-        public string edit(OfficialRate or, DateTime? SelectedDate, Currency c, string Rate, bool? IsChecked)
-        {
-            if (SelectedDate.Value.Date == null || SelectedDate.Value.Date == null || c == null || Rate == "")
+            if (SelectedDate == null || c == null || Rate == "")
             {
                 return "Please fill out all fields.";
             }
+            else if (DateTime.Compare(SelectedDate.Value.Date, DateTime.Today) < 0)
+            {
+                return "Please select a later date.";
+            }
             else
             {
+                OfficialRate or = new OfficialRate();
                 or.ValidityDate = SelectedDate.Value.Date;
                 or.Currency = c.CurrencyId;
                 or.Rate = int.Parse(Rate);
@@ -114,16 +83,38 @@ namespace ExchangeRates.Helpers
                     or.IsActive = 0;
                 }
 
-                myExchangeDatabase.OfficialRates.Add(or);
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return officialRatesRepository.InsertOfficialRate(or);
+            }
+        }
+
+        public string edit(OfficialRate or, DateTime? SelectedDate, Currency c, string Rate, bool? IsChecked)
+        {
+            if (SelectedDate.Value.Date == null || SelectedDate.Value.Date == null || c == null || Rate == "")
+            {
+                return "Please fill out all fields.";
+            }
+            else
+            {
+                OfficialRate newOR = new OfficialRate();
+                newOR.ValidityDate = SelectedDate.Value.Date;
+                newOR.Currency = c.CurrencyId;
+                newOR.Rate = int.Parse(Rate);
+                if (IsChecked == true)
+                {
+                    newOR.IsActive = 1;
+                }
+                else
+                {
+                    newOR.IsActive = 0;
+                }
+
+                return officialRatesRepository.UpdateOfficialRate(or, newOR);
             }
         }
 
         public void delete(OfficialRate or)
         {
-            or.IsActive = 0;
-            myExchangeDatabase.SaveChanges();
+            officialRatesRepository.DeleteOfficialRate(or);
         }
     }
 }

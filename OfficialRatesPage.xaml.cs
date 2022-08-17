@@ -43,7 +43,7 @@ namespace ExchangeRates
 
         private void Insert(object sender, RoutedEventArgs e)
         {
-            string result = orHelper.insert(ValidityDate, /*ValidityDate.SelectedDate, */(Currency)CurrencyCB.SelectedItem, Rate.Text, checkBox.IsChecked);
+            string result = orHelper.insert(ValidityDate.SelectedDate, (Currency)CurrencyCB.SelectedItem, Rate.Text, checkBox.IsChecked);
             if (!result.Equals("ok"))
             {
                 MessageBox.Show(result);

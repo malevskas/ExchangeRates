@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExchangeRates.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,11 @@ namespace ExchangeRates.Helpers
 {
     internal class UsersHelper
     {
-        private Entity myExchangeDatabase = new Entity();
+        private readonly IUsersRepository usersRepository = new UsersRepository();
 
         public List<User> loadTable()
         {
-            List<User> allMyUsers = myExchangeDatabase.Users.ToList<User>();
-            return allMyUsers;
+            return usersRepository.GetAllUsers();
         }
 
         public string insert(string FirstName, string Surname, bool? IsChecked)
@@ -38,9 +38,7 @@ namespace ExchangeRates.Helpers
                     user.IsActive = 0;
                 }
 
-                myExchangeDatabase.Users.Add(user);
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return usersRepository.InsertUser(user);
             }
         }
 
@@ -52,26 +50,25 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                user.FirstName = FirstName;
-                user.Surname = Surname;
+                User newUser = new User();
+                newUser.FirstName = FirstName;
+                newUser.Surname = Surname;
                 if (IsChecked == true)
                 {
-                    user.IsActive = 1;
+                    newUser.IsActive = 1;
                 }
                 else
                 {
-                    user.IsActive = 0;
+                    newUser.IsActive = 0;
                 }
 
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return usersRepository.UpdateUser(user, newUser);
             }
         }
 
         public void delete(User user)
         {
-            user.IsActive = 0;
-            myExchangeDatabase.SaveChanges();
+            usersRepository.DeleteUser(user);
         }
     }
 }

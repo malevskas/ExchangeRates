@@ -12,7 +12,8 @@ namespace ExchangeRates.Repositories
 
         public void DeleteOfficialRate(OfficialRate officialRate)
         {
-            throw new NotImplementedException();
+            officialRate.IsActive = 0;
+            myExchangeDatabase.SaveChanges();
         }
 
         public List<OfficialRate> GetAllOfficialRates()
@@ -28,9 +29,29 @@ namespace ExchangeRates.Repositories
             return "ok";
         }
 
-        public string UpdateOfficialRate(OfficialRate officialRate)
+        public string UpdateOfficialRate(OfficialRate officialRate, OfficialRate newOfficialRate)
         {
-            throw new NotImplementedException();
+            officialRate.Currency = newOfficialRate.Currency;
+            officialRate.ValidityDate = newOfficialRate.ValidityDate;
+            officialRate.Rate = newOfficialRate.Rate;
+            officialRate.IsActive = newOfficialRate.IsActive;
+            myExchangeDatabase.SaveChanges();
+            return "ok";
+        }
+
+        public List<Currency> GetAllCurrencies()
+        {
+            return myExchangeDatabase.Currencies.ToList<Currency>();
+        }
+
+        public Currency GetCurrencyByName(string name)
+        {
+            return myExchangeDatabase.Currencies.Where(cu => cu.CurrencyName == name).FirstOrDefault();
+        }
+
+        public bool EntryExists(string name)
+        {
+            return myExchangeDatabase.OfficialRates.Where(or => or.ValidityDate == DateTime.Today && or.Currency1.CurrencyName == name).Any();
         }
     }
 }

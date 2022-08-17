@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExchangeRates.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,30 +11,26 @@ namespace ExchangeRates.Helpers
 {
     internal class OperationsHelper
     {
-        private Entity myExchangeDatabase = new Entity();
+        private readonly IOperationsRepository operationsRepository = new OperationsRepository();
 
         public List<Currency> fillCurrencyCB()
         {
-            List<Currency> allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
-            return allMyCurrencies;
+            return operationsRepository.GetAllCurrencies();
         }
 
         public List<User> fillUserCB()
         {
-            List<User> allMyUsers = myExchangeDatabase.Users.ToList<User>();
-            return allMyUsers;
+            return operationsRepository.GetAllUsers();
         }
 
         public List<OperationType> fillOperationTypeCB()
         {
-            List<OperationType> allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
-            return allMyOperationTypes;
+            return operationsRepository.GetAllOperationTypes();
         }
 
         public List<Operation> loadTable()
         {
-            List<Operation> allMyOperations = myExchangeDatabase.Operations.ToList<Operation>();
-            return allMyOperations;
+            return operationsRepository.GetAllOperations();
         }
 
         public string insert(DateTime? SelectedDate, User u, OperationType ot, Currency from, Currency to, string Amount)
@@ -56,9 +53,7 @@ namespace ExchangeRates.Helpers
                 operation.CurrencyTo = to.CurrencyId;
                 operation.Amount = int.Parse(Amount);
 
-                myExchangeDatabase.Operations.Add(operation);
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return operationsRepository.InsertOperation(operation);
             }
         }
 
@@ -70,15 +65,15 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                operation.OperationTypeId = ot.OperationTypeId;
-                operation.OperationDate = SelectedDate.Value.Date;
-                operation.UserId = u.UserId;
-                operation.CurrencyFrom = from.CurrencyId;
-                operation.CurrencyTo = to.CurrencyId;
-                operation.Amount = int.Parse(Amount);
+                Operation newOperation = new Operation();
+                newOperation.OperationTypeId = ot.OperationTypeId;
+                newOperation.OperationDate = SelectedDate.Value.Date;
+                newOperation.UserId = u.UserId;
+                newOperation.CurrencyFrom = from.CurrencyId;
+                newOperation.CurrencyTo = to.CurrencyId;
+                newOperation.Amount = int.Parse(Amount);
 
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return operationsRepository.UpdateOperation(operation, newOperation);
             }
         }
     }

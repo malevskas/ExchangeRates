@@ -11,7 +11,7 @@ namespace ExchangeRates.Repository
         List<Currency> GetAllCurrencies();
         Currency GetCurrencyById(int id);
         string InsertCurrency(Currency currency);
-        string UpdateCurrency(Currency currency);
+        string UpdateCurrency(Currency currency, Currency newCurrency);
         void DeleteCurrency(Currency currency);
         List<string> GetCurrencyCodes();
         List<string> GetCurrencyNames();

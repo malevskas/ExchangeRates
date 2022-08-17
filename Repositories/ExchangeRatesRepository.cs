@@ -29,9 +29,20 @@ namespace ExchangeRates.Repositories
             return "ok";
         }
 
-        public string UpdateExchangeRate(ExchangeRate exchangeRate)
+        public string UpdateExchangeRate(ExchangeRate exchangeRate, ExchangeRate newExchangeRate)
         {
-            throw new NotImplementedException();
+            exchangeRate.ValidityDate = newExchangeRate.ValidityDate;
+            exchangeRate.CurrencyFrom = newExchangeRate.CurrencyFrom;
+            exchangeRate.CurrencyTo = newExchangeRate.CurrencyTo;
+            exchangeRate.Rate = newExchangeRate.Rate;
+            exchangeRate.IsActive = newExchangeRate.IsActive;
+            myExchangeDatabase.SaveChanges();
+            return "ok";
+        }
+
+        public List<Currency> GetAllCurrencies()
+        {
+            return myExchangeDatabase.Currencies.ToList<Currency>();
         }
     }
 }

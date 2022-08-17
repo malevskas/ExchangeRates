@@ -10,7 +10,8 @@ namespace ExchangeRates.Repositories
     {
         List<ExchangeRate> GetAllExchangeRates();
         string InsertExchangeRate(ExchangeRate exchangeRate);
-        string UpdateExchangeRate(ExchangeRate exchangeRate);
+        string UpdateExchangeRate(ExchangeRate exchangeRate, ExchangeRate newExchangeRate);
         void DeleteExchangeRate(ExchangeRate exchangeRate);
+        List<Currency> GetAllCurrencies();
     }
 }

@@ -35,8 +35,12 @@ namespace ExchangeRates.Repositories
             return "ok";
         }
 
-        public string UpdateCurrency(Currency currency)
+        public string UpdateCurrency(Currency currency, Currency newCurrency)
         {
+            currency.CurrencyName = newCurrency.CurrencyName;
+            currency.Code = newCurrency.Code;
+            currency.IsActive = newCurrency.IsActive;
+            myExchangeDatabase.SaveChanges();
             return "ok";
         }
 

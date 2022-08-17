@@ -41,7 +41,7 @@
         <Button Grid.Column="0" Grid.Row="6" Content="Load Table" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Center" Click="LoadTable"/>
         <Button Grid.Column="1" Grid.Row="6" Content="Insert" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" Click="Insert" Width="55"/>
         <Button Grid.Column="1" Grid.Row="6" Content="Edit" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Center" Width="55" Click="Edit"/>
-        <Button Style="{StaticResource DeleteButton}" Grid.Column="1" Grid.Row="6" Content="Delete" HorizontalAlignment="Left" Margin="125,0,0,0" VerticalAlignment="Center" Width="55" Click="Delete"/>
+        <Button Grid.Column="1" Grid.Row="6" Content="Delete" HorizontalAlignment="Left" Margin="125,0,0,0" VerticalAlignment="Center" Width="55" Click="Delete"/>
         <DataGrid x:Name="dataGrid" Grid.Row="7" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding Path=ExchangeRates}" SelectedCellsChanged="populateTextBox">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Currency From" Binding="{Binding Currency.CurrencyName}"/>

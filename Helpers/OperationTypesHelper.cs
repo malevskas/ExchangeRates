@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExchangeRates.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,11 @@ namespace ExchangeRates.Helpers
 {
     internal class OperationTypesHelper
     {
-        private Entity myExchangeDatabase = new Entity();
-        
+        private readonly IOperationTypesRepository operationTypesRepository = new OperationTypesRepository();
+
         public List<OperationType> loadTable()
         {
-            List<OperationType> allMyOperationTypes = myExchangeDatabase.OperationTypes.ToList<OperationType>();
-            return allMyOperationTypes;
+            return operationTypesRepository.GetAllOperationTypes();
         }
 
         public string insert(string Code, string OperationName, bool? IsChecked)
@@ -38,9 +38,7 @@ namespace ExchangeRates.Helpers
                     ot.isActive = 0;
                 }
 
-                myExchangeDatabase.OperationTypes.Add(ot);
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return operationTypesRepository.InsertOperationType(ot);
             }
         }
 
@@ -52,26 +50,25 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                ot.Code = Code;
-                ot.OperationName = OperationName;
+                OperationType newOT = new OperationType();
+                newOT.Code = Code;
+                newOT.OperationName = OperationName;
                 if (IsChecked == true)
                 {
-                    ot.isActive = 1;
+                    newOT.isActive = 1;
                 }
                 else
                 {
-                    ot.isActive = 0;
+                    newOT.isActive = 0;
                 }
 
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return operationTypesRepository.UpdateOperationType(ot, newOT);
             }
         }
 
         public void delete(OperationType ot)
         {
-            ot.isActive = 0;
-            myExchangeDatabase.SaveChanges();
+            operationTypesRepository.DeleteOperationType(ot);
         }
     }
 }

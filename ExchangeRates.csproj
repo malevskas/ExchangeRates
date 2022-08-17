@@ -103,7 +103,13 @@
     <Compile Include="Repositories\ICurrenciesRepository.cs" />
     <Compile Include="Repositories\IExchangeRatesRepository.cs" />
     <Compile Include="Repositories\IOfficialRatesRepository.cs" />
+    <Compile Include="Repositories\IOperationsRepository.cs" />
+    <Compile Include="Repositories\IOperationTypesRepository.cs" />
+    <Compile Include="Repositories\IUsersRepository.cs" />
     <Compile Include="Repositories\OfficialRatesRepository.cs" />
+    <Compile Include="Repositories\OperationsRepository.cs" />
+    <Compile Include="Repositories\OperationTypesRepository.cs" />
+    <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="UsersPage.xaml.cs">
       <DependentUpon>UsersPage.xaml</DependentUpon>
     </Compile>

@@ -11,13 +11,11 @@ namespace ExchangeRates.Helpers
 {
     internal class ExchangeRatesHelper
     {
-        private Entity myExchangeDatabase = new Entity();
         private readonly IExchangeRatesRepository exchangeRatesRepository = new ExchangeRatesRepository();
         
         public List<Currency> fillCB()
         {
-            List<Currency> allMyCurrencies = myExchangeDatabase.Currencies.ToList<Currency>();
-            return allMyCurrencies;
+            return exchangeRatesRepository.GetAllCurrencies();
         }
 
         public List<ExchangeRate> loadTable()
@@ -67,21 +65,21 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                er.ValidityDate = SelectedDate.Value.Date;
-                er.CurrencyFrom = from.CurrencyId;
-                er.CurrencyTo = to.CurrencyId;
-                er.Rate = int.Parse(Rate);
+                ExchangeRate newER = new ExchangeRate();
+                newER.ValidityDate = SelectedDate.Value.Date;
+                newER.CurrencyFrom = from.CurrencyId;
+                newER.CurrencyTo = to.CurrencyId;
+                newER.Rate = int.Parse(Rate);
                 if (IsChecked == true)
                 {
-                    er.IsActive = 1;
+                    newER.IsActive = 1;
                 }
                 else
                 {
-                    er.IsActive = 0;
+                    newER.IsActive = 0;
                 }
 
-                myExchangeDatabase.SaveChanges();
-                return "ok";
+                return exchangeRatesRepository.UpdateExchangeRate(er, newER);
             }
         }
 

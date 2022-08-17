@@ -10,7 +10,10 @@ namespace ExchangeRates.Repositories
     {
         List<OfficialRate> GetAllOfficialRates();
         string InsertOfficialRate(OfficialRate officialRate);
-        string UpdateOfficialRate(OfficialRate officialRate);
+        string UpdateOfficialRate(OfficialRate officialRate, OfficialRate newOfficialRate);
         void DeleteOfficialRate(OfficialRate officialRate);
+        List<Currency> GetAllCurrencies();
+        Currency GetCurrencyByName(string name);
+        bool EntryExists(string name);
     }
 }

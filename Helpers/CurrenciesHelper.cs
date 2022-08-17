@@ -16,8 +16,6 @@ namespace ExchangeRates.Helpers
 {
     internal class CurrenciesHelper
     {
-        //private Entity myExchangeDatabase = new Entity();
-
         private readonly ICurrenciesRepository currenciesRepository = new CurrenciesRepository();
 
         public List<Currency> loadTable()
@@ -94,18 +92,19 @@ namespace ExchangeRates.Helpers
             }
             else
             {
-                currency.Code = CodeText;
-                currency.CurrencyName = CurrencyNameText;
+                Currency newC = new Currency();
+                newC.Code = CodeText;
+                newC.CurrencyName = CurrencyNameText;
                 if (IsChecked == true)
                 {
-                    currency.IsActive = 1;
+                    newC.IsActive = 1;
                 }
                 else
                 {
-                    currency.IsActive = 0;
+                    newC.IsActive = 0;
                 }
 
-                return currenciesRepository.InsertCurrency(currency);
+                return currenciesRepository.UpdateCurrency(currency, newC);
             }
         }
 

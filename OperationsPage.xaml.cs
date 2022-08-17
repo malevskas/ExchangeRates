@@ -71,11 +71,11 @@ namespace ExchangeRates
         {
             Operation operation = (Operation)dataGrid.SelectedItem;
             OperationId.Content = operation.OperationId.ToString();
-            OperationTypeCB.Text = operation.OperationTypeId.ToString();
+            OperationTypeCB.Text = operation.OperationType.OperationName;
             OperationDate.SelectedDate = operation.OperationDate;
-            UserCB.Text = operation.UserId.ToString();
-            CurrencyFromCB.Text = operation.CurrencyFrom.ToString();
-            CurrencyToCB.Text = operation.CurrencyTo.ToString();
+            UserCB.Text = operation.User.FirstName;
+            CurrencyFromCB.Text = operation.Currency.CurrencyName;
+            CurrencyToCB.Text = operation.Currency1.CurrencyName;
             Amount.Text = operation.Amount.ToString();
         }
 
