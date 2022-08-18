@@ -25,15 +25,23 @@ namespace ExchangeRates.Repositories
         public string Insert(T t)
         {
             table.Add(t);
-            myExchangeDatabase.SaveChanges();
-            return "ok";
+            if (myExchangeDatabase.SaveChanges() >= 0)
+            {
+                return "ok";
+            }
+            return "Action failed!";
         }
 
         public string Update(T t)
         {
-            table.Attach(t);
-            myExchangeDatabase.SaveChanges();
-            return "ok";
+            //table.Attach(t);
+            //myExchangeDatabase.SaveChanges();
+            //return "ok";
+            if (myExchangeDatabase.SaveChanges() >= 0)
+            {
+                return "ok";
+            }
+            return "Action failed!";
         }
 
         public List<string> GetCurrencyCodes()

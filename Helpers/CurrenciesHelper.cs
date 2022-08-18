@@ -107,10 +107,10 @@ namespace ExchangeRates.Helpers
             }
         }
 
-        public void delete(Currency currency)
+        public string delete(Currency currency)
         {
             currency.IsActive = 0;
-            currRepo.Update(currency);
+            return currRepo.Update(currency);
         }
     }
 }

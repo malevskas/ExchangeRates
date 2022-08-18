@@ -112,10 +112,10 @@ namespace ExchangeRates.Helpers
             }
         }
 
-        public void delete(OfficialRate or)
+        public string delete(OfficialRate or)
         {
             or.IsActive = 0;
-            orRepo.Update(or);
+            return orRepo.Update(or);
         }
     }
 }

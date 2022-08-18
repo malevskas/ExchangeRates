@@ -68,9 +68,16 @@ namespace ExchangeRates
 
         private void Delete(object sender, RoutedEventArgs e)
         {
-            erHelper.delete((ExchangeRate)dataGrid.SelectedItem);
-            checkBox.IsChecked = false;
-            dataGrid.ItemsSource = erHelper.loadTable();
+            string result = erHelper.delete((ExchangeRate)dataGrid.SelectedItem);
+            if (result != "ok")
+            {
+                MessageBox.Show(result);
+            }
+            else
+            {
+                checkBox.IsChecked = false;
+                dataGrid.ItemsSource = erHelper.loadTable();
+            }
         }
 
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)

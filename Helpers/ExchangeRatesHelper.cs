@@ -16,7 +16,7 @@ namespace ExchangeRates.Helpers
 
         public List<Currency> fillCB()
         {
-            return exchangeRatesRepository.GetAllCurrencies();
+            return erRepo.GetAllCurrencies();
         }
 
         public List<ExchangeRate> loadTable()
@@ -83,10 +83,10 @@ namespace ExchangeRates.Helpers
             }
         }
 
-        public void delete(ExchangeRate er)
+        public string delete(ExchangeRate er)
         {
             er.IsActive = 0;
-            erRepo.Update(er);
+            return erRepo.Update(er);
         }
     }
 }

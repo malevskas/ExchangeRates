@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace ExchangeRates.Helpers
 {
-    internal class OperationTypesHelper
+    internal class OperationTypesHelper:IRepository<OperationType>
     {
         //private readonly IOperationTypesRepository operationTypesRepository = new OperationTypesRepository();
         private readonly IRepository<OperationType> otRepo = new Repository<OperationType>();
@@ -66,10 +66,60 @@ namespace ExchangeRates.Helpers
             }
         }
 
-        public void delete(OperationType ot)
+        public string delete(OperationType ot)
         {
             ot.isActive = 0;
-            otRepo.Update(ot);
+            return otRepo.Update(ot);
+        }
+
+        public List<OperationType> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Insert(OperationType t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Update(OperationType t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetCurrencyCodes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetCurrencyNames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Currency> GetAllCurrencies()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Currency GetCurrencyByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool EntryExists(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<User> GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<OperationType> GetAllOperationTypes()
+        {
+            throw new NotImplementedException();
         }
     }
 }

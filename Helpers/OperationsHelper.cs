@@ -16,17 +16,17 @@ namespace ExchangeRates.Helpers
 
         public List<Currency> fillCurrencyCB()
         {
-            return operationsRepository.GetAllCurrencies();
+            return operationRepo.GetAllCurrencies();
         }
 
         public List<User> fillUserCB()
         {
-            return operationsRepository.GetAllUsers();
+            return operationRepo.GetAllUsers();
         }
 
         public List<OperationType> fillOperationTypeCB()
         {
-            return operationsRepository.GetAllOperationTypes();
+            return operationRepo.GetAllOperationTypes();
         }
 
         public List<Operation> loadTable()

@@ -66,10 +66,10 @@ namespace ExchangeRates.Helpers
             }
         }
 
-        public void delete(User user)
+        public string delete(User user)
         {
             user.IsActive = 0;
-            userRepo.Update(user);
+            return userRepo.Update(user);
         }
     }
 }
