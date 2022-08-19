@@ -88,7 +88,6 @@
     <Compile Include="Entities\sysdiagram.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Helpers\CurrenciesHelper.cs" />
-    <Compile Include="Helpers\dsKursKursZbir.cs" />
     <Compile Include="Helpers\ExchangeRatesHelper.cs" />
     <Compile Include="Helpers\OfficialRatesHelper.cs" />
     <Compile Include="Helpers\dsKurs.cs" />
@@ -98,6 +97,10 @@
     <Compile Include="OfficialRatesPage.xaml.cs">
       <DependentUpon>OfficialRatesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\ICurrenciesRepository.cs" />
+    <Compile Include="Repositories\IExchangeRatesRepository.cs" />
+    <Compile Include="Repositories\IOfficialRatesRepository.cs" />
+    <Compile Include="Repositories\IOperationsRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="UsersPage.xaml.cs">

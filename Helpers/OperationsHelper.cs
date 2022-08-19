@@ -9,24 +9,24 @@ using System.Windows.Controls;
 
 namespace ExchangeRates.Helpers
 {
-    internal class OperationsHelper
+    internal class OperationsHelper : IOperationsRepository
     {
-        //private readonly IOperationsRepository operationsRepository = new OperationsRepository();
+        private Entity myExchangeDatabase = new Entity();
         private readonly IRepository<Operation> operationRepo = new Repository<Operation>();
 
         public List<Currency> fillCurrencyCB()
         {
-            return operationRepo.GetAllCurrencies();
+            return GetAllCurrencies();
         }
 
         public List<User> fillUserCB()
         {
-            return operationRepo.GetAllUsers();
+            return GetAllUsers();
         }
 
         public List<OperationType> fillOperationTypeCB()
         {
-            return operationRepo.GetAllOperationTypes();
+            return GetAllOperationTypes();
         }
 
         public List<Operation> loadTable()
@@ -75,6 +75,20 @@ namespace ExchangeRates.Helpers
 
                 return operationRepo.Update(operation);
             }
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return myExchangeDatabase.Users.ToList();
+        }
+
+        public List<OperationType> GetAllOperationTypes()
+        {
+            return myExchangeDatabase.OperationTypes.ToList();
+        }
+        public List<Currency> GetAllCurrencies()
+        {
+            return myExchangeDatabase.Currencies.ToList<Currency>();
         }
     }
 }

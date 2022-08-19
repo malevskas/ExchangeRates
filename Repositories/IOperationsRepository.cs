@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ExchangeRates.Repositories
 {
-    public interface IRepository<T> where T : class
+    public interface IOperationsRepository
     {
-        List<T> GetAll();
-        string Insert(T t);
-        string Update(T t);
+        List<User> GetAllUsers();
+        List<OperationType> GetAllOperationTypes();
+        List<Currency> GetAllCurrencies();
     }
 }

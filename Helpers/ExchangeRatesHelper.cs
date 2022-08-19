@@ -9,14 +9,14 @@ using System.Windows.Controls;
 
 namespace ExchangeRates.Helpers
 {
-    internal class ExchangeRatesHelper
+    internal class ExchangeRatesHelper : IExchangeRatesRepository
     {
-        //private readonly IExchangeRatesRepository exchangeRatesRepository = new ExchangeRatesRepository();
+        private Entity myExchangeDatabase = new Entity();
         private readonly IRepository<ExchangeRate> erRepo = new Repository<ExchangeRate>();
 
         public List<Currency> fillCB()
         {
-            return erRepo.GetAllCurrencies();
+            return GetAllCurrencies();
         }
 
         public List<ExchangeRate> loadTable()
@@ -87,6 +87,11 @@ namespace ExchangeRates.Helpers
         {
             er.IsActive = 0;
             return erRepo.Update(er);
+        }
+
+        public List<Currency> GetAllCurrencies()
+        {
+            return myExchangeDatabase.Currencies.ToList<Currency>();
         }
     }
 }

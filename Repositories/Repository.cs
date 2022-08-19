@@ -43,40 +43,5 @@ namespace ExchangeRates.Repositories
             }
             return "Action failed!";
         }
-
-        public List<string> GetCurrencyCodes()
-        {
-            return myExchangeDatabase.Currencies.Select(x => x.Code).ToList();
-        }
-
-        public List<string> GetCurrencyNames()
-        {
-            return myExchangeDatabase.Currencies.Select(x => x.CurrencyName).ToList();
-        }
-
-        public List<Currency> GetAllCurrencies()
-        {
-            return myExchangeDatabase.Currencies.ToList<Currency>();
-        }
-
-        public Currency GetCurrencyByName(string name)
-        {
-            return myExchangeDatabase.Currencies.Where(cu => cu.CurrencyName == name).FirstOrDefault();
-        }
-
-        public bool EntryExists(string name)
-        {
-            return myExchangeDatabase.OfficialRates.Where(or => or.ValidityDate == DateTime.Today && or.Currency1.CurrencyName == name).Any();
-        }
-
-        public List<User> GetAllUsers()
-        {
-            return myExchangeDatabase.Users.ToList();
-        }
-
-        public List<OperationType> GetAllOperationTypes()
-        {
-            return myExchangeDatabase.OperationTypes.ToList();
-        }
     }
 }

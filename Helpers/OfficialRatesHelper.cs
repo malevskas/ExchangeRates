@@ -13,14 +13,14 @@ using System.Xml.Serialization;
 
 namespace ExchangeRates.Helpers
 {
-    internal class OfficialRatesHelper
+    internal class OfficialRatesHelper : IOfficialRatesRepository
     {
-        //private readonly IOfficialRatesRepository officialRatesRepository = new OfficialRatesRepository();
+        private Entity myExchangeDatabase = new Entity();
         private readonly IRepository<OfficialRate> orRepo = new Repository<OfficialRate>();
 
         public List<Currency> fillCB()
         {
-            return orRepo.GetAllCurrencies();
+            return GetAllCurrencies();
         }
 
         public List<OfficialRate> loadTable()
@@ -43,14 +43,14 @@ namespace ExchangeRates.Helpers
             foreach (dsKursKursZbir zbir in result.Items)
             {
                 string name = zbir.Oznaka;
-                Currency c = orRepo.GetCurrencyByName(name);
+                Currency c = GetCurrencyByName(name);
                 OfficialRate o = new OfficialRate();
                 o.Currency = c.CurrencyId;
                 o.ValidityDate = zbir.Datum;
                 o.Rate = zbir.Sreden;
                 o.IsActive = 1;
 
-                if (!orRepo.EntryExists(name))
+                if (!EntryExists(name))
                 {
                     orRepo.Insert(o);
                 }
@@ -116,6 +116,21 @@ namespace ExchangeRates.Helpers
         {
             or.IsActive = 0;
             return orRepo.Update(or);
+        }
+
+        public List<Currency> GetAllCurrencies()
+        {
+            return myExchangeDatabase.Currencies.ToList<Currency>();
+        }
+
+        public Currency GetCurrencyByName(string name)
+        {
+            return myExchangeDatabase.Currencies.Where(cu => cu.CurrencyName == name).FirstOrDefault();
+        }
+
+        public bool EntryExists(string name)
+        {
+            return myExchangeDatabase.OfficialRates.Where(or => or.ValidityDate == DateTime.Today && or.Currency1.CurrencyName == name).Any();
         }
     }
 }

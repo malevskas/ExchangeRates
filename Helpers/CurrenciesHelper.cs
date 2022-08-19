@@ -13,9 +13,9 @@ using System.Xml.Serialization;
 
 namespace ExchangeRates.Helpers
 {
-    internal class CurrenciesHelper
+    internal class CurrenciesHelper : ICurrenciesRepository
     {
-        //private readonly ICurrenciesRepository currenciesRepository = new CurrenciesRepository();
+        private Entity myExchangeDatabase = new Entity();
         private readonly IRepository<Currency> currRepo = new Repository<Currency>();
 
         public List<Currency> loadTable()
@@ -51,8 +51,8 @@ namespace ExchangeRates.Helpers
 
         public string insert(string CodeText, string CurrencyNameText, bool? IsChecked)
         {
-            var allMyCodes = currRepo.GetCurrencyCodes();
-            var allMyCurrencyNames = currRepo.GetCurrencyNames();
+            var allMyCodes = GetCurrencyCodes();
+            var allMyCurrencyNames = GetCurrencyNames();
 
             if (CodeText == "" || CurrencyNameText == "")
             {
@@ -111,6 +111,15 @@ namespace ExchangeRates.Helpers
         {
             currency.IsActive = 0;
             return currRepo.Update(currency);
+        }
+        public List<string> GetCurrencyCodes()
+        {
+            return myExchangeDatabase.Currencies.Select(x => x.Code).ToList();
+        }
+
+        public List<string> GetCurrencyNames()
+        {
+            return myExchangeDatabase.Currencies.Select(x => x.CurrencyName).ToList();
         }
     }
 }
