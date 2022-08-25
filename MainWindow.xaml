@@ -9,7 +9,7 @@
         Title="MainWindow" Height="700" Width="1050">
 
     <Grid>
-        
+
         <Menu IsMainMenu="True">
             <MenuItem Header="Currencies" Click="CurrenciesMenu"></MenuItem>
             <MenuItem Header="Exchange Rates" Click="ExchangeRatesMenu"></MenuItem>
@@ -20,7 +20,12 @@
         </Menu>
 
         <Frame x:Name="MainFrame" Margin="0,30,0,0"/>
-        
+        <Label Content="Username" HorizontalAlignment="Left" Margin="142,58,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="UserName" HorizontalAlignment="Left" Margin="125,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="Pass" Content="Password" HorizontalAlignment="Left" Margin="599,58,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name ="Password" HorizontalAlignment="Left" Margin="569,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Log in" HorizontalAlignment="Left" Margin="392,256,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+
     </Grid>
-    
+
 </Window>

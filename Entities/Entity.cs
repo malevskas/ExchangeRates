@@ -1,3 +1,4 @@
+using ExchangeRates.Entities;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -20,6 +21,7 @@ namespace ExchangeRates
         public virtual DbSet<OperationType> OperationTypes { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Auth> Auths { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -80,6 +82,13 @@ namespace ExchangeRates
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Surname)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Auth>()
+                .Property(e => e.UserName);
+
+            modelBuilder.Entity<Auth>()
+                .Property(e => e.Password)
                 .IsUnicode(false);
         }
     }

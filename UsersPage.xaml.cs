@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,7 +17,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Configuration;
 using System.Windows.Shapes;
+using System.Net.Http.Headers;
 
 namespace ExchangeRates
 {
@@ -25,6 +29,7 @@ namespace ExchangeRates
     public partial class UsersPage : Page
     {
         private UsersHelper uHelper;
+        private readonly string url = ConfigurationManager.AppSettings["baseUrl"];
 
         public UsersPage()
         {
@@ -32,26 +37,92 @@ namespace ExchangeRates
             uHelper = new UsersHelper();
         }
 
-        private void LoadTable(object sender, RoutedEventArgs e)
+        private async void LoadTable(object sender, RoutedEventArgs e)
         {
-            dataGrid.ItemsSource = uHelper.loadTable();
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJTaW1vbmFNYWxldnNrYSIsIm5iZiI6MTY2MTQxODU5NywiZXhwIjoxNjYxNDIwMzk3LCJpYXQiOjE2NjE0MTg1OTd9.X-G2_QMrlRPKcse3G75-M0S5qWjQpwaMwo305_galp4");
+                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJTaW1vbmFNYWxldnNrYSIsIm5iZiI6MTY2MTQxNzMzMiwiZXhwIjoxNjYxNDE5MTMyLCJpYXQiOjE2NjE0MTczMzJ9.FN458S_4FawiSaHMyOWpPnDzbP_47CB93YkLKo0Yatc");
+                
+                HttpResponseMessage response = await client.GetAsync(url + "Users");
+                List<User> list = await response.Content.ReadAsAsync<List<User>>();
+                dataGrid.ItemsSource = list;
+            }
         }
         
-        private void Insert(object sender, RoutedEventArgs e)
+        private async void Insert(object sender, RoutedEventArgs e)
         {
-            string result = uHelper.insert(FirstName.Text, Surname.Text, checkBox.IsChecked);
-            if (!result.Equals("ok"))
+            User user = new User();
+            user.FirstName = FirstName.Text;
+            user.Surname = Surname.Text;
+            if (checkBox.IsChecked == true)
             {
-                MessageBox.Show(result);
+                user.IsActive = 1;
             }
             else
             {
-                dataGrid.ItemsSource = uHelper.loadTable();
+                user.IsActive = 0;
             }
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.PostAsJsonAsync(url + "Users", user);
+                    response.EnsureSuccessStatusCode();
+                    string msg = await response.Content.ReadAsStringAsync();
+                    response = await client.GetAsync(url + "Users");
+                    List<User> list = await response.Content.ReadAsAsync<List<User>>();
+                    dataGrid.ItemsSource = list;
+                } catch
+                {
+                    MessageBox.Show("Failed!");
+                }
+            }
+
+            //string result = uHelper.insert(FirstName.Text, Surname.Text, checkBox.IsChecked);
+            //if (!result.Equals("ok"))
+            //{
+            //    MessageBox.Show(result);
+            //}
+            //else
+            //{
+            //dataGrid.ItemsSource = uHelper.loadTable();
+            //}
         }
 
         private void Edit(object sender, RoutedEventArgs e)
         {
+            User user = (User)dataGrid.SelectedItem;
+            user.FirstName = FirstName.Text;
+            user.Surname = Surname.Text;
+            if (checkBox.IsChecked == true)
+            {
+                user.IsActive = 1;
+            }
+            else
+            {
+                user.IsActive = 0;
+            }
+
+            //using (HttpClient client = new HttpClient())
+            //{
+            //    try
+            //    {
+            //        HttpResponseMessage response = await client.PutAsJsonAsync(url + "Users/" + user.UserId.ToString(), user);
+            //        response.EnsureSuccessStatusCode();
+            //        string msg = await response.Content.ReadAsStringAsync();
+            //        response = await client.GetAsync(url + "Users");
+            //        List<User> list = await response.Content.ReadAsAsync<List<User>>();
+            //        dataGrid.ItemsSource = list;
+            //    }
+            //    catch
+            //    {
+            //        MessageBox.Show("Failed!");
+            //    }
+            //}
+
+
             string result = uHelper.edit((User)dataGrid.SelectedItem, FirstName.Text, Surname.Text, checkBox.IsChecked);
             if (!result.Equals("ok"))
             {
