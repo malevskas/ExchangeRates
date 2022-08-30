@@ -41,7 +41,7 @@ namespace ExchangeRates
         {
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJTaW1vbmFNYWxldnNrYSIsIm5iZiI6MTY2MTQxODU5NywiZXhwIjoxNjYxNDIwMzk3LCJpYXQiOjE2NjE0MTg1OTd9.X-G2_QMrlRPKcse3G75-M0S5qWjQpwaMwo305_galp4");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJNYWxldnNrYVMiLCJuYmYiOjE2NjE4NTIwMDAsImV4cCI6MTY2MjAzMjAwMCwiaWF0IjoxNjYxODUyMDAwfQ.F1lz8DV6dsT5e4ihgJAREbXo3DWn47sqWEYk6mco7_Y");
                 //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJTaW1vbmFNYWxldnNrYSIsIm5iZiI6MTY2MTQxNzMzMiwiZXhwIjoxNjYxNDE5MTMyLCJpYXQiOjE2NjE0MTczMzJ9.FN458S_4FawiSaHMyOWpPnDzbP_47CB93YkLKo0Yatc");
                 
                 HttpResponseMessage response = await client.GetAsync(url + "Users");
