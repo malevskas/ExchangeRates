@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ExchangeRatesDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="CalculateDailyTDA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Amount" Type="float" Mode="In" />
+          <Parameter Name="InterestRate" Type="float" Mode="In" />
+          <Parameter Name="Period" Type="int" Mode="In" />
+          <Parameter Name="Day" Type="int" Mode="In" />
+          <Parameter Name="Month" Type="int" Mode="In" />
+          <Parameter Name="Year" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DailyLoanInstallments" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Amount" Type="float" Mode="In" />
+          <Parameter Name="NumOfInstallments" Type="int" Mode="In" />
+          <Parameter Name="InterestRate" Type="float" Mode="In" />
+          <Parameter Name="Day" Type="int" Mode="In" />
+          <Parameter Name="Month" Type="int" Mode="In" />
+          <Parameter Name="Year" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="ExchangeRatesDBModelStoreContainer" />
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExchangeRatesDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ExchangeRatesDBEntities1" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="CalculateDailyTDA" ReturnType="Collection(ExchangeRatesDBModel.CalculateDailyTDA_Result)">
+            <Parameter Name="Amount" Mode="In" Type="Double" />
+            <Parameter Name="InterestRate" Mode="In" Type="Double" />
+            <Parameter Name="Period" Mode="In" Type="Int32" />
+            <Parameter Name="Day" Mode="In" Type="Int32" />
+            <Parameter Name="Month" Mode="In" Type="Int32" />
+            <Parameter Name="Year" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DailyLoanInstallments" ReturnType="Collection(ExchangeRatesDBModel.DailyLoanInstallments_Result)">
+            <Parameter Name="Amount" Mode="In" Type="Double" />
+            <Parameter Name="NumOfInstallments" Mode="In" Type="Int32" />
+            <Parameter Name="InterestRate" Mode="In" Type="Double" />
+            <Parameter Name="Day" Mode="In" Type="Int32" />
+            <Parameter Name="Month" Mode="In" Type="Int32" />
+            <Parameter Name="Year" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="CalculateDailyTDA_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="MonthlyDate" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="YearDate" Nullable="true" />
+          <Property Type="Double" Name="Amount" Nullable="true" />
+          <Property Type="Double" Name="Interest" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="DailyLoanInstallments_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="MonthlyDate" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="YearDate" Nullable="true" />
+          <Property Type="Double" Name="Payment" Nullable="true" />
+          <Property Type="Double" Name="Capital" Nullable="true" />
+          <Property Type="Double" Name="Interest" Nullable="true" />
+          <Property Type="Double" Name="TotalInterest" Nullable="true" />
+          <Property Type="Double" Name="Balance" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExchangeRatesDBModelStoreContainer" CdmEntityContainer="ExchangeRatesDBEntities1" >
+          <FunctionImportMapping FunctionImportName="CalculateDailyTDA" FunctionName="ExchangeRatesDBModel.Store.CalculateDailyTDA">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ExchangeRatesDBModel.CalculateDailyTDA_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MonthlyDate" ColumnName="MonthlyDate" />
+                <ScalarProperty Name="YearDate" ColumnName="YearDate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Interest" ColumnName="Interest" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DailyLoanInstallments" FunctionName="ExchangeRatesDBModel.Store.DailyLoanInstallments">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ExchangeRatesDBModel.DailyLoanInstallments_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MonthlyDate" ColumnName="MonthlyDate" />
+                <ScalarProperty Name="YearDate" ColumnName="YearDate" />
+                <ScalarProperty Name="Payment" ColumnName="Payment" />
+                <ScalarProperty Name="Capital" ColumnName="Capital" />
+                <ScalarProperty Name="Interest" ColumnName="Interest" />
+                <ScalarProperty Name="TotalInterest" ColumnName="TotalInterest" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

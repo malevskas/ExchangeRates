@@ -96,8 +96,8 @@ namespace ExchangeRates
 
         private void PreviewTextNumericInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
-            e.Handled = !regex.IsMatch(e.Text);
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
 
         private void PreviewTextAlphabeticInput(object sender, TextCompositionEventArgs e)

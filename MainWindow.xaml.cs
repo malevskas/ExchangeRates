@@ -58,6 +58,16 @@ namespace ExchangeRates
             MainFrame.Content = new UsersPage();
         }
 
+        private void CalculateTDAMenu(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Content = new CalculateTDA();
+        }
+
+        private void CalculateInstallmentsMenu(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Content = new CalculateLoanInstallments();
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";

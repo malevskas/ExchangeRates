@@ -92,6 +92,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CalculateDailyTDA_Result.cs">
+      <DependentUpon>StoredProcedures.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CalculateLoanInstallments.xaml.cs">
+      <DependentUpon>CalculateLoanInstallments.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CalculateTDA.xaml.cs">
+      <DependentUpon>CalculateTDA.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DailyLoanInstallments_Result.cs">
+      <DependentUpon>StoredProcedures.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Auth.cs" />
     <Compile Include="Entities\sysdiagram.cs" />
     <Compile Include="Entities\User.cs" />
@@ -111,6 +123,21 @@
     <Compile Include="Repositories\IOperationsRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="StoredProcedures.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StoredProcedures.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoredProcedures.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StoredProcedures.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoredProcedures.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StoredProcedures.edmx</DependentUpon>
+    </Compile>
     <Compile Include="UsersPage.xaml.cs">
       <DependentUpon>UsersPage.xaml</DependentUpon>
     </Compile>
@@ -119,6 +146,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Page Include="CalculateLoanInstallments.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CalculateTDA.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CurrenciesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -198,6 +233,13 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EntityDeploy Include="StoredProcedures.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>StoredProcedures.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="StoredProcedures.edmx.diagram">
+      <DependentUpon>StoredProcedures.edmx</DependentUpon>
+    </None>
     <None Include="Web References\nbrm\kurs.wsdl" />
     <None Include="Web References\nbrm\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
@@ -225,6 +267,21 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>ExchangeRates_nbrm_Kurs</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="StoredProcedures.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>StoredProcedures.edmx</DependentUpon>
+      <LastGenOutput>StoredProcedures.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="StoredProcedures.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>StoredProcedures.edmx</DependentUpon>
+      <LastGenOutput>StoredProcedures.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
