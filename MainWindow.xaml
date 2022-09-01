@@ -11,22 +11,23 @@
     <Grid>
 
         <Menu IsMainMenu="True">
-            <MenuItem Header="Currencies" Click="CurrenciesMenu"></MenuItem>
-            <MenuItem Header="Exchange Rates" Click="ExchangeRatesMenu"></MenuItem>
-            <MenuItem Header="Official Rates" Click="OfficialRatesMenu"></MenuItem>
-            <MenuItem Header="Operations" Click="OperationsMenu"></MenuItem>
-            <MenuItem Header="Operation Types" Click="OperationTypesMenu"></MenuItem>
-            <MenuItem Header="Users" Click="UsersMenu"></MenuItem>
-            <MenuItem Header="Calculate TDA" Click="CalculateTDAMenu"></MenuItem>
-            <MenuItem Header="Calculate Loan Installments" Click="CalculateInstallmentsMenu"></MenuItem>
+            <MenuItem Name="Currencies" Header="Currencies" Click="CurrenciesMenu"></MenuItem>
+            <MenuItem Name="ExchangeRates" Header="Exchange Rates" Click="ExchangeRatesMenu"></MenuItem>
+            <MenuItem Name="OfficialRates" Header="Official Rates" Click="OfficialRatesMenu"></MenuItem>
+            <MenuItem Name="Operations" Header="Operations" Click="OperationsMenu"></MenuItem>
+            <MenuItem Name="OperationTypes" Header="Operation Types" Click="OperationTypesMenu"></MenuItem>
+            <MenuItem Name="Users" Header="Users" Click="UsersMenu"></MenuItem>
+            <MenuItem Name="CalculateTDA" Header="Calculate TDA" Click="CalculateTDAMenu"></MenuItem>
+            <MenuItem Name="CalculateLoanInstallments" Header="Calculate Loan Installments" Click="CalculateInstallmentsMenu"></MenuItem>
         </Menu>
 
         <Frame x:Name="MainFrame" Margin="0,30,0,0"/>
-        <Label Content="Username" HorizontalAlignment="Left" Margin="142,58,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="UserName" HorizontalAlignment="Left" Margin="174,174,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="Pass" Content="Password" HorizontalAlignment="Left" Margin="599,58,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name ="Password" HorizontalAlignment="Left" Margin="569,89,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Log in" HorizontalAlignment="Left" Margin="392,256,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Label Name="usern" Content="Username" HorizontalAlignment="Left" Margin="243,93,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="UserName" HorizontalAlignment="Left" Margin="215,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="Pass" Content="Password" HorizontalAlignment="Left" Margin="745,93,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name ="Password" HorizontalAlignment="Right" Margin="0,160,215,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="but" Content="Log in" HorizontalAlignment="Left" Margin="520,347,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+
 
     </Grid>
 

@@ -1,4 +1,5 @@
 ﻿using ExchangeRates.Entities;
+using ExchangeRates.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,20 @@ namespace ExchangeRates
     /// </summary>
     public partial class MainWindow : Window
     {
+
         private readonly string url = ConfigurationManager.AppSettings["baseUrl"];
+
         public MainWindow()
         {
             InitializeComponent();
+            Currencies.Visibility = Visibility.Collapsed;
+            ExchangeRates.Visibility = Visibility.Collapsed;
+            OfficialRates.Visibility = Visibility.Collapsed;
+            Operations.Visibility = Visibility.Collapsed;
+            OperationTypes.Visibility = Visibility.Collapsed;
+            Users.Visibility = Visibility.Collapsed;
+            CalculateTDA.Visibility = Visibility.Collapsed;
+            CalculateLoanInstallments.Visibility = Visibility.Collapsed;
         }
 
         private void CurrenciesMenu(object sender, RoutedEventArgs e)
@@ -68,24 +79,6 @@ namespace ExchangeRates
             MainFrame.Content = new CalculateLoanInstallments();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            string cs = "Data Source=DESKTOP-JRGOK04;Initial Catalog=ExchangeRatesDB;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(cs);
-            string comm = "EXEC UpdateUsers @Id = 1, @FirstName = 'Simona', @Surname = 'Malevska', @IsActive = 0";
-
-            try
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand(comm, conn);
-                cmd.ExecuteNonQuery();
-
-            } catch (Exception ex)
-            {
-                conn.Close();
-            }
-        }
-
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var auth = new Auth();
@@ -107,7 +100,30 @@ namespace ExchangeRates
 
                 var responseString = await response.Content.ReadAsStringAsync();
 
-                Debug.Write("OKOK" + responseString);
+                var statusCode = response.StatusCode;
+                if (statusCode == HttpStatusCode.OK)
+                {
+                    Currencies.Visibility = Visibility.Visible;
+                    ExchangeRates.Visibility = Visibility.Visible;
+                    OfficialRates.Visibility = Visibility.Visible;
+                    Operations.Visibility = Visibility.Visible;
+                    OperationTypes.Visibility = Visibility.Visible;
+                    Users.Visibility = Visibility.Visible;
+                    CalculateTDA.Visibility = Visibility.Visible;
+                    CalculateLoanInstallments.Visibility = Visibility.Visible;
+
+                    usern.Visibility = Visibility.Collapsed;
+                    UserName.Visibility = Visibility.Collapsed;
+                    Pass.Visibility = Visibility.Collapsed;
+                    Password.Visibility = Visibility.Collapsed;
+                    but.Visibility = Visibility.Collapsed;
+
+                    Token.SetToken(responseString);
+                }
+                else if (statusCode == HttpStatusCode.Unauthorized)
+                {
+                    MessageBox.Show("User unauthorized!");
+                }
 
                 //client.SendAsync(request).Wait();
 

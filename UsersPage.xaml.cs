@@ -41,7 +41,7 @@ namespace ExchangeRates
         {
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJNYWxldnNrYVMiLCJuYmYiOjE2NjE4NTIwMDAsImV4cCI6MTY2MjAzMjAwMCwiaWF0IjoxNjYxODUyMDAwfQ.F1lz8DV6dsT5e4ihgJAREbXo3DWn47sqWEYk6mco7_Y");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token.GetToken());
                 //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJTaW1vbmFNYWxldnNrYSIsIm5iZiI6MTY2MTQxNzMzMiwiZXhwIjoxNjYxNDE5MTMyLCJpYXQiOjE2NjE0MTczMzJ9.FN458S_4FawiSaHMyOWpPnDzbP_47CB93YkLKo0Yatc");
                 
                 HttpResponseMessage response = await client.GetAsync(url + "Users");
@@ -68,6 +68,8 @@ namespace ExchangeRates
             {
                 try
                 {
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token.GetToken());
+
                     HttpResponseMessage response = await client.PostAsJsonAsync(url + "Users", user);
                     response.EnsureSuccessStatusCode();
                     string msg = await response.Content.ReadAsStringAsync();
@@ -91,7 +93,7 @@ namespace ExchangeRates
             //}
         }
 
-        private void Edit(object sender, RoutedEventArgs e)
+        private async void Edit(object sender, RoutedEventArgs e)
         {
             User user = (User)dataGrid.SelectedItem;
             user.FirstName = FirstName.Text;
@@ -103,6 +105,25 @@ namespace ExchangeRates
             else
             {
                 user.IsActive = 0;
+            }
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token.GetToken());
+
+                    HttpResponseMessage response = await client.PutAsJsonAsync(url + "Users/" + user.UserId.ToString(), user);
+                    response.EnsureSuccessStatusCode();
+                    string msg = await response.Content.ReadAsStringAsync();
+                    response = await client.GetAsync(url + "Users");
+                    List<User> list = await response.Content.ReadAsAsync<List<User>>();
+                    dataGrid.ItemsSource = list;
+                }
+                catch
+                {
+                    MessageBox.Show("Failed!");
+                }
             }
 
             //using (HttpClient client = new HttpClient())
@@ -123,19 +144,39 @@ namespace ExchangeRates
             //}
 
 
-            string result = uHelper.edit((User)dataGrid.SelectedItem, FirstName.Text, Surname.Text, checkBox.IsChecked);
-            if (!result.Equals("ok"))
-            {
-                MessageBox.Show(result);
-            }
-            else
-            {
-                dataGrid.ItemsSource = uHelper.loadTable();
-            }
+            //string result = uHelper.edit((User)dataGrid.SelectedItem, FirstName.Text, Surname.Text, checkBox.IsChecked);
+            //if (!result.Equals("ok"))
+            //{
+            //    MessageBox.Show(result);
+            //}
+            //else
+            //{
+            //    dataGrid.ItemsSource = uHelper.loadTable();
+            //}
         }
 
-        private void Delete(object sender, RoutedEventArgs e)
+        private async void Delete(object sender, RoutedEventArgs e)
         {
+            User user = (User)dataGrid.SelectedItem;
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token.GetToken());
+
+                    HttpResponseMessage response = await client.PutAsJsonAsync(url + "Users/" + user.UserId.ToString(), user);
+                    response.EnsureSuccessStatusCode();
+                    string msg = await response.Content.ReadAsStringAsync();
+                    response = await client.GetAsync(url + "Users");
+                    List<User> list = await response.Content.ReadAsAsync<List<User>>();
+                    dataGrid.ItemsSource = list;
+                }
+                catch
+                {
+                    MessageBox.Show("Failed!");
+                }
+            }
+
             string result = uHelper.delete((User)dataGrid.SelectedItem);
             if (result != "ok")
             {
@@ -151,16 +192,19 @@ namespace ExchangeRates
         private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
         {
             User user = (User)dataGrid.SelectedItem;
-            UserId.Content = user.UserId.ToString();
-            FirstName.Text = user.FirstName;
-            Surname.Text = user.Surname;
-            if (user.IsActive == 1)
+            if(user != null)
             {
-                checkBox.IsChecked = true;
-            }
-            else
-            {
-                checkBox.IsChecked = false;
+                UserId.Content = user.UserId.ToString();
+                FirstName.Text = user.FirstName;
+                Surname.Text = user.Surname;
+                if (user.IsActive == 1)
+                {
+                    checkBox.IsChecked = true;
+                }
+                else
+                {
+                    checkBox.IsChecked = false;
+                }
             }
         }
 

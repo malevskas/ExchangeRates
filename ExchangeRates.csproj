@@ -113,6 +113,7 @@
     <Compile Include="Helpers\dsKurs.cs" />
     <Compile Include="Helpers\OperationsHelper.cs" />
     <Compile Include="Helpers\OperationTypesHelper.cs" />
+    <Compile Include="Helpers\Token.cs" />
     <Compile Include="Helpers\UsersHelper.cs" />
     <Compile Include="OfficialRatesPage.xaml.cs">
       <DependentUpon>OfficialRatesPage.xaml</DependentUpon>

@@ -14,7 +14,7 @@
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition Width="8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
@@ -23,7 +23,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
-        
+
         <Label Grid.Column="0" Grid.Row="0" Content="User Id" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label Grid.Column="0" Grid.Row="1" Content="First Name" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <Label Grid.Column="0" Grid.Row="2" Content="Surname" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
