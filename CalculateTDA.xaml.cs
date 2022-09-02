@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -45,6 +47,37 @@ namespace ExchangeRates
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void Excel(object sender, RoutedEventArgs e)
+        {
+            using (System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog() { Filter = "Excel Workbook|*.xlxs" })
+            {
+                if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    try
+                    {
+                        using (XLWorkbook workbook = new XLWorkbook())
+                        {
+                            workbook.Worksheets.Add(((DataView)dataGrid.ItemsSource).ToTable(), "TDA Calculations");
+                            workbook.SaveAs(sfd.FileName);
+                        }
+                        MessageBox.Show("Success!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+            //PdfPTable pdfTable = new PdfPTable(dataGrid.Columns.Count);
+            //foreach(System.Data.DataRowView gvr in dataGrid.ItemsSource)
+            //{
+            //    foreach(TableCell tableCell in gvr.Cells)
+            //    {
+            //        Debug.Write(tableCell);
+            //    }
+            //}
         }
     }
 }

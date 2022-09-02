@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -30,6 +29,7 @@ namespace ExchangeRates
     {
         private UsersHelper uHelper;
         private readonly string url = ConfigurationManager.AppSettings["baseUrl"];
+        User user = null;
 
         public UsersPage()
         {
@@ -95,7 +95,7 @@ namespace ExchangeRates
 
         private async void Edit(object sender, RoutedEventArgs e)
         {
-            User user = (User)dataGrid.SelectedItem;
+            user = (User)dataGrid.SelectedItem;
             user.FirstName = FirstName.Text;
             user.Surname = Surname.Text;
             if (checkBox.IsChecked == true)
@@ -157,7 +157,8 @@ namespace ExchangeRates
 
         private async void Delete(object sender, RoutedEventArgs e)
         {
-            User user = (User)dataGrid.SelectedItem;
+            user = (User)dataGrid.SelectedItem;
+            user.IsActive = 0;
             using (HttpClient client = new HttpClient())
             {
                 try
@@ -177,41 +178,66 @@ namespace ExchangeRates
                 }
             }
 
-            string result = uHelper.delete((User)dataGrid.SelectedItem);
-            if (result != "ok")
+            //string result = uHelper.delete((User)dataGrid.SelectedItem);
+            //if (result != "ok")
+            //{
+            //    MessageBox.Show(result);
+            //}
+            //else
+            //{
+            //    checkBox.IsChecked = false;
+            //    dataGrid.ItemsSource = uHelper.loadTable();
+            //}
+        }
+
+        private void populateTextBox(object sender, SelectionChangedEventArgs e)
+        {
+            user = (sender as DataGrid).SelectedItem as User ?? user;
+            UserId.Content = user.UserId.ToString();
+            FirstName.Text = user.FirstName;
+            Surname.Text = user.Surname;
+            if (user.IsActive == 1)
             {
-                MessageBox.Show(result);
+                checkBox.IsChecked = true;
             }
             else
             {
                 checkBox.IsChecked = false;
-                dataGrid.ItemsSource = uHelper.loadTable();
             }
         }
 
-        private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
-        {
-            User user = (User)dataGrid.SelectedItem;
-            if(user != null)
-            {
-                UserId.Content = user.UserId.ToString();
-                FirstName.Text = user.FirstName;
-                Surname.Text = user.Surname;
-                if (user.IsActive == 1)
-                {
-                    checkBox.IsChecked = true;
-                }
-                else
-                {
-                    checkBox.IsChecked = false;
-                }
-            }
-        }
+        //private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
+        //{
+        //    user = (User)dataGrid.SelectedItem ?? user;
+        //    UserId.Content = user.UserId.ToString();
+        //    FirstName.Text = user.FirstName;
+        //    Surname.Text = user.Surname;
+        //    if (user.IsActive == 1)
+        //    {
+        //        checkBox.IsChecked = true;
+        //    }
+        //    else
+        //    {
+        //        checkBox.IsChecked = false;
+        //    }
+        //}
 
         private void PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("^[a-zA-Z ]");
             e.Handled = !regex.IsMatch(e.Text);
         }
+
+        //public void exportToPdf(DataGrid dg, string fileName)
+        //{
+        //    BaseFont baseFont = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1250, BaseFont.EMBEDDED);
+        //    PdfPTable pdfTable = new PdfPTable(dg.Columns.Count);
+        //    pdfTable.DefaultCell.Padding = 3;
+        //    pdfTable.DefaultCell.BorderWidth = 1;
+        //    pdfTable.WidthPercentage = 100;
+        //    pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
+
+
+        //}
     }
 }
