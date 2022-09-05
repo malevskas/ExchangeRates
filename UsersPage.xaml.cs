@@ -42,7 +42,6 @@ namespace ExchangeRates
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token.GetToken());
-                //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJTaW1vbmFNYWxldnNrYSIsIm5iZiI6MTY2MTQxNzMzMiwiZXhwIjoxNjYxNDE5MTMyLCJpYXQiOjE2NjE0MTczMzJ9.FN458S_4FawiSaHMyOWpPnDzbP_47CB93YkLKo0Yatc");
                 
                 HttpResponseMessage response = await client.GetAsync(url + "Users");
                 List<User> list = await response.Content.ReadAsAsync<List<User>>();
@@ -126,24 +125,6 @@ namespace ExchangeRates
                 }
             }
 
-            //using (HttpClient client = new HttpClient())
-            //{
-            //    try
-            //    {
-            //        HttpResponseMessage response = await client.PutAsJsonAsync(url + "Users/" + user.UserId.ToString(), user);
-            //        response.EnsureSuccessStatusCode();
-            //        string msg = await response.Content.ReadAsStringAsync();
-            //        response = await client.GetAsync(url + "Users");
-            //        List<User> list = await response.Content.ReadAsAsync<List<User>>();
-            //        dataGrid.ItemsSource = list;
-            //    }
-            //    catch
-            //    {
-            //        MessageBox.Show("Failed!");
-            //    }
-            //}
-
-
             //string result = uHelper.edit((User)dataGrid.SelectedItem, FirstName.Text, Surname.Text, checkBox.IsChecked);
             //if (!result.Equals("ok"))
             //{
@@ -205,22 +186,6 @@ namespace ExchangeRates
                 checkBox.IsChecked = false;
             }
         }
-
-        //private void populateTextBox(object sender, SelectedCellsChangedEventArgs e)
-        //{
-        //    user = (User)dataGrid.SelectedItem ?? user;
-        //    UserId.Content = user.UserId.ToString();
-        //    FirstName.Text = user.FirstName;
-        //    Surname.Text = user.Surname;
-        //    if (user.IsActive == 1)
-        //    {
-        //        checkBox.IsChecked = true;
-        //    }
-        //    else
-        //    {
-        //        checkBox.IsChecked = false;
-        //    }
-        //}
 
         private void PreviewTextInput(object sender, TextCompositionEventArgs e)
         {

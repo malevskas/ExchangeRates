@@ -10,7 +10,8 @@
 namespace ExchangeRates
 {
     using System;
-    
+    using System.Data.Entity.Core.Objects;
+
     public partial class CalculateDailyTDA_Result
     {
         public int Id { get; set; }

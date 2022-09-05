@@ -83,7 +83,7 @@ namespace ExchangeRates
         {
             var auth = new Auth();
             auth.UserName = UserName.Text;
-            auth.Password = Password.Text;
+            auth.Password = Password.Password;
             //var json = JsonConvert.SerializeObject(auth);
             using (HttpClient client = new HttpClient())
             {
