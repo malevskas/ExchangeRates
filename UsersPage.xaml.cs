@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using System.Configuration;
 using System.Windows.Shapes;
 using System.Net.Http.Headers;
+using System.Net;
 
 namespace ExchangeRates
 {
@@ -42,10 +43,17 @@ namespace ExchangeRates
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token.GetToken());
-                
+
                 HttpResponseMessage response = await client.GetAsync(url + "Users");
-                List<User> list = await response.Content.ReadAsAsync<List<User>>();
-                dataGrid.ItemsSource = list;
+                var statusCode = response.StatusCode;
+                if (statusCode == HttpStatusCode.OK)
+                {
+                    List<User> list = await response.Content.ReadAsAsync<List<User>>();
+                    dataGrid.ItemsSource = list;
+                } else
+                {
+                    MessageBox.Show("User unauthorized!");
+                }
             }
         }
         
@@ -70,11 +78,18 @@ namespace ExchangeRates
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token.GetToken());
 
                     HttpResponseMessage response = await client.PostAsJsonAsync(url + "Users", user);
-                    response.EnsureSuccessStatusCode();
-                    string msg = await response.Content.ReadAsStringAsync();
-                    response = await client.GetAsync(url + "Users");
-                    List<User> list = await response.Content.ReadAsAsync<List<User>>();
-                    dataGrid.ItemsSource = list;
+                    var statusCode = response.StatusCode;
+                    if (statusCode == HttpStatusCode.Created)
+                    {
+                        string msg = await response.Content.ReadAsStringAsync();
+                        response = await client.GetAsync(url + "Users");
+                        List<User> list = await response.Content.ReadAsAsync<List<User>>();
+                        dataGrid.ItemsSource = list;
+                    }
+                    else
+                    {
+                        MessageBox.Show("User unauthorized!");
+                    }
                 } catch
                 {
                     MessageBox.Show("Failed!");
@@ -113,11 +128,24 @@ namespace ExchangeRates
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token.GetToken());
 
                     HttpResponseMessage response = await client.PutAsJsonAsync(url + "Users/" + user.UserId.ToString(), user);
-                    response.EnsureSuccessStatusCode();
+                    var statusCode = response.StatusCode;
+                    Debug.Write(statusCode);
                     string msg = await response.Content.ReadAsStringAsync();
                     response = await client.GetAsync(url + "Users");
                     List<User> list = await response.Content.ReadAsAsync<List<User>>();
                     dataGrid.ItemsSource = list;
+                    //if (statusCode == HttpStatusCode.OK)
+                    //{
+                    //    string msg = await response.Content.ReadAsStringAsync();
+                    //    response = await client.GetAsync(url + "Users");
+                    //    List<User> list = await response.Content.ReadAsAsync<List<User>>();
+                    //    dataGrid.ItemsSource = list;
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("User unauthorized!");
+                    //}
+
                 }
                 catch
                 {
@@ -147,11 +175,23 @@ namespace ExchangeRates
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token.GetToken());
 
                     HttpResponseMessage response = await client.PutAsJsonAsync(url + "Users/" + user.UserId.ToString(), user);
-                    response.EnsureSuccessStatusCode();
+                    var statusCode = response.StatusCode;
+                    Debug.Write(statusCode);
                     string msg = await response.Content.ReadAsStringAsync();
                     response = await client.GetAsync(url + "Users");
                     List<User> list = await response.Content.ReadAsAsync<List<User>>();
                     dataGrid.ItemsSource = list;
+                    //if (statusCode == HttpStatusCode.OK)
+                    //{
+                    //    string msg = await response.Content.ReadAsStringAsync();
+                    //    response = await client.GetAsync(url + "Users");
+                    //    List<User> list = await response.Content.ReadAsAsync<List<User>>();
+                    //    dataGrid.ItemsSource = list;
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("User unauthorized!");
+                    //}
                 }
                 catch
                 {

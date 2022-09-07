@@ -34,9 +34,6 @@ namespace ExchangeRates.Repositories
 
         public string Update(T t)
         {
-            //table.Attach(t);
-            //myExchangeDatabase.SaveChanges();
-            //return "ok";
             if (myExchangeDatabase.SaveChanges() >= 0)
             {
                 return "ok";

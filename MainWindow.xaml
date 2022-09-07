@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ExchangeRates"
         mc:Ignorable="d"
         MinHeight="650" MinWidth="1050"
-        Title="MainWindow" Height="700" Width="1050">
+        Title="Exchange Rates" Height="700" Width="1050">
 
     <Grid>
 
@@ -22,11 +22,12 @@
         </Menu>
 
         <Frame x:Name="MainFrame" Margin="0,30,0,0"/>
-        <Label Name="usern" Content="Username" HorizontalAlignment="Left" Margin="243,93,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="UserName" HorizontalAlignment="Left" Margin="215,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="Pass" Content="Password" HorizontalAlignment="Left" Margin="745,93,0,0" VerticalAlignment="Top"/>
-        <PasswordBox x:Name="Password" HorizontalAlignment="Left" Margin="715,160,0,0" VerticalAlignment="Top" Width="120" Height="25"/>
-        <Button x:Name="but" Content="Log in" HorizontalAlignment="Left" Margin="520,347,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+
+        <Label Name="usern" Content="Username" HorizontalAlignment="Left" Margin="52,62,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="UserName" HorizontalAlignment="Left" Margin="52,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="350"/>
+        <Label x:Name="Pass" Content="Password" HorizontalAlignment="Left" Margin="52,130,0,0" VerticalAlignment="Top"/>
+        <PasswordBox x:Name="Password" HorizontalAlignment="Left" Margin="52,160,0,0" VerticalAlignment="Top" Width="350" Height="25"/>
+        <Button x:Name="but" Content="Log in" HorizontalAlignment="Left" Margin="52,222,0,0" VerticalAlignment="Top" Click="Button_Click_1" Width="70"/>
 
     </Grid>
 

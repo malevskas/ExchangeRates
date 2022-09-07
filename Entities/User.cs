@@ -30,5 +30,14 @@ namespace ExchangeRates
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OperationsHistory> OperationsHistories { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + Surname;
+            }
+            
+        }
     }
 }

@@ -33,7 +33,6 @@
         <TextBox x:Name="Period" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextNumericInput"/>
         <DatePicker x:Name="StartDate" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center"/>
         <Button Grid.Column="1" Grid.Row="4" Content="Calculate" HorizontalAlignment="Left" Margin="5,0,0,11" VerticalAlignment="Bottom" Click="Calculate" Width="55"/>
-        <Button Grid.Column="1" Grid.Row="4" Content="Download as PDF" HorizontalAlignment="Left" Margin="185,10,0,0" VerticalAlignment="Top" Width="110" Click="Excel"/>
         <DataGrid x:Name="dataGrid" Grid.Row="5" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding Path=CalculateDailyTDA_Result}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Month" Binding="{Binding MonthlyDate}"/>

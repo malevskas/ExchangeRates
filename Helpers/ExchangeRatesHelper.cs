@@ -43,7 +43,7 @@ namespace ExchangeRates.Helpers
                     er.ValidityDate = SelectedDate.Value.Date;
                     er.CurrencyFrom = from.CurrencyId;
                     er.CurrencyTo = to.CurrencyId;
-                    er.Rate = int.Parse(Rate);
+                    er.Rate = Convert.ToDouble(Rate);
                     if (IsChecked == true)
                     {
                         er.IsActive = 1;

@@ -73,7 +73,7 @@ namespace ExchangeRates
             OperationId.Content = operation.OperationId.ToString();
             OperationTypeCB.Text = operation.OperationType.OperationName;
             OperationDate.SelectedDate = operation.OperationDate;
-            UserCB.Text = operation.User.FirstName;
+            UserCB.Text = operation.User.FullName;
             CurrencyFromCB.Text = operation.Currency.CurrencyName;
             CurrencyToCB.Text = operation.Currency1.CurrencyName;
             Amount.Text = operation.Amount.ToString();

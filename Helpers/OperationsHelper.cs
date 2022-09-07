@@ -64,6 +64,10 @@ namespace ExchangeRates.Helpers
             {
                 return "Please fill out all fields.";
             }
+            else if (DateTime.Compare(SelectedDate.Value.Date, DateTime.Today) < 0)
+            {
+                return "Please select a later date.";
+            }
             else
             {
                 operation.OperationTypeId = ot.OperationTypeId;

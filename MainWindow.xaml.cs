@@ -84,18 +84,8 @@ namespace ExchangeRates
             var auth = new Auth();
             auth.UserName = UserName.Text;
             auth.Password = Password.Password;
-            //var json = JsonConvert.SerializeObject(auth);
             using (HttpClient client = new HttpClient())
             {
-                //var request = new HttpRequestMessage
-                //{
-                //    Method = HttpMethod.Post,
-                //    RequestUri = new Uri(url + "Token/Authenticate"),
-                //    Content = new StringContent(json, Encoding.UTF8, "application/json"),
-                //};
-
-                //var content = new FormUrlEncodedContent(json);
-
                 var response = await client.PostAsJsonAsync(url + "Token/Authenticate", auth);
 
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -124,12 +114,6 @@ namespace ExchangeRates
                 {
                     MessageBox.Show("User unauthorized!");
                 }
-
-                //client.SendAsync(request).Wait();
-
-                //var response = (HttpWebResponse)request.GetResponse();
-
-                //var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
 
                 //HttpResponseMessage response = await client.PostAsJsonAsync(url + "Token/Authenticate", FirstName.Text+Surname1.Text, Password.Text);
 

@@ -94,11 +94,15 @@ namespace ExchangeRates.Helpers
             {
                 return "Please fill out all fields.";
             }
+            else if (DateTime.Compare(SelectedDate.Value.Date, DateTime.Today) < 0)
+            {
+                return "Please select a later date.";
+            }
             else
             {
                 or.ValidityDate = SelectedDate.Value.Date;
                 or.Currency = c.CurrencyId;
-                or.Rate = int.Parse(Rate);
+                or.Rate = Convert.ToDouble(Rate);
                 if (IsChecked == true)
                 {
                     or.IsActive = 1;

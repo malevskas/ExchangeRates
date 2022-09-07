@@ -36,7 +36,7 @@
         <Label x:Name="OperationId" Style="{StaticResource FancyText}" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top"/>
         <Label Content="Operation Date" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Right" Margin="5" VerticalAlignment="Top"/>
         <ComboBox x:Name="OperationTypeCB" DisplayMemberPath="OperationName" SelectedValuePath="OperationTypeId" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
-        <ComboBox x:Name="UserCB" Grid.Column="1" Grid.Row="2" DisplayMemberPath="FirstName" SelectedValuePath="UserId" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
+        <ComboBox x:Name="UserCB" Grid.Column="1" Grid.Row="2" DisplayMemberPath="FullName" SelectedValuePath="UserId" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
         <ComboBox x:Name="CurrencyFromCB" DisplayMemberPath="CurrencyName" SelectedValuePath="CurrencyId" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
         <ComboBox x:Name="CurrencyToCB" DisplayMemberPath="CurrencyName" SelectedValuePath="CurrencyId" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="100"/>
         <TextBox x:Name="Amount" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top" PreviewTextInput="PreviewTextInput" MaxLength="10"/>
@@ -47,7 +47,7 @@
         <DataGrid x:Name="dataGrid" Grid.Row="8" Grid.ColumnSpan="2" AutoGenerateColumns="False" Margin="5" ItemsSource="{Binding Path=Operations}" SelectedCellsChanged="populateTextBox">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Operation Type" Binding="{Binding OperationType.OperationName}"/>
-                <DataGridTextColumn Header="User" Binding="{Binding User.FirstName}"/>
+                <DataGridTextColumn Header="User" Binding="{Binding User.FullName}"/>
                 <DataGridTextColumn Header="Currency From" Binding="{Binding Currency.CurrencyName}"/>
                 <DataGridTextColumn Header="Currency To" Binding="{Binding Currency1.CurrencyName}"/>
                 <DataGridTextColumn Header="Amount" Binding="{Binding Amount}"/>
